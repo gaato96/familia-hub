@@ -131,6 +131,27 @@ explícitas y no `select *`** a propósito: agregar una columna sensible a
 `member_details` no la filtra por accidente. `tests/rls/isolation.test.ts`
 verifica la lista exacta de columnas que devuelve.
 
+### Finanzas: porcentajes en basis points, y la suma NO tiene constraint
+
+Los porcentajes del reparto se guardan como enteros en basis points
+(`10000` = 100%), nunca como decimales: con `0.35` y compañía, seis rubros que
+"suman 100%" terminan sumando 99.99 y el reparto muestra una diferencia
+inexplicable.
+
+Deliberadamente **no hay un CHECK que obligue a que sumen 10000**. Un constraint
+así haría imposible editar: bajar un rubro del 35% al 30% dejaría el total en
+9500 y la base rechazaría el UPDATE antes de poder subir otro. La validación
+vive en la pantalla, que muestra cuánto falta o cuánto sobra mientras se edita.
+
+`summarizeBudget()` reparte sobre 10000 bp y **no sobre la suma real**: si los
+rubros suman 90%, el 10% restante queda visible como "sin asignar" en vez de
+inflarse entre los rubros existentes. Es la diferencia entre "te falta asignar
+plata" y "la plata se fue sola a algún lado".
+
+El estado de un vencimiento (`pagado` / `vencido` / `por-vencer` / `pendiente`)
+se **deriva** de `paid_on` y de la fecha; no hay columna `status`. Una columna
+editable a mano dejaría filas "pagadas" sin fecha de pago.
+
 ### Los tres canales redundantes de Realtime
 
 `use-notes-realtime.ts` y `use-shopping-realtime.ts` combinan Realtime + poll de 30s + refetch al
@@ -217,5 +238,9 @@ consultas, peso/talla, hitos y talles; caja fuerte documental con bucket privado
 la cámara; contactos; y la ficha de emergencia offline (`/emergencia`), que es la única pantalla
 con datos que el service worker cachea.
 
-**Falta:** finanzas del hogar (Fase 3), menú semanal y despensa (Fase 4). El plan completo está en
+**Fase 3 (finanzas) — implementada.** Ingresos por integrante y por mes, motor de reparto por
+porcentajes configurables con los seis rubros sembrados al crear la familia, y vencimientos
+ordenados cronológicamente con estado derivado. Solo la ven los adultos, como el expediente.
+
+**Falta:** menú semanal y despensa (Fase 4). El plan completo está en
 `C:\Users\gaato\.claude\plans\quiero-desarrollar-una-web-keen-sunbeam.md`.

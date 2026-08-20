@@ -1,10 +1,12 @@
-import { AlertTriangle, CalendarDays, CircleCheck } from "lucide-react";
+import { AlertTriangle, CalendarDays, CircleCheck, Wallet } from "lucide-react";
 import Link from "next/link";
 
 import { DaySummary } from "@/components/app/day-summary";
 import { FridgeBoard } from "@/components/board/fridge-board";
 import { requireFamily } from "@/lib/auth/context";
-import { todayInAr } from "@/lib/dates";
+import { expenseStatus } from "@/lib/budget/allocate";
+import { addDaysIso, todayInAr } from "@/lib/dates";
+import { formatMoney } from "@/lib/money";
 import { fetchNotes } from "@/lib/notes/queries";
 import {
   ensureInstances,
@@ -31,12 +33,26 @@ export default async function InicioPage() {
   // semana todavía no existen y el resumen del día saldría vacío.
   await ensureInstances(supabase, today);
 
-  const [notes, todayTasks, todayEvents, overdue] = await Promise.all([
+  const [notes, todayTasks, todayEvents, overdue, dueSoon] = await Promise.all([
     fetchNotes(supabase),
     fetchTasksBetween(supabase, today, today),
     fetchEventsBetween(supabase, today, today),
     fetchOverdueTasks(supabase, today),
+    // Vencimientos impagos que ya vencieron o vencen pronto. RLS devuelve cero
+    // filas si quien mira no es adulto, así que no hace falta chequear el rol:
+    // la tarjeta simplemente no aparece.
+    supabase
+      .from("expenses")
+      .select("*")
+      .is("paid_on", null)
+      .lte("due_date", addDaysIso(today, 5))
+      .order("due_date", { ascending: true }),
   ]);
+
+  const urgentExpenses = (dueSoon.data ?? []).filter(
+    (expense) => expenseStatus(expense, today) !== "pendiente",
+  );
+  const urgentCents = urgentExpenses.reduce((sum, e) => sum + e.amount_cents, 0);
 
   const mine = todayTasks.filter((t) => t.assigned_member_id === member.id);
   const pendingMine = mine.filter((t) => t.status === "pending");
@@ -87,6 +103,22 @@ export default async function InicioPage() {
               {overdue.length} {overdue.length === 1 ? "tarea atrasada" : "tareas atrasadas"}
             </span>{" "}
             en la casa.
+          </span>
+        </Link>
+      ) : null}
+
+      {urgentExpenses.length > 0 ? (
+        <Link
+          href="/finanzas"
+          className="flex items-center gap-3 rounded-app border border-danger/40 bg-danger/5 p-3 text-sm"
+        >
+          <Wallet className="size-5 shrink-0 text-danger" />
+          <span className="text-fg">
+            <span className="font-semibold">
+              {urgentExpenses.length}{" "}
+              {urgentExpenses.length === 1 ? "vencimiento" : "vencimientos"}
+            </span>{" "}
+            por {formatMoney(urgentCents)}.
           </span>
         </Link>
       ) : null}

@@ -8,7 +8,9 @@ import {
   Moon,
   Smartphone,
   Sun,
+  Wallet,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
@@ -45,7 +47,7 @@ function getSupportSnapshot(): PushSupport {
   return cachedSupport;
 }
 
-export function SettingsPanel({ email }: { email: string }) {
+export function SettingsPanel({ email, isParent }: { email: string; isParent: boolean }) {
   const router = useRouter();
   const dark = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
   const support = useSyncExternalStore(
@@ -100,6 +102,26 @@ export function SettingsPanel({ email }: { email: string }) {
     <div className="space-y-5">
       <h1 className="text-2xl font-bold tracking-tight text-fg">Más</h1>
 
+      {/* Finanzas vive acá y no en la bottom nav: seis pestañas no entran
+          cómodas en un teléfono, y además solo la ven los adultos. */}
+      {isParent ? (
+        <Link
+          href="/finanzas"
+          className="flex items-center gap-3 rounded-app border border-border bg-surface p-4"
+        >
+          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
+            <Wallet className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-medium text-fg">Finanzas del hogar</span>
+            <span className="block truncate text-xs text-muted">
+              Ingresos, reparto y vencimientos.
+            </span>
+          </span>
+          <ChevronRight className="size-4 shrink-0 text-muted" />
+        </Link>
+      ) : null}
+
       <section className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
         <button
           type="button"
@@ -134,7 +156,6 @@ export function SettingsPanel({ email }: { email: string }) {
       <section className="rounded-app border border-dashed border-border p-4">
         <h2 className="text-sm font-semibold text-fg">Lo que viene</h2>
         <ul className="mt-2 space-y-1 text-sm text-muted">
-          <li>Finanzas del hogar y vencimientos</li>
           <li>Menú semanal y despensa</li>
         </ul>
       </section>

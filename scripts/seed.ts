@@ -279,6 +279,40 @@ async function seedFamilyContent(
     ).error,
   );
 
+  // --- Finanzas (Fase 3) --------------------------------------------------
+  const month = `${new Date().toISOString().slice(0, 7)}-01`;
+
+  check(
+    `${label} ingreso`,
+    (
+      await client.from("income_entries").insert({
+        label: `Sueldo (${label})`,
+        amount_cents: 1_200_000_00,
+        period_month: month,
+        member_id: memberIds[0] ?? null,
+      })
+    ).error,
+  );
+
+  const { data: allocs, error: allocsError } = await client
+    .from("budget_allocations")
+    .select("id, label");
+  check(`${label} leer rubros`, allocsError);
+
+  check(
+    `${label} gasto`,
+    (
+      await client.from("expenses").insert({
+        label: `Alquiler (${label})`,
+        amount_cents: 450_000_00,
+        due_date: `${month.slice(0, 8)}10`,
+        category: "alquiler",
+        allocation_id: allocs?.[0]?.id ?? null,
+        is_recurring: true,
+      })
+    ).error,
+  );
+
   check(
     `${label} generar ocurrencias`,
     (

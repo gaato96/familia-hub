@@ -407,6 +407,69 @@ export type EmergencyCardRow = {
 };
 
 // ---------------------------------------------------------------------------
+// Fase 3 — finanzas
+// ---------------------------------------------------------------------------
+export type ExpenseCategory =
+  | "alquiler"
+  | "expensas"
+  | "servicios"
+  | "tarjeta"
+  | "prestamo"
+  | "salud"
+  | "julian"
+  | "super"
+  | "transporte"
+  | "suscripcion"
+  | "varios";
+
+export type IncomeEntryRow = {
+  id: string;
+  family_id: string;
+  member_id: string | null;
+  label: string;
+  /** Centavos enteros. Ver src/lib/money.ts. */
+  amount_cents: number;
+  /** Siempre el día 1 del mes: lo normaliza un trigger. */
+  period_month: string;
+  received_on: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type BudgetAllocationRow = {
+  id: string;
+  family_id: string;
+  label: string;
+  /** Basis points enteros: 10000 = 100%. Nunca decimales. */
+  percent_bp: number;
+  /** No nulo = asignación personal, de libre disponibilidad. */
+  member_id: string | null;
+  color: string;
+  position: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ExpenseRow = {
+  id: string;
+  family_id: string;
+  label: string;
+  category: ExpenseCategory;
+  amount_cents: number;
+  due_date: string;
+  /** La fuente de verdad del estado: si tiene fecha, está pago. */
+  paid_on: string | null;
+  paid_by_member_id: string | null;
+  allocation_id: string | null;
+  document_id: string | null;
+  is_recurring: boolean;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// ---------------------------------------------------------------------------
 // Database
 // ---------------------------------------------------------------------------
 /**
@@ -621,6 +684,28 @@ export type Database = {
         | "is_emergency"
         | "position"
       >;
+
+      // --- Fase 3 ---------------------------------------------------------
+      income_entries: Table<
+        IncomeEntryRow,
+        Stamps | "family_id" | "member_id" | "received_on" | "notes"
+      >;
+      budget_allocations: Table<
+        BudgetAllocationRow,
+        Stamps | "family_id" | "member_id" | "color" | "position"
+      >;
+      expenses: Table<
+        ExpenseRow,
+        | Stamps
+        | "family_id"
+        | "category"
+        | "paid_on"
+        | "paid_by_member_id"
+        | "allocation_id"
+        | "document_id"
+        | "is_recurring"
+        | "notes"
+      >;
     };
     Views: Record<string, never>;
     Functions: {
@@ -647,6 +732,7 @@ export type Database = {
        * del expediente, y solo el subconjunto que sirve en una guardia.
        */
       emergency_card: { Args: Record<string, never>; Returns: EmergencyCardRow[] };
+      budget_total_bp: { Args: Record<string, never>; Returns: number };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

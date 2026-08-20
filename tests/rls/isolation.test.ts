@@ -335,4 +335,40 @@ describe("aislamiento entre familias", () => {
     const { data } = await hijo.storage.from("family-docs").list(unoFamilyId);
     expect(data ?? []).toEqual([]);
   });
+
+  // -------------------------------------------------------------------------
+  // Fase 3 — finanzas
+  //
+  // Mismo criterio que el expediente: cuánto gana cada uno y cuánto se debe no
+  // es información para los chicos de la casa.
+  // -------------------------------------------------------------------------
+  const FINANCE_TABLES = ["income_entries", "budget_allocations", "expenses"] as const;
+
+  it.each(FINANCE_TABLES)("%s: cada familia ve solo lo suyo", async (table) => {
+    const [{ data: rowsUno }, { data: rowsDos }] = await Promise.all([
+      uno.from(table as "expenses").select("family_id"),
+      dos.from(table as "expenses").select("family_id"),
+    ]);
+
+    expect((rowsUno ?? []).length).toBeGreaterThan(0);
+    expect((rowsDos ?? []).length).toBeGreaterThan(0);
+    expect(new Set((rowsUno ?? []).map((r) => r.family_id))).toEqual(new Set([unoFamilyId]));
+    expect(new Set((rowsDos ?? []).map((r) => r.family_id))).toEqual(new Set([dosFamilyId]));
+  });
+
+  it.each(FINANCE_TABLES)("%s: un integrante no ve las finanzas", async (table) => {
+    const { data, error } = await hijo.from(table as "expenses").select("*");
+    expect(error).toBeNull();
+    expect(data ?? []).toEqual([]);
+  });
+
+  it("un integrante tampoco puede cargar un gasto", async () => {
+    const { error } = await hijo.from("expenses").insert({
+      label: "No deberia entrar",
+      amount_cents: 1000,
+      due_date: "2026-12-01",
+    });
+
+    expect(error).not.toBeNull();
+  });
 });

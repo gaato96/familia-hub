@@ -49,7 +49,12 @@ export async function GET(request: Request) {
     // de la semana que viene todavía no existen y el resumen diría "0 tareas".
     await admin.rpc("ensure_task_instances", { p_until: sunday, p_family_id: family.id });
 
-    const [{ count: taskCount }, { count: eventCount }, { data: profiles }] = await Promise.all([
+    const [
+      { count: taskCount },
+      { count: eventCount },
+      { data: dueExpenses },
+      { data: profiles },
+    ] = await Promise.all([
       admin
         .from("task_instances")
         .select("id", { count: "exact", head: true })
@@ -63,15 +68,25 @@ export async function GET(request: Request) {
         .eq("family_id", family.id)
         .gte("starts_at", `${monday}T00:00:00-03:00`)
         .lte("starts_at", `${sunday}T23:59:59-03:00`),
+      // Vencimientos impagos hasta el domingo que viene, incluidos los que ya
+      // vencieron: una factura de la semana pasada sin pagar es justamente lo
+      // que hay que recordar el domingo a la noche.
+      admin
+        .from("expenses")
+        .select("amount_cents")
+        .eq("family_id", family.id)
+        .is("paid_on", null)
+        .lte("due_date", sunday),
       admin.from("profiles").select("id").eq("family_id", family.id).eq("is_active", true),
     ]);
 
     const tasks = taskCount ?? 0;
     const events = eventCount ?? 0;
+    const bills = dueExpenses?.length ?? 0;
 
     // Una semana vacía no genera aviso: un push que dice "no hay nada" enseña
     // a ignorar los push.
-    if (tasks === 0 && events === 0) continue;
+    if (tasks === 0 && events === 0 && bills === 0) continue;
 
     notified += await sendPushToProfiles(
       (profiles ?? []).map((p) => p.id),
@@ -80,9 +95,10 @@ export async function GET(request: Request) {
         body: [
           tasks > 0 ? `${tasks} ${tasks === 1 ? "tarea" : "tareas"}` : null,
           events > 0 ? `${events} ${events === 1 ? "evento" : "eventos"}` : null,
+          bills > 0 ? `${bills} ${bills === 1 ? "vencimiento" : "vencimientos"}` : null,
         ]
           .filter(Boolean)
-          .join(" y "),
+          .join(" · "),
         url: `/planner?semana=${monday}`,
         tag: "resumen-semanal",
       },
