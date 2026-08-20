@@ -235,6 +235,178 @@ export type ShoppingItemRow = {
 };
 
 // ---------------------------------------------------------------------------
+// Fase 2 — expediente, documentos y contactos
+// ---------------------------------------------------------------------------
+export type BloodType = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
+
+export type DocumentCategory =
+  | "identidad"
+  | "salud"
+  | "escuela"
+  | "vivienda"
+  | "vehiculo"
+  | "garantia"
+  | "seguro"
+  | "finanzas"
+  | "otros";
+
+export type ContactCategory =
+  | "salud"
+  | "urgencias"
+  | "escuela"
+  | "servicios"
+  | "familia"
+  | "otros";
+
+export type SizeKind = "ropa" | "calzado" | "pantalon" | "abrigo" | "otro";
+
+export type MemberDetailRow = {
+  member_id: string;
+  family_id: string;
+  full_legal_name: string | null;
+  dni: string | null;
+  cuil: string | null;
+  blood_type: BloodType | null;
+  health_insurance: string | null;
+  health_insurance_id: string | null;
+  allergies: string | null;
+  conditions: string | null;
+  emergency_notes: string | null;
+  address: string | null;
+  birth_place: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type DocumentRow = {
+  id: string;
+  family_id: string;
+  member_id: string | null;
+  title: string;
+  description: string | null;
+  category: DocumentCategory;
+  storage_path: string;
+  mime_type: string;
+  size_bytes: number;
+  issued_on: string | null;
+  expires_on: string | null;
+  uploaded_by_member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type MedicationRow = {
+  id: string;
+  family_id: string;
+  member_id: string;
+  name: string;
+  dose: string | null;
+  frequency: string | null;
+  treats: string | null;
+  notes: string | null;
+  prescribed_by: string | null;
+  started_on: string | null;
+  ended_on: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type VaccineRow = {
+  id: string;
+  family_id: string;
+  member_id: string;
+  name: string;
+  dose_label: string | null;
+  applied_on: string | null;
+  due_on: string | null;
+  place: string | null;
+  batch_number: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type MedicalVisitRow = {
+  id: string;
+  family_id: string;
+  member_id: string;
+  visited_on: string;
+  specialty: string | null;
+  professional: string | null;
+  place: string | null;
+  reason: string | null;
+  diagnosis: string | null;
+  indications: string | null;
+  next_visit_on: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type GrowthRecordRow = {
+  id: string;
+  family_id: string;
+  member_id: string;
+  measured_on: string;
+  /** Gramos enteros. Ver src/lib/records/measures.ts para el formato. */
+  weight_grams: number | null;
+  /** Milímetros enteros. */
+  height_mm: number | null;
+  head_circ_mm: number | null;
+  notes: string | null;
+  created_at: string;
+};
+
+export type MilestoneRow = {
+  id: string;
+  family_id: string;
+  member_id: string;
+  title: string;
+  achieved_on: string;
+  notes: string | null;
+  created_at: string;
+};
+
+export type MemberSizeRow = {
+  id: string;
+  family_id: string;
+  member_id: string;
+  kind: SizeKind;
+  value: string;
+  notes: string | null;
+  valid_from: string;
+  created_at: string;
+};
+
+export type ContactRow = {
+  id: string;
+  family_id: string;
+  name: string;
+  role: string | null;
+  phone: string | null;
+  alt_phone: string | null;
+  notes: string | null;
+  category: ContactCategory;
+  is_emergency: boolean;
+  position: number;
+  created_at: string;
+  updated_at: string;
+};
+
+/** Lo que devuelve la función emergency_card(). */
+export type EmergencyCardRow = {
+  member_id: string;
+  display_name: string;
+  color: string;
+  birth_date: string | null;
+  blood_type: BloodType | null;
+  allergies: string | null;
+  conditions: string | null;
+  emergency_notes: string | null;
+  medications: string[];
+};
+
+// ---------------------------------------------------------------------------
 // Database
 // ---------------------------------------------------------------------------
 /**
@@ -356,6 +528,99 @@ export type Database = {
         | "position"
         | "added_by_member_id"
       >;
+
+      // --- Fase 2 ---------------------------------------------------------
+      member_details: Table<
+        MemberDetailRow,
+        | "family_id"
+        | "created_at"
+        | "updated_at"
+        | "full_legal_name"
+        | "dni"
+        | "cuil"
+        | "blood_type"
+        | "health_insurance"
+        | "health_insurance_id"
+        | "allergies"
+        | "conditions"
+        | "emergency_notes"
+        | "address"
+        | "birth_place"
+      >;
+      documents: Table<
+        DocumentRow,
+        | Stamps
+        | "family_id"
+        | "member_id"
+        | "description"
+        | "category"
+        | "issued_on"
+        | "expires_on"
+        | "uploaded_by_member_id"
+      >;
+      medications: Table<
+        MedicationRow,
+        | Stamps
+        | "family_id"
+        | "dose"
+        | "frequency"
+        | "treats"
+        | "notes"
+        | "prescribed_by"
+        | "started_on"
+        | "ended_on"
+        | "is_active"
+      >;
+      vaccines: Table<
+        VaccineRow,
+        | Stamps
+        | "family_id"
+        | "dose_label"
+        | "applied_on"
+        | "due_on"
+        | "place"
+        | "batch_number"
+        | "notes"
+      >;
+      medical_visits: Table<
+        MedicalVisitRow,
+        | Stamps
+        | "family_id"
+        | "specialty"
+        | "professional"
+        | "place"
+        | "reason"
+        | "diagnosis"
+        | "indications"
+        | "next_visit_on"
+      >;
+      growth_records: Table<
+        GrowthRecordRow,
+        | "id"
+        | "created_at"
+        | "family_id"
+        | "weight_grams"
+        | "height_mm"
+        | "head_circ_mm"
+        | "notes"
+      >;
+      milestones: Table<MilestoneRow, "id" | "created_at" | "family_id" | "notes">;
+      member_sizes: Table<
+        MemberSizeRow,
+        "id" | "created_at" | "family_id" | "notes" | "valid_from"
+      >;
+      contacts: Table<
+        ContactRow,
+        | Stamps
+        | "family_id"
+        | "role"
+        | "phone"
+        | "alt_phone"
+        | "notes"
+        | "category"
+        | "is_emergency"
+        | "position"
+      >;
     };
     Views: Record<string, never>;
     Functions: {
@@ -377,6 +642,11 @@ export type Database = {
         Returns: number;
       };
       clear_checked_items: { Args: { p_list_id: string }; Returns: number };
+      /**
+       * SECURITY DEFINER: es la única puerta por la que un `child` ve datos
+       * del expediente, y solo el subconjunto que sirve en una guardia.
+       */
+      emergency_card: { Args: Record<string, never>; Returns: EmergencyCardRow[] };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

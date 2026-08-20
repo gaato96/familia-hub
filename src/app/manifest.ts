@@ -39,13 +39,11 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {
-        name: "La semana",
-        short_name: "Planner",
-        url: "/planner",
+        name: "Ficha de emergencia",
+        short_name: "Emergencia",
+        url: "/emergencia",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
-      // El atajo a /emergencia se agrega en la Fase 2, cuando esa pantalla
-      // exista: un shortcut a un 404 es peor que no tener el shortcut.
     ],
   };
 }

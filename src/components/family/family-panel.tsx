@@ -1,6 +1,18 @@
 "use client";
 
-import { Baby, Check, Copy, RefreshCw, Shield, UserPlus } from "lucide-react";
+import {
+  Baby,
+  Check,
+  ChevronRight,
+  Copy,
+  FileText,
+  Phone,
+  RefreshCw,
+  Shield,
+  TriangleAlert,
+  UserPlus,
+} from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -93,6 +105,31 @@ export function FamilyPanel({
         </p>
       </header>
 
+      {/* Accesos que no cuelgan de ninguna persona en particular. La ficha de
+          emergencia va primero y la ve todo el mundo. */}
+      <nav className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+        <QuickLink
+          href="/emergencia"
+          icon={<TriangleAlert className="size-5 text-danger" />}
+          label="Ficha de emergencia"
+          hint="Grupo sanguíneo, alergias y medicación. Funciona sin internet."
+        />
+        <QuickLink
+          href="/contactos"
+          icon={<Phone className="size-5 text-muted" />}
+          label="Contactos"
+          hint="Pediatra, urgencias, servicios."
+        />
+        {isParent ? (
+          <QuickLink
+            href="/documentos"
+            icon={<FileText className="size-5 text-muted" />}
+            label="Papeles de la casa"
+            hint="Contratos, garantías y seguros."
+          />
+        ) : null}
+      </nav>
+
       <ul className="space-y-2">
         {members.map((m) => {
           const role = m.profile_id ? roleOf.get(m.profile_id) : undefined;
@@ -104,27 +141,54 @@ export function FamilyPanel({
             >
               <MemberAvatar member={m} />
 
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-fg">
-                  {m.display_name}
-                  {m.id === currentMemberId ? (
-                    <span className="text-muted"> · vos</span>
-                  ) : null}
-                </p>
-                <p className="flex items-center gap-1 text-xs text-muted">
-                  {m.kind === "dependent" ? (
-                    <>
-                      <Baby className="size-3" /> Sin cuenta propia
-                    </>
-                  ) : role === "parent" ? (
-                    <>
-                      <Shield className="size-3" /> Administra la casa
-                    </>
-                  ) : (
-                    "Integrante"
-                  )}
-                </p>
-              </div>
+              {/* El expediente solo lo abre un adulto: adentro hay DNI, obra
+                  social e historia clínica. RLS es lo que de verdad lo impide;
+                  esto evita ofrecer un link que llevaría a una pantalla vacía. */}
+              {isParent ? (
+                <Link href={`/familia/${m.id}`} className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-fg">
+                    {m.display_name}
+                    {m.id === currentMemberId ? (
+                      <span className="text-muted"> · vos</span>
+                    ) : null}
+                  </p>
+                  <p className="flex items-center gap-1 text-xs text-muted">
+                    {m.kind === "dependent" ? (
+                      <>
+                        <Baby className="size-3" /> Ver expediente
+                      </>
+                    ) : role === "parent" ? (
+                      <>
+                        <Shield className="size-3" /> Administra la casa
+                      </>
+                    ) : (
+                      "Ver expediente"
+                    )}
+                  </p>
+                </Link>
+              ) : (
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-fg">
+                    {m.display_name}
+                    {m.id === currentMemberId ? (
+                      <span className="text-muted"> · vos</span>
+                    ) : null}
+                  </p>
+                  <p className="flex items-center gap-1 text-xs text-muted">
+                    {m.kind === "dependent" ? (
+                      <>
+                        <Baby className="size-3" /> Sin cuenta propia
+                      </>
+                    ) : role === "parent" ? (
+                      <>
+                        <Shield className="size-3" /> Administra la casa
+                      </>
+                    ) : (
+                      "Integrante"
+                    )}
+                  </p>
+                </div>
+              )}
 
               {/* Cambiar rol solo lo ve un adulto, y nunca sobre sí mismo: si el
                   único administrador se degrada, no queda nadie que pueda
@@ -287,5 +351,30 @@ function AddDependentForm({
         {pending ? "Guardando..." : "Agregar"}
       </Button>
     </form>
+  );
+}
+
+function QuickLink({
+  href,
+  icon,
+  label,
+  hint,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  hint: string;
+}) {
+  return (
+    <Link href={href} className="flex items-center gap-3 p-4">
+      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-surface-2">
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium text-fg">{label}</span>
+        <span className="block truncate text-xs text-muted">{hint}</span>
+      </span>
+      <ChevronRight className="size-4 shrink-0 text-muted" />
+    </Link>
   );
 }

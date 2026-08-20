@@ -6,8 +6,9 @@ Guía para Claude Code (claude.ai/code) al trabajar en este repositorio.
 
 **Casa** (`family-hub`): PWA mobile-first para la organización de un hogar. Una familia = un
 tenant. Tablero de notas tipo heladera en tiempo real, planner semanal con tareas recurrentes
-rotativas, listas de compras compartidas y —en fases siguientes— el expediente de Julián,
-finanzas del hogar y menú semanal. Se instala en el teléfono y manda Web Push.
+rotativas, listas de compras compartidas, el expediente de salud de cada integrante con su caja
+fuerte documental, y —en fases siguientes— finanzas del hogar y menú semanal. Se instala en el
+teléfono y manda Web Push.
 
 Está en castellano rioplatense, de punta a punta: la UI, los mensajes de error, los nombres de
 las rutas (`/ingresar`, `/planner`, `/compras`) y los comentarios. El código (identificadores,
@@ -111,6 +112,25 @@ veces** (la de SQL materializa, la de TS previsualiza). **Cambian juntas o no ca
 `tests/unit/recurrence.test.ts` cubre los casos que se rompen solos: fin de mes, el 31 en febrero,
 el `from` que no corre el ancla, el techo de horizonte colgado de *hoy* y no de `starts_on`.
 
+### El expediente es la excepción de permisos
+
+Casi toda la app la usan por igual adultos y chicos. El expediente NO: las nueve
+tablas de la Fase 2 (`member_details`, `documents`, `medications`, `vaccines`,
+`medical_visits`, `growth_records`, `milestones`, `member_sizes`) exigen
+`is_parent()` en sus policies, y las policies se generan en un bucle
+(`20260820130100_rls_records.sql`) justamente para que no exista la que se
+escribió a mano y se olvidó el chequeo.
+
+`contacts` es la única de ese grupo que lee toda la casa: el teléfono del
+pediatra sirve sobre todo cuando el adulto no está.
+
+La otra puerta es `emergency_card()`, una función SECURITY DEFINER que le
+devuelve a cualquier integrante un subconjunto acotado —grupo sanguíneo,
+alergias, condiciones y medicación activa— y nada más. Devuelve **columnas
+explícitas y no `select *`** a propósito: agregar una columna sensible a
+`member_details` no la filtra por accidente. `tests/rls/isolation.test.ts`
+verifica la lista exacta de columnas que devuelve.
+
 ### Los tres canales redundantes de Realtime
 
 `use-notes-realtime.ts` y `use-shopping-realtime.ts` combinan Realtime + poll de 30s + refetch al
@@ -164,6 +184,27 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
   de vacunas.
 - **Las escrituras rápidas van directo del cliente a Supabase**, sin Server Action: RLS ya
   autoriza cada fila y el viaje corto es lo que hace que tildar se sienta instantáneo.
+- **En un insert de VARIAS filas, todas tienen que llevar las mismas claves.** PostgREST arma
+  un solo `INSERT` con la unión de las claves y manda `NULL` explícito donde falte una, en vez
+  de dejar actuar al `DEFAULT`. Con una columna `NOT NULL DEFAULT`, omitirla en una sola fila
+  hace fallar el lote entero. Costó encontrarlo una vez (`is_pinned` en `notes`); no vale la
+  pena una segunda.
+- **Borrar una cuenta NO borra al integrante.** `family_members` sobrevive con `kind` pasado a
+  `dependent` (trigger de `20260820140000`), porque de esa fila cuelgan las tareas que hizo y
+  su expediente. Antes de ese trigger, el `on delete set null` sobre `profile_id` violaba el
+  CHECK de la tabla y hacía que borrar un usuario fallara con un
+  "Database error deleting user" que no explicaba nada.
+- **Peso y talla van en enteros de la unidad más chica** (gramos, milímetros), igual que la
+  plata en centavos. `src/lib/records/measures.ts` tiene el parseo y el formato, y acepta coma
+  decimal porque es como se tipea acá.
+- **Los adjuntos se comprimen en el cliente antes de subir** (WebP, tope 2000px). Sin eso, veinte
+  fotos de celular sin tocar se comen medio free tier de Storage sin que nadie note la
+  diferencia al mirarlas. Los PDF pasan tal cual: recomprimirlos los rompe o los agranda.
+- **Si el insert de `documents` falla después de subir el archivo, el archivo se borra.** Al
+  revés quedaría un huérfano invisible ocupando espacio que nadie puede eliminar desde la app.
+- **`npm run db:seed` corta ante cualquier error.** Una versión anterior los ignoraba y decía
+  "Listo" con media base vacía; los tests de RLS fallaban por falta de datos y parecía un
+  problema de policies.
 
 ## Estado del proyecto
 
@@ -171,6 +212,10 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
 notas en vivo, planner semanal con tareas recurrentes y rotación, compras con tachado en tiempo
 real, PWA instalable, Web Push y resumen del domingo.
 
-**Falta:** expediente de Julián y caja fuerte documental (Fase 2, incluye la ficha de emergencia
-offline), finanzas del hogar (Fase 3), menú semanal y despensa (Fase 4). El plan completo está en
+**Fase 2 (expediente) — implementada.** Datos personales y legales, medicamentos, vacunas,
+consultas, peso/talla, hitos y talles; caja fuerte documental con bucket privado y subida desde
+la cámara; contactos; y la ficha de emergencia offline (`/emergencia`), que es la única pantalla
+con datos que el service worker cachea.
+
+**Falta:** finanzas del hogar (Fase 3), menú semanal y despensa (Fase 4). El plan completo está en
 `C:\Users\gaato\.claude\plans\quiero-desarrollar-una-web-keen-sunbeam.md`.

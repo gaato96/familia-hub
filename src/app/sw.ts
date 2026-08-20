@@ -1,6 +1,6 @@
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
-import { NetworkOnly, Serwist } from "serwist";
+import { NetworkFirst, NetworkOnly, Serwist } from "serwist";
 
 declare global {
   interface WorkerGlobalScope extends SerwistGlobalConfig {
@@ -33,6 +33,32 @@ const serwist = new Serwist({
       // Supabase REST / Realtime / Auth — siempre en vivo.
       matcher: ({ url }) => url.hostname.endsWith(".supabase.co"),
       handler: new NetworkOnly(),
+    },
+
+    /* ------------------------------------------------------------------
+       LA EXCEPCIÓN: /emergencia.
+
+       Es la única pantalla con datos que se cachea, y el motivo es el que
+       justifica romper la regla de arriba: tiene que abrir en una guardia
+       sin señal. Va NetworkFirst con 3s de espera, así que con internet
+       siempre muestra lo actual y solo cae al cache cuando no hay red.
+
+       Los datos en sí los guarda el componente en localStorage (ver
+       emergency-card.tsx) — esto cachea el HTML que los pinta.
+    ------------------------------------------------------------------ */
+    {
+      matcher: ({ url, sameOrigin, request }) =>
+        sameOrigin && request.mode === "navigate" && url.pathname === "/emergencia",
+      handler: new NetworkFirst({
+        cacheName: "ficha-emergencia",
+        networkTimeoutSeconds: 3,
+        plugins: [
+          {
+            cacheWillUpdate: async ({ response }) =>
+              response.status === 200 ? response : null,
+          },
+        ],
+      }),
     },
 
     ...defaultCache,

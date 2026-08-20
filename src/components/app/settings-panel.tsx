@@ -134,8 +134,6 @@ export function SettingsPanel({ email }: { email: string }) {
       <section className="rounded-app border border-dashed border-border p-4">
         <h2 className="text-sm font-semibold text-fg">Lo que viene</h2>
         <ul className="mt-2 space-y-1 text-sm text-muted">
-          <li>Expediente de Julián y caja fuerte de documentos</li>
-          <li>Ficha de emergencia sin conexión</li>
           <li>Finanzas del hogar y vencimientos</li>
           <li>Menú semanal y despensa</li>
         </ul>
