@@ -1,0 +1,131 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* El modo oscuro es una clase en <html>, no una media query: la elección del
+   usuario tiene que ganarle a la preferencia del sistema. Ver theme-script.tsx. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Paleta
+   Base cálida tipo papel, no gris azulado: la app imita una heladera con
+   papelitos, y un fondo frío pelea con eso. El violeta es el único color
+   "de sistema"; el resto del color de la app lo ponen los integrantes y las
+   notas, que traen el suyo.
+--------------------------------------------------------------------------- */
+:root {
+  --app-bg: #faf8f5;
+  --app-surface: #ffffff;
+  --app-surface-2: #f4f1ec;
+  --app-border: #e7e1d8;
+  --app-fg: #1c1917;
+  --app-muted: #78716c;
+  --app-primary: #6d4aff;
+  --app-primary-fg: #ffffff;
+  --app-danger: #dc2626;
+  --app-success: #16a34a;
+  --app-warning: #d97706;
+
+  /* Corcho de fondo del tablero de notas. */
+  --app-board: #e9dfcd;
+
+  --radius: 0.875rem;
+}
+
+.dark {
+  --app-bg: #131217;
+  --app-surface: #1c1a22;
+  --app-surface-2: #24212c;
+  --app-border: #322e3c;
+  --app-fg: #f5f3f0;
+  --app-muted: #a29daf;
+  --app-primary: #9d84ff;
+  --app-primary-fg: #16131f;
+  --app-danger: #f87171;
+  --app-success: #4ade80;
+  --app-warning: #fbbf24;
+
+  --app-board: #221f2b;
+}
+
+@theme inline {
+  --color-bg: var(--app-bg);
+  --color-surface: var(--app-surface);
+  --color-surface-2: var(--app-surface-2);
+  --color-border: var(--app-border);
+  --color-fg: var(--app-fg);
+  --color-muted: var(--app-muted);
+  --color-primary: var(--app-primary);
+  --color-primary-fg: var(--app-primary-fg);
+  --color-danger: var(--app-danger);
+  --color-success: var(--app-success);
+  --color-warning: var(--app-warning);
+  --color-board: var(--app-board);
+
+  --radius-app: var(--radius);
+
+  /* next/font expone --font-jakarta y --font-caveat; acá se convierten en las
+     utilidades `font-sans` y `font-hand`. */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--app-border);
+  }
+
+  html {
+    /* Sin esto, un doble tap para tildar un ítem de la compra hace zoom. */
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--app-bg);
+    color: var(--app-fg);
+    /* La PWA instalada ocupa toda la pantalla: sin esto, la bottom nav queda
+       debajo de la barra de gestos del teléfono. */
+    padding-bottom: env(safe-area-inset-bottom);
+    overscroll-behavior-y: none;
+  }
+
+  /* El foco visible se mantiene, pero solo por teclado: en un teléfono, un
+     anillo violeta después de cada tap parece un error. */
+  :focus-visible {
+    outline: 2px solid var(--app-primary);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Scroll horizontal sin barra: las pestañas de listas de compras. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Respeta a quien pidió menos movimiento en el sistema. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

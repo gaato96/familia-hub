@@ -1,0 +1,39 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# production
+/build
+
+# env
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# supabase
+supabase/.temp
+supabase/.branches
+
+# testing
+/playwright-report/
+/test-results/
+/blob-report/
+/coverage
+
+# pwa — generado en build
+/public/sw.js
+/public/sw.js.map
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
