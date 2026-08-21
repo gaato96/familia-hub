@@ -152,6 +152,36 @@ El estado de un vencimiento (`pagado` / `vencido` / `por-vencer` / `pendiente`)
 se **deriva** de `paid_on` y de la fecha; no hay columna `status`. Una columna
 editable a mano dejaría filas "pagadas" sin fecha de pago.
 
+### Comidas: la cadena que justifica el módulo
+
+El módulo no existe para "tener recetas", sino para que del menú de la semana
+salga sola la lista del súper:
+
+```
+meal_plan -> recipe_ingredients -> (descontar pantry_items) -> shopping_items
+```
+
+Todo el modelo está armado alrededor de esa cadena. Por eso
+`recipe_ingredients.name` es texto libre y `pantry_item_id` es OPCIONAL:
+escribir "2 cebollas" tiene que funcionar sin dar de alta "cebolla" como
+producto primero. Un catálogo obligatorio es lo que hace que nadie cargue
+nunca una receta.
+
+`generate_shopping_from_meals()` corre entera en Postgres, en una transacción.
+Agrupa por nombre normalizado (dos recetas con cebolla no dan dos renglones),
+**solo descuenta la despensa si el ingrediente está vinculado Y las unidades
+coinciden** —restar "200 g" de "1 paquete" daría un número inventado, y una
+lista del súper que miente es peor que no tenerla—, y no duplica lo que ya está
+sin tildar, así que se puede correr dos veces sin miedo.
+
+`meal_plan` acepta receta O texto libre, nunca las dos ni ninguna (CHECK): la
+mitad de las cenas de una casa son "sobras" o "pizza", y obligar a cargar una
+receta para cada una dejaría el menú a medio llenar.
+
+A diferencia del expediente y de finanzas, estas tablas **no** exigen
+`is_parent()`. Que un chico anote que quiere milanesas el jueves, o avise que
+se acabó la leche, es el punto.
+
 ### Los tres canales redundantes de Realtime
 
 `use-notes-realtime.ts` y `use-shopping-realtime.ts` combinan Realtime + poll de 30s + refetch al
@@ -209,7 +239,8 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
   un solo `INSERT` con la unión de las claves y manda `NULL` explícito donde falte una, en vez
   de dejar actuar al `DEFAULT`. Con una columna `NOT NULL DEFAULT`, omitirla en una sola fila
   hace fallar el lote entero. Costó encontrarlo una vez (`is_pinned` en `notes`); no vale la
-  pena una segunda.
+  pena una segunda. Vale también para los ingredientes de una receta y para el volcado de la
+  despensa a la lista.
 - **Borrar una cuenta NO borra al integrante.** `family_members` sobrevive con `kind` pasado a
   `dependent` (trigger de `20260820140000`), porque de esa fila cuelgan las tareas que hizo y
   su expediente. Antes de ese trigger, el `on delete set null` sobre `profile_id` violaba el
@@ -242,5 +273,11 @@ con datos que el service worker cachea.
 porcentajes configurables con los seis rubros sembrados al crear la familia, y vencimientos
 ordenados cronológicamente con estado derivado. Solo la ven los adultos, como el expediente.
 
-**Falta:** menú semanal y despensa (Fase 4). El plan completo está en
+**Fase 4 (comidas) — implementada.** Menú semanal por almuerzo y cena, recetas con
+ingredientes, despensa con vencimientos y mínimos de reposición, y el botón que vuelca a la
+lista del súper lo que falta.
+
+**El plan original está completo.** Ideas que quedaron anotadas y no se construyeron:
+vencimientos del hogar y el auto (VTV, seguro, service, garrafa), álbum de recuerdos con
+cumpleaños, y un panel de equidad que muestre el reparto real de tareas. El plan completo está en
 `C:\Users\gaato\.claude\plans\quiero-desarrollar-una-web-keen-sunbeam.md`.

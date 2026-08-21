@@ -280,7 +280,8 @@ async function seedFamilyContent(
   );
 
   // --- Finanzas (Fase 3) --------------------------------------------------
-  const month = `${new Date().toISOString().slice(0, 7)}-01`;
+  const today = new Date().toISOString().slice(0, 10);
+  const month = `${today.slice(0, 7)}-01`;
 
   check(
     `${label} ingreso`,
@@ -312,6 +313,87 @@ async function seedFamilyContent(
       })
     ).error,
   );
+
+  // --- Comidas y despensa (Fase 4) ----------------------------------------
+  const { data: recipe, error: recipeError } = await client
+    .from("recipes")
+    .insert({
+      title: `Milanesas con puré (${label})`,
+      minutes: 45,
+      servings: 4,
+    })
+    .select("id")
+    .single();
+  check(`${label} receta`, recipeError);
+
+  check(
+    `${label} despensa`,
+    (
+      await client.from("pantry_items").insert([
+        {
+          name: "Papas",
+          quantity: 1,
+          unit: "kg",
+          location: "despensa",
+          min_quantity: 2,
+          expires_on: null,
+        },
+        {
+          name: "Leche",
+          quantity: 0,
+          unit: "litros",
+          location: "heladera",
+          min_quantity: 1,
+          expires_on: null,
+        },
+      ])
+    ).error,
+  );
+
+  if (recipe) {
+    const { data: pantry } = await client
+      .from("pantry_items")
+      .select("id, name")
+      .eq("name", "Papas")
+      .maybeSingle();
+
+    check(
+      `${label} ingredientes`,
+      (
+        await client.from("recipe_ingredients").insert([
+          // "Papas" va vinculada a la despensa: la generación de la lista tiene
+          // que descontar el kilo que ya hay y pedir solo lo que falta.
+          {
+            recipe_id: recipe.id,
+            name: "Papas",
+            quantity: 3,
+            unit: "kg",
+            pantry_item_id: pantry?.id ?? null,
+            position: 0,
+          },
+          {
+            recipe_id: recipe.id,
+            name: "Carne",
+            quantity: 1,
+            unit: "kg",
+            pantry_item_id: null,
+            position: 1,
+          },
+        ])
+      ).error,
+    );
+
+    check(
+      `${label} menú`,
+      (
+        await client.from("meal_plan").insert({
+          meal_date: today,
+          slot: "cena",
+          recipe_id: recipe.id,
+        })
+      ).error,
+    );
+  }
 
   check(
     `${label} generar ocurrencias`,

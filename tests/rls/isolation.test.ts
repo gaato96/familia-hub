@@ -371,4 +371,60 @@ describe("aislamiento entre familias", () => {
 
     expect(error).not.toBeNull();
   });
+
+  // -------------------------------------------------------------------------
+  // Fase 4 — comidas
+  //
+  // Acá el criterio se invierte: comer es de toda la casa. Que un chico pueda
+  // anotar que quiere milanesas el jueves, o avisar que se acabó la leche, es
+  // el punto del módulo.
+  // -------------------------------------------------------------------------
+  const MEAL_TABLES = ["recipes", "recipe_ingredients", "pantry_items", "meal_plan"] as const;
+
+  it.each(MEAL_TABLES)("%s: cada familia ve solo lo suyo", async (table) => {
+    const [{ data: rowsUno }, { data: rowsDos }] = await Promise.all([
+      uno.from(table as "recipes").select("family_id"),
+      dos.from(table as "recipes").select("family_id"),
+    ]);
+
+    expect((rowsUno ?? []).length).toBeGreaterThan(0);
+    expect((rowsDos ?? []).length).toBeGreaterThan(0);
+    expect(new Set((rowsUno ?? []).map((r) => r.family_id))).toEqual(new Set([unoFamilyId]));
+    expect(new Set((rowsDos ?? []).map((r) => r.family_id))).toEqual(new Set([dosFamilyId]));
+  });
+
+  it.each(MEAL_TABLES)("%s: un integrante SÍ las ve", async (table) => {
+    const { data, error } = await hijo.from(table as "recipes").select("family_id");
+
+    expect(error).toBeNull();
+    expect((data ?? []).length).toBeGreaterThan(0);
+    expect(new Set((data ?? []).map((r) => r.family_id))).toEqual(new Set([unoFamilyId]));
+  });
+
+  it("un integrante puede anotar qué quiere comer", async () => {
+    const { error } = await hijo.from("meal_plan").insert({
+      meal_date: "2027-01-15",
+      slot: "cena",
+      free_text: "Milanesas",
+    });
+
+    expect(error).toBeNull();
+    await hijo.from("meal_plan").delete().eq("meal_date", "2027-01-15");
+  });
+
+  it("generate_shopping_from_meals rechaza una lista de otra familia", async () => {
+    const { data: listaDos } = await dos
+      .from("shopping_lists")
+      .select("id")
+      .limit(1)
+      .single();
+
+    const { error } = await uno.rpc("generate_shopping_from_meals", {
+      p_from: "2026-01-01",
+      p_to: "2026-12-31",
+      p_list_id: listaDos!.id,
+    });
+
+    expect(error).not.toBeNull();
+  });
 });

@@ -470,6 +470,69 @@ export type ExpenseRow = {
 };
 
 // ---------------------------------------------------------------------------
+// Fase 4 — comidas y despensa
+// ---------------------------------------------------------------------------
+export type MealSlot = "almuerzo" | "cena";
+export type PantryLocation = "heladera" | "freezer" | "despensa" | "limpieza" | "otro";
+
+export type RecipeRow = {
+  id: string;
+  family_id: string;
+  title: string;
+  instructions: string | null;
+  servings: number | null;
+  /** Minutos. Para filtrar "algo rápido" un martes a las 20:30. */
+  minutes: number | null;
+  source_url: string | null;
+  image_path: string | null;
+  is_favorite: boolean;
+  created_by_member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RecipeIngredientRow = {
+  id: string;
+  family_id: string;
+  recipe_id: string;
+  name: string;
+  quantity: number | null;
+  unit: string | null;
+  /** Vínculo opcional con la despensa: sin él el ingrediente igual funciona. */
+  pantry_item_id: string | null;
+  position: number;
+  created_at: string;
+};
+
+export type PantryItemRow = {
+  id: string;
+  family_id: string;
+  name: string;
+  quantity: number;
+  unit: string | null;
+  location: PantryLocation;
+  /** Por debajo de esto, hay que reponer. */
+  min_quantity: number | null;
+  expires_on: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type MealPlanRow = {
+  id: string;
+  family_id: string;
+  meal_date: string;
+  slot: MealSlot;
+  /** O receta o texto libre, nunca los dos: lo garantiza un CHECK. */
+  recipe_id: string | null;
+  free_text: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// ---------------------------------------------------------------------------
 // Database
 // ---------------------------------------------------------------------------
 /**
@@ -495,6 +558,17 @@ type Table<
   Update: Partial<Row>;
   Relationships: Rels;
 };
+
+/** meal_plan -> recipes. La usa fetchWeekMeals() para traer el título del plato. */
+type MealPlanRelationships = [
+  {
+    foreignKeyName: "meal_plan_recipe_id_fkey";
+    columns: ["recipe_id"];
+    isOneToOne: false;
+    referencedRelation: "recipes";
+    referencedColumns: ["id"];
+  },
+];
 
 /** task_instances -> tasks. La usa fetchTasksBetween() para traer el título. */
 type TaskInstanceRelationships = [
@@ -706,6 +780,40 @@ export type Database = {
         | "is_recurring"
         | "notes"
       >;
+
+      // --- Fase 4 ---------------------------------------------------------
+      recipes: Table<
+        RecipeRow,
+        | Stamps
+        | "family_id"
+        | "instructions"
+        | "servings"
+        | "minutes"
+        | "source_url"
+        | "image_path"
+        | "is_favorite"
+        | "created_by_member_id"
+      >;
+      recipe_ingredients: Table<
+        RecipeIngredientRow,
+        "id" | "created_at" | "family_id" | "quantity" | "unit" | "pantry_item_id" | "position"
+      >;
+      pantry_items: Table<
+        PantryItemRow,
+        | Stamps
+        | "family_id"
+        | "quantity"
+        | "unit"
+        | "location"
+        | "min_quantity"
+        | "expires_on"
+        | "notes"
+      >;
+      meal_plan: Table<
+        MealPlanRow,
+        Stamps | "family_id" | "recipe_id" | "free_text" | "notes",
+        MealPlanRelationships
+      >;
     };
     Views: Record<string, never>;
     Functions: {
@@ -733,6 +841,11 @@ export type Database = {
        */
       emergency_card: { Args: Record<string, never>; Returns: EmergencyCardRow[] };
       budget_total_bp: { Args: Record<string, never>; Returns: number };
+      /** Vuelca a una lista de compras lo que falta para el menú del rango. */
+      generate_shopping_from_meals: {
+        Args: { p_from: string; p_to: string; p_list_id: string };
+        Returns: number;
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

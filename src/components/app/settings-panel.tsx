@@ -8,6 +8,7 @@ import {
   Moon,
   Smartphone,
   Sun,
+  UtensilsCrossed,
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
@@ -102,25 +103,25 @@ export function SettingsPanel({ email, isParent }: { email: string; isParent: bo
     <div className="space-y-5">
       <h1 className="text-2xl font-bold tracking-tight text-fg">Más</h1>
 
-      {/* Finanzas vive acá y no en la bottom nav: seis pestañas no entran
-          cómodas en un teléfono, y además solo la ven los adultos. */}
-      {isParent ? (
-        <Link
-          href="/finanzas"
-          className="flex items-center gap-3 rounded-app border border-border bg-surface p-4"
-        >
-          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
-            <Wallet className="size-5" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-medium text-fg">Finanzas del hogar</span>
-            <span className="block truncate text-xs text-muted">
-              Ingresos, reparto y vencimientos.
-            </span>
-          </span>
-          <ChevronRight className="size-4 shrink-0 text-muted" />
-        </Link>
-      ) : null}
+      {/* Estos dos viven acá y no en la bottom nav: seis pestañas no entran
+          cómodas en un teléfono de 360px. */}
+      <nav className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+        <QuickLink
+          href="/comidas"
+          icon={<UtensilsCrossed className="size-5 text-muted" />}
+          label="Comidas y despensa"
+          hint="Menú de la semana, recetas y lo que hay en casa."
+        />
+        {/* Finanzas solo la ven los adultos. */}
+        {isParent ? (
+          <QuickLink
+            href="/finanzas"
+            icon={<Wallet className="size-5 text-primary" />}
+            label="Finanzas del hogar"
+            hint="Ingresos, reparto y vencimientos."
+          />
+        ) : null}
+      </nav>
 
       <section className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
         <button
@@ -154,9 +155,10 @@ export function SettingsPanel({ email, isParent }: { email: string; isParent: bo
       {/* Se listan las secciones que faltan en vez de esconderlas: así nadie
           busca finanzas durante diez minutos creyendo que se le perdió. */}
       <section className="rounded-app border border-dashed border-border p-4">
-        <h2 className="text-sm font-semibold text-fg">Lo que viene</h2>
+        <h2 className="text-sm font-semibold text-fg">Ideas para más adelante</h2>
         <ul className="mt-2 space-y-1 text-sm text-muted">
-          <li>Menú semanal y despensa</li>
+          <li>Vencimientos del hogar y el auto (VTV, seguro, service)</li>
+          <li>Álbum de recuerdos y cumpleaños</li>
         </ul>
       </section>
     </div>
@@ -245,5 +247,30 @@ function PushRow({
         />
       </span>
     </button>
+  );
+}
+
+function QuickLink({
+  href,
+  icon,
+  label,
+  hint,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  hint: string;
+}) {
+  return (
+    <Link href={href} className="flex items-center gap-3 p-4">
+      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-surface-2">
+        {icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium text-fg">{label}</span>
+        <span className="block truncate text-xs text-muted">{hint}</span>
+      </span>
+      <ChevronRight className="size-4 shrink-0 text-muted" />
+    </Link>
   );
 }

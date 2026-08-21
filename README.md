@@ -3,6 +3,21 @@
 PWA de organización familiar. Notas en la heladera, planner semanal, tareas de la casa y listas de
 compras — todo compartido entre los integrantes, instalable en el teléfono y con avisos push.
 
+## Qué tiene
+
+- **La heladera** — notas en vivo que ven todos, como papelitos pegados.
+- **La semana** — planner con eventos y tareas de la casa, con recurrencia
+  ("cada 15 días", "lunes y jueves") y rotación automática de responsables.
+- **Compras** — seis listas, tachado en tiempo real, artículos frecuentes.
+- **Familia** — expediente de salud de cada integrante (medicamentos, vacunas,
+  consultas, peso y talla, hitos, talles), caja fuerte de documentos y contactos.
+- **Emergencia** — grupo sanguíneo, alergias y medicación actual, en una
+  pantalla que abre sin internet.
+- **Finanzas** — ingresos, reparto del fondo común por porcentajes y
+  vencimientos ordenados por fecha. Solo para los adultos.
+- **Comidas** — menú semanal, recetas y despensa, con un botón que arma la
+  lista del súper con lo que falta.
+
 ## Puesta en marcha
 
 ```bash
