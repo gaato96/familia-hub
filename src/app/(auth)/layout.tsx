@@ -1,6 +1,6 @@
 import { CalendarClock, ShoppingCart, Target, FolderLock } from "lucide-react";
 
-import { HorneroMark } from "@/components/brand/logo";
+import { NidoMark } from "@/components/brand/logo";
 import { APP_NAME, APP_TAGLINE } from "@/lib/brand";
 
 const HIGHLIGHTS = [
@@ -35,7 +35,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         />
 
         <div className="relative flex items-center gap-3">
-          <HorneroMark className="size-9" />
+          <NidoMark className="size-9" />
           <span className="font-display text-2xl font-bold tracking-tight">{APP_NAME}</span>
         </div>
 
@@ -56,14 +56,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <p className="relative text-xs opacity-70">
-          El hornero construye su nido de barro, y lo construye en pareja.
+          Un nido se construye entre todos, rama por rama.
         </p>
       </aside>
 
       <main className="mx-auto flex min-h-dvh w-full max-w-sm flex-col justify-center gap-8 px-5 py-12 lg:max-w-md lg:px-12">
         <header className="flex flex-col items-center gap-3 text-center lg:items-start lg:text-left">
           <div className="grid size-14 place-items-center rounded-app bg-primary text-primary-fg shadow-card lg:hidden">
-            <HorneroMark className="size-7" />
+            <NidoMark className="size-7" />
           </div>
           <div>
             <h1 className="font-display text-2xl font-bold tracking-tight text-fg lg:text-3xl">

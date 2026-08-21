@@ -6,11 +6,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 
+import { InstallCard } from "@/components/app/install-card";
 import { Wordmark } from "@/components/brand/logo";
+import { AvatarPicker } from "@/components/family/avatar-picker";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
 import { SECONDARY_NAV } from "@/lib/nav";
+import type { FamilyMemberRow } from "@/types/database";
 import {
   isSubscribed,
   pushSupport,
@@ -51,7 +54,17 @@ function getSupportSnapshot(): PushSupport {
  * los busca acá, y esconderlos según el tamaño de pantalla obliga a aprender
  * dos mapas distintos de la misma app.
  */
-export function SettingsPanel({ email, isParent }: { email: string; isParent: boolean }) {
+export function SettingsPanel({
+  email,
+  isParent,
+  member,
+  familyId,
+}: {
+  email: string;
+  isParent: boolean;
+  member: FamilyMemberRow;
+  familyId: string;
+}) {
   const router = useRouter();
   const dark = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
   const support = useSyncExternalStore(
@@ -105,6 +118,26 @@ export function SettingsPanel({ email, isParent }: { email: string; isParent: bo
       <PageHeader title="Más" subtitle="Todo lo demás de la casa, y tus ajustes." />
 
       <div className="space-y-5">
+        {/* Instalar va primero: es el paso que convierte esto en una app que se
+            abre desde la pantalla de inicio en vez de un link perdido en el
+            chat de la familia. La tarjeta se esconde sola si ya está instalada
+            en un navegador que no ofrece instalación. */}
+        <InstallCard />
+
+        <Card className="flex items-center gap-4">
+          {/* Cada uno puede cambiar SU foto aunque no administre la casa: es lo
+              que permite la policy `family_members_update`. */}
+          <AvatarPicker member={member} familyId={familyId} size="lg" />
+          <div className="min-w-0">
+            <p className="font-display text-base font-bold text-fg">
+              {member.display_name}
+            </p>
+            <p className="text-sm text-muted">
+              {member.avatar_path ? "Tocá la cámara para cambiar tu foto." : "Ponete una foto."}
+            </p>
+          </div>
+        </Card>
+
         <nav className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {sections.map(({ href, label, icon: Icon, hint }) => (
             <Link key={href} href={href}>

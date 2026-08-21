@@ -244,6 +244,31 @@ describe("aislamiento entre familias", () => {
     expect(data ?? []).toEqual([]);
   });
 
+  it("storage: tampoco se puede BAJAR una foto de la otra familia", async () => {
+    // Listar vacío no alcanza como prueba: la ruta de un avatar es adivinable
+    // hasta cierto punto (family_id/member_id/uuid) y `/api/avatar/[id]` la
+    // arma sola. Lo que tiene que fallar es la descarga directa.
+    const path = `${dosFamilyId}/${crypto.randomUUID()}/foto.webp`;
+    const bytes = new Blob([new Uint8Array([1, 2, 3])], { type: "image/webp" });
+
+    const subida = await dos.storage.from("avatars").upload(path, bytes);
+    expect(subida.error).toBeNull();
+
+    const { data, error } = await uno.storage.from("avatars").download(path);
+    expect(data).toBeNull();
+    expect(error).not.toBeNull();
+
+    await dos.storage.from("avatars").remove([path]);
+  });
+
+  it("storage: y no se puede escribir en la carpeta de la otra familia", async () => {
+    const path = `${dosFamilyId}/${crypto.randomUUID()}/intruso.webp`;
+    const bytes = new Blob([new Uint8Array([1, 2, 3])], { type: "image/webp" });
+
+    const { error } = await uno.storage.from("avatars").upload(path, bytes);
+    expect(error).not.toBeNull();
+  });
+
   // -------------------------------------------------------------------------
   // Fase 2 — expediente
   //

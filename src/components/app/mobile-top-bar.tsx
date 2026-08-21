@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { MemberAvatar } from "@/components/app/member-chip";
-import { HorneroMark } from "@/components/brand/logo";
+import { NidoMark } from "@/components/brand/logo";
 import { APP_NAME } from "@/lib/brand";
 import type { FamilyMemberRow } from "@/types/database";
 
@@ -23,7 +23,7 @@ export function MobileTopBar({
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-bg/85 backdrop-blur-xl safe-top lg:hidden">
       <div className="mx-auto flex h-14 max-w-lg items-center gap-2.5 px-4">
-        <HorneroMark className="size-6 shrink-0 text-primary" />
+        <NidoMark className="size-6 shrink-0 text-primary" />
         <span className="min-w-0 flex-1">
           <span className="block font-display text-base font-bold leading-none text-fg">
             {APP_NAME}

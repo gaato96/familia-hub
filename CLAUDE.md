@@ -4,16 +4,18 @@ Guía para Claude Code (claude.ai/code) al trabajar en este repositorio.
 
 ## Qué es esto
 
-**Hornero** (`hornero`): PWA para la organización de un hogar. Una familia = un tenant. Tablero
+**Mi Nido** (`mi-nido`): PWA para la organización de un hogar. Una familia = un tenant. Tablero
 de notas tipo heladera en tiempo real, vista diaria con bloques de horarios, planner semanal con
 tareas recurrentes rotativas, objetivos partidos en pasos, listas de compras compartidas, el
 expediente de salud de cada integrante con su caja fuerte documental, finanzas del hogar y menú
 semanal. Se instala en el teléfono y manda Web Push.
 
-**El nombre.** El hornero construye su nido de barro, y lo construye en pareja: los dos levantan
-la casa capa por capa. De ahí sale también la paleta — el nido es de barro, y por eso el color
+**El nombre.** Un nido es lo que la familia construye entre todos y lo que sostiene a los que
+están adentro. De ahí sale también la paleta: un nido es de barro y de ramas, y por eso el color
 que da órdenes en toda la app es terracota. El nombre vive en `src/lib/brand.ts` y no repetido
-por veinte archivos, justamente para que cambiarlo sea una línea.
+por veinte archivos, justamente para que cambiarlo sea una línea — ya se cambió dos veces.
+`APP_SHORT_NAME` ("Nido") existe aparte porque abajo del ícono, en la pantalla de inicio del
+teléfono, entran unos doce caracteres.
 
 **Mobile-first pero no mobile-only.** Quien administra la casa trabaja en una pantalla grande y
 el resto de la familia usa el teléfono. Las dos formas están en el mismo shell
@@ -275,6 +277,52 @@ haría lo mismo pero con un render extra en la hidratación — y lo prohíbe
 `react-hooks/set-state-in-effect`, que es la misma regla que ya obligó a `theme.ts` y a
 `emergency-cache.ts`.
 
+### Las fotos de perfil van por una ruta, no por una URL firmada
+
+El bucket `avatars` es privado como el de documentos, así que una foto no tiene URL pública. La
+forma obvia —firmar una URL por avatar y pasarla por props— muere en `MemberAvatar`: se usa en
+quince pantallas, la mitad de servidor y la mitad de cliente, todas tipadas contra
+`FamilyMemberRow`. Habría que tocar quince archivos para agregar un campo que no está en la tabla.
+
+En su lugar, `/api/avatar/[memberId]` lee la fila **con la sesión de quien pide** y devuelve los
+bytes. Entonces `<img src="/api/avatar/{id}">` funciona en cualquier lado sin plomería, y la URL
+firmada no aparece nunca en el HTML. El aislamiento lo sigue haciendo RLS: el id de un integrante
+de otra casa no devuelve fila y la respuesta es 404 — no hay ningún chequeo de `family_id` escrito
+a mano ahí.
+
+Tres detalles que no son adorno:
+
+- **La foto se recorta a un cuadrado en el cliente antes de subir** (512px, WebP). En la app
+  siempre se muestra dentro de un círculo: subir la foto entera y recortar con CSS deja una foto
+  apaisada con media cara afuera.
+- **El archivo viejo se borra al final**, después de que la fila nueva quedó guardada. Al revés,
+  una subida fallida dejaría al integrante sin foto por un error que no era suyo.
+- **La `<img>` va ENCIMA de las iniciales, no en lugar de ellas.** Con `alt=""`, una imagen que no
+  carga —sin señal, o la fila apunta a un archivo borrado— no dibuja nada y abajo siguen estando
+  las iniciales. Sin eso quedaría un círculo vacío.
+
+`emergency_card()` no devuelve la foto a propósito, y por eso `MemberAvatar` acepta un integrante
+"mínimo" sin `id` ni `avatar_path`: la ficha de emergencia tiene que abrir sin señal, y una imagen
+detrás de una ruta autenticada no cargaría.
+
+### Instalarla en el teléfono
+
+`beforeinstallprompt` lo dispara el navegador **una sola vez y temprano**, a veces antes de que
+React hidrate. Si nadie lo agarra se pierde para esa visita. Por eso `src/lib/pwa/install.ts`
+engancha el listener al evaluar el módulo —no adentro de un efecto— y `ServiceWorkerRegister` lo
+importa por su efecto de módulo desde el layout raíz, que es el único lugar que está en todas las
+pantallas.
+
+Hay tres mundos y se dicen distinto: Android y Chrome de escritorio tienen evento, así que hay
+botón de verdad; iPhone no expone ninguno y hay que explicar Compartir → "Agregar a inicio" con
+palabras; y si ya está instalada no hay nada que ofrecer.
+
+**Los íconos van declarados a mano en el `metadata` del layout raíz.** Next los detecta solo si
+están como `app/icon.png` / `app/apple-icon.png`, y acá los genera `npm run icons` en
+`public/icons/`. Sin el `apple-touch-icon` explícito, "Agregar a inicio" en un iPhone usa una
+**captura de la pantalla** como ícono — queda un cuadradito borroso con el login adentro, y no hay
+ningún error que avise.
+
 ### Los tres canales redundantes de Realtime
 
 `use-notes-realtime.ts` y `use-shopping-realtime.ts` combinan Realtime + poll de 30s + refetch al
@@ -372,6 +420,8 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
   diferencia al mirarlas. Los PDF pasan tal cual: recomprimirlos los rompe o los agranda.
 - **Si el insert de `documents` falla después de subir el archivo, el archivo se borra.** Al
   revés quedaría un huérfano invisible ocupando espacio que nadie puede eliminar desde la app.
+- **El bucket de avatares es privado y se lee por `/api/avatar/[memberId]`**, no por URL firmada
+  pasada por props. Ver "Las fotos de perfil van por una ruta".
 - **La semana se guarda en ISO: 1 = lunes ... 7 = domingo.** `getUTCDay()` devuelve 0 el domingo,
   que además de no ser ISO lo pone al principio de la semana. La conversión vive en `isoWeekday()`
   y en ningún otro lado: un bloque de domingo guardado como 7 y leído como 0 desaparece del
@@ -388,6 +438,10 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
 - **El destino nuevo se agrega en `src/lib/nav.ts` y en ningún otro lado.** De ahí salen la barra
   lateral, la barra inferior y la grilla de `/mas`. Agregarlo en uno solo es cómo se consigue que
   la app tenga dos mapas distintos según la pantalla.
+- **Los tests e2e crean sus propias filas, no tocan las de la semilla.** Un test que tilda "el
+  primer ítem de la lista" pasa la primera vez y falla la décima, cuando ya no queda ninguno sin
+  tildar y termina destildando uno. Nombre único con `Date.now()` y listo: la corrida cincuenta se
+  comporta como la primera. Vale también para los bloques de horarios y los objetivos.
 - **`npm run db:seed` corta ante cualquier error.** Una versión anterior los ignoraba y decía
   "Listo" con media base vacía; los tests de RLS fallaban por falta de datos y parecía un
   problema de policies.
@@ -416,6 +470,10 @@ Hornero y tiene sistema visual propio; barra lateral y diálogos centrados en es
 diaria con línea de tiempo, "ahora / lo que sigue" y bloques solapados en columnas; vista semanal
 de horarios dentro del planner; objetivos con pasos asignables; y un panel de control reordenado
 por la pregunta que contesta cada franja en vez de por orden de aparición.
+
+**Fase 6 (fotos e instalación) — implementada.** Foto de perfil por integrante, con recorte al
+cuadrado en el cliente y lectura por ruta autenticada; tarjeta de instalación de la PWA que
+distingue Android de iPhone de "ya instalada"; e íconos de Apple declarados.
 
 **Ideas anotadas y todavía no construidas:** vencimientos del hogar y el auto (VTV, seguro,
 service, garrafa), álbum de recuerdos con cumpleaños, y un panel de equidad que muestre el reparto

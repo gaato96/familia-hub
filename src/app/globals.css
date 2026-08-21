@@ -6,14 +6,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ===========================================================================
-   Hornero — sistema visual
+   Mi Nido — sistema visual
    ---------------------------------------------------------------------------
    "Cálido y moderno": la eficiencia de una herramienta de productividad con la
    temperatura de una casa. Tres decisiones sostienen todo lo demás.
 
-   1. La terracota manda. Es el barro con el que el hornero construye el nido,
-      y es el único color que da órdenes: botones primarios, pestaña activa,
-      lo que hay que tocar. Si algo es terracota, se toca.
+   1. La terracota manda. Es el barro y las ramas con las que se construye un
+      nido, y es el único color que da órdenes: botones primarios, pestaña
+      activa, lo que hay que tocar. Si algo es terracota, se toca.
    2. El azul informa y el verde confirma. Nunca al revés: un verde en un botón
       de acción hace que "listo" y "hacelo" se parezcan demasiado.
    3. La jerarquía la hacen las sombras y el tono, no los bordes. Los bordes

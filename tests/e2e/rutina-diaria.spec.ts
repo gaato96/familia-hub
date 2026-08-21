@@ -52,15 +52,24 @@ test("la rutina de todos los días", async ({ page }) => {
   await nav(page).getByRole("link", { name: "Compras" }).click();
   await expect(page.getByRole("heading", { name: "Compras" })).toBeVisible();
 
-  // Se guarda el NOMBRE antes de tocarlo: al tildar, el ítem se va abajo a
-  // "ya está" y `.first()` pasaría a apuntar a otra fila —que sigue sin
-  // tildar— y el test fallaría por su propio efecto.
-  const firstItem = page.getByRole("checkbox").first();
-  const itemName = (await firstItem.textContent())!.trim();
-  await firstItem.click();
-  await expect(page.getByRole("checkbox", { name: itemName })).toBeChecked();
+  // Se agrega un ítem propio en vez de tildar el primero de la lista.
+  //
+  // `.first()` dependía del estado que dejó la corrida anterior: después de
+  // unas cuantas, todos los ítems de la semilla ya estaban tildados y el test
+  // terminaba DEStildando uno — y fallaba por su propio efecto acumulado. Con
+  // un nombre único, la corrida número cincuenta se comporta como la primera.
+  const itemName = `Yerba ${Date.now()}`;
+  await page.getByPlaceholder(/Agregar a/).fill(itemName);
+  await page.getByRole("button", { name: "Agregar", exact: true }).click();
 
+  const item = page.getByRole("checkbox", { name: itemName });
+  await expect(item).toBeVisible();
+  await item.click();
+
+  // Se verifica DESPUÉS del refresh: el tilde es optimista, así que la prueba
+  // de que se guardó es que sobreviva a recargar, no lo que muestre React.
   await page.reload();
+  await expect(page.getByRole("checkbox", { name: itemName })).toBeChecked();
   await expect(page.getByText(/Ya está \(/)).toBeVisible();
 
   // --- Mirar la semana ---------------------------------------------------
@@ -119,6 +128,36 @@ test("el día se arma con bloques y la vista lo dibuja", async ({ page }) => {
   await expect(page.getByTitle(title).first()).toBeVisible();
 });
 
+test("la foto de perfil se sube, se recorta y se sirve por la ruta privada", async ({
+  page,
+}) => {
+  await signIn(page);
+  await nav(page).getByRole("link", { name: "Más" }).click();
+
+  // Un PNG apaisado de 2x1: si el recorte no funcionara, la imagen que sirve
+  // la ruta no sería cuadrada.
+  await page.setInputFiles('input[type="file"]', {
+    name: "foto.png",
+    mimeType: "image/png",
+    buffer: WIDE_PNG,
+  });
+
+  const avatar = page.locator('main img[src^="/api/avatar/"]').first();
+  await expect(avatar).toBeVisible({ timeout: 15_000 });
+
+  // El bucket es privado: la única forma de ver la foto es la ruta, y la ruta
+  // exige sesión. Sin cookies tiene que rebotar.
+  const src = (await avatar.getAttribute("src"))!;
+  const conSesion = await page.request.get(src);
+  expect(conSesion.status()).toBe(200);
+  expect(conSesion.headers()["content-type"]).toContain("image");
+
+  const dimensiones = await avatar.evaluate(
+    (img: HTMLImageElement) => [img.naturalWidth, img.naturalHeight],
+  );
+  expect(dimensiones[0]).toBe(dimensiones[1]);
+});
+
 test("sin sesión, cualquier pantalla privada manda a ingresar", async ({ page }) => {
   await page.context().clearCookies();
 
@@ -127,3 +166,15 @@ test("sin sesión, cualquier pantalla privada manda a ingresar", async ({ page }
   // Y vuelve a donde quería ir después de entrar.
   await expect(page).toHaveURL(/next=%2Fcompras/);
 });
+
+/**
+ * PNG de 2x1 píxeles, en base64.
+ *
+ * Va inline y no como archivo suelto en el repo: un binario de 70 bytes
+ * escondido en una carpeta de fixtures es exactamente lo que se borra por
+ * error dentro de seis meses.
+ */
+const WIDE_PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAYAAAD0In+KAAAAFElEQVR4nGP8z8Dwn4GBgYEJRIAAIxYCAn8Br1YAAAAASUVORK5CYII=",
+  "base64",
+);

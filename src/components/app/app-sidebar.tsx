@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { MemberAvatar } from "@/components/app/member-chip";
-import { HorneroBadge } from "@/components/brand/logo";
+import { NidoBadge } from "@/components/brand/logo";
 import { APP_NAME } from "@/lib/brand";
 import { isActivePath, PRIMARY_NAV, SECONDARY_NAV, type NavItem } from "@/lib/nav";
 import { cn } from "@/lib/utils";
@@ -43,7 +43,7 @@ export function AppSidebar({
       )}
     >
       <div className="flex items-center gap-2.5 px-5 py-5">
-        <HorneroBadge />
+        <NidoBadge />
         <span className="min-w-0">
           <span className="block font-display text-lg font-bold leading-tight text-fg">
             {APP_NAME}

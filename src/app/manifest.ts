@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 
-import { APP_DESCRIPTION, APP_NAME } from "@/lib/brand";
+import { APP_DESCRIPTION, APP_NAME, APP_SHORT_NAME } from "@/lib/brand";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${APP_NAME} — la casa en orden`,
-    short_name: APP_NAME,
+    // Abajo del ícono, en la pantalla de inicio, entran unos doce caracteres:
+    // más largo que eso y el teléfono lo corta con puntos suspensivos.
+    short_name: APP_SHORT_NAME,
     description: APP_DESCRIPTION,
     start_url: "/",
     display: "standalone",

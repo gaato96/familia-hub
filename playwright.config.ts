@@ -17,7 +17,20 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: "list",
+  /**
+   * Timeouts holgados a propósito.
+   *
+   * La suite corre contra `next dev`, que compila cada ruta la PRIMERA vez que
+   * alguien la pide: el primer click sobre "Hoy" o sobre "Semana" en una tanda
+   * limpia puede tardar diez segundos en pintar. Con los 5s por defecto, el
+   * test que le toca ir primero falla por lento y no por roto — y peor, falla
+   * uno distinto cada vez, que es la clase de test que la gente termina
+   * ignorando.
+   */
+  expect: { timeout: 20_000 },
   use: {
+    actionTimeout: 20_000,
+    navigationTimeout: 30_000,
     baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",
     trace: "on-first-retry",
     locale: "es-AR",

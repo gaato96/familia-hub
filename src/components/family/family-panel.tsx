@@ -18,6 +18,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { MemberAvatar } from "@/components/app/member-chip";
+import { AvatarPicker } from "@/components/family/avatar-picker";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -139,7 +140,15 @@ export function FamilyPanel({
               key={m.id}
               className="flex items-center gap-3 rounded-app bg-surface shadow-card p-3"
             >
-              <MemberAvatar member={m} />
+              {/* La foto la cambia un adulto sobre cualquiera, y cualquiera
+                  sobre la suya: es exactamente lo que permite la policy
+                  `family_members_update`. Sin este chequeo el botón estaría
+                  ahí para rebotar. */}
+              {isParent || m.id === currentMemberId ? (
+                <AvatarPicker member={m} familyId={family.id} size="md" />
+              ) : (
+                <MemberAvatar member={m} />
+              )}
 
               {/* El expediente solo lo abre un adulto: adentro hay DNI, obra
                   social e historia clínica. RLS es lo que de verdad lo impide;

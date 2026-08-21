@@ -1,10 +1,10 @@
-# Hornero
+# Mi Nido
 
 PWA de organización familiar. El día de cada uno, las tareas de la casa, las compras, la plata y
 el expediente de cada integrante — compartido entre todos, instalable en el teléfono y con avisos
 push.
 
-> El hornero construye su nido de barro, y lo construye en pareja.
+> Un nido se construye entre todos, rama por rama.
 
 Se usa igual desde una pantalla grande que desde un teléfono: en escritorio hay barra lateral con
 todas las secciones a la vista; en el teléfono, cinco pestañas abajo y el resto en "Más".
@@ -19,8 +19,9 @@ todas las secciones a la vista; en el teléfono, cinco pestañas abajo y el rest
   con recurrencia ("cada 15 días", "lunes y jueves") y rotación automática de responsables.
 - **Objetivos** — lo que la casa se propuso, partido en pasos que alguien puede agarrar.
 - **Compras** — seis listas, tachado en tiempo real, artículos frecuentes.
-- **Familia** — expediente de salud de cada integrante (medicamentos, vacunas,
-  consultas, peso y talla, hitos, talles), caja fuerte de documentos y contactos.
+- **Familia** — foto y expediente de salud de cada integrante (medicamentos,
+  vacunas, consultas, peso y talla, hitos, talles), caja fuerte de documentos y
+  contactos.
 - **Emergencia** — grupo sanguíneo, alergias y medicación actual, en una
   pantalla que abre sin internet.
 - **Finanzas** — ingresos, reparto del fondo común por porcentajes y
@@ -77,9 +78,15 @@ que aparece en **Familia** es lo que se comparte con el resto.
 
 ## Instalarla en el teléfono
 
-- **Android**: Chrome muestra el aviso de instalar solo. Si no aparece, menú → "Instalar app".
-- **iPhone**: botón Compartir → "Agregar a inicio". **Los avisos push solo funcionan con la app
-  instalada así** — es una limitación de Apple, no de la app.
+En **Más** hay una tarjeta que lo resuelve según el teléfono:
+
+- **Android**: botón "Instalar" y listo.
+- **iPhone**: Apple no permite instalar con un botón, así que la tarjeta explica el camino —
+  Compartir → "Agregar a pantalla de inicio". **Los avisos push solo funcionan con la app
+  instalada así**; es una limitación de Apple, no de la app.
+
+Instalada, aparece como **Nido** en la pantalla de inicio. Mantener apretado el ícono ofrece
+atajos directos a "Hoy", la lista del súper y la ficha de emergencia.
 
 ## Comandos
 

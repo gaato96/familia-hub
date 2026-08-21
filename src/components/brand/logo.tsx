@@ -2,18 +2,18 @@ import { APP_NAME } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 /**
- * El nido del hornero: una cúpula de barro sobre una rama, con la entrada
- * lateral en arco.
+ * El nido visto un poco desde arriba: el aro, el hueco y tres huevos adentro.
  *
- * Se dibuja con `fill-rule="evenodd"` y no con dos formas superpuestas para
- * que la entrada sea un agujero REAL: así el mismo path funciona sobre
- * cualquier fondo —el ícono de la PWA, un botón, la barra lateral— sin que
- * haya que pintar la puerta del color del fondo de atrás.
+ * El hueco es un agujero REAL (`fillRule="evenodd"` sobre un solo path, no dos
+ * formas superpuestas), y todo se dibuja con `currentColor`. Las dos cosas
+ * juntas son lo que hace que el mismo dibujo funcione sobre cualquier fondo —
+ * el ícono de la PWA sobre terracota, la barra lateral sobre blanco, un botón—
+ * sin tener que pintar ninguna pieza del color del fondo de atrás.
+ *
+ * Los huevos van separados y no pegados: superpuestos se fusionan en una sola
+ * mancha, y abajo de 40px deja de leerse que son tres.
  */
-export function HorneroMark({
-  className,
-  ...props
-}: React.ComponentProps<"svg">) {
+export function NidoMark({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -25,21 +25,19 @@ export function HorneroMark({
         fill="currentColor"
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M12 3a8.5 8.5 0 0 1 8.5 8.5V19a1 1 0 0 1-1 1H4.5a1 1 0 0 1-1-1v-7.5A8.5 8.5 0 0 1 12 3Zm2.75 9.25A3.25 3.25 0 0 0 11.5 15.5V20h6.5v-4.5a3.25 3.25 0 0 0-3.25-3.25Z"
+        d="M2.4 13.2A9.6 5.4 0 0 1 21.6 13.2C21.6 17.7 17.3 21 12 21S2.4 17.7 2.4 13.2ZM12 9.75c-3.37 0-6.1 1.5-6.1 3.15S8.63 16.05 12 16.05s6.1-1.5 6.1-3.15S15.37 9.75 12 9.75Z"
       />
-      {/* La rama. Corta, no cruza todo el ancho: un nido de hornero está
-          apoyado en el extremo de una rama, no colgado del medio. */}
-      <path
-        fill="currentColor"
-        d="M2.75 20.5h18.5a.9.9 0 0 1 0 1.8H2.75a.9.9 0 0 1 0-1.8Z"
-        opacity="0.45"
-      />
+      <g fill="currentColor" opacity="0.82">
+        <ellipse cx="9.25" cy="13.3" rx="1.3" ry="1.55" />
+        <ellipse cx="12" cy="12.3" rx="1.3" ry="1.55" />
+        <ellipse cx="14.75" cy="13.3" rx="1.3" ry="1.55" />
+      </g>
     </svg>
   );
 }
 
 /** Marca sobre pastilla terracota. Es el avatar de la app en la barra. */
-export function HorneroBadge({ className }: { className?: string }) {
+export function NidoBadge({ className }: { className?: string }) {
   return (
     <span
       className={cn(
@@ -47,7 +45,7 @@ export function HorneroBadge({ className }: { className?: string }) {
         className,
       )}
     >
-      <HorneroMark className="size-5" />
+      <NidoMark className="size-5" />
     </span>
   );
 }
@@ -61,7 +59,7 @@ export function Wordmark({
 }) {
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
-      <HorneroBadge />
+      <NidoBadge />
       <span className="min-w-0">
         <span className="block font-display text-lg font-bold leading-tight tracking-tight text-fg">
           {APP_NAME}

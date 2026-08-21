@@ -2,6 +2,13 @@
 
 import { useEffect } from "react";
 
+// Import por su efecto de módulo, a propósito: engancha el listener de
+// `beforeinstallprompt`. El navegador dispara ese evento UNA sola vez y
+// temprano, así que tiene que haber alguien escuchando en todas las pantallas
+// —no solo en Ajustes, que es donde se muestra el botón—. Este componente vive
+// en el layout raíz, que es el único lugar que cumple eso.
+import "@/lib/pwa/install";
+
 /**
  * Registra el service worker.
  *

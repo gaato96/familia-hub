@@ -39,6 +39,22 @@ export const metadata: Metadata = {
   description: APP_TAGLINE,
   applicationName: APP_NAME,
   manifest: "/manifest.webmanifest",
+  /**
+   * Los íconos van declarados a mano.
+   *
+   * Next los detecta solo si están como `app/icon.png` / `app/apple-icon.png`,
+   * y acá se generan con `npm run icons` a `public/icons/`. Sin el
+   * `apple-touch-icon`, "Agregar a inicio" en un iPhone usa una CAPTURA de la
+   * pantalla como ícono: queda un cuadradito borroso con el formulario de
+   * login adentro, y no hay ningún error que avise.
+   */
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

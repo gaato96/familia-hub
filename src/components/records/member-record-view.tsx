@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { MemberAvatar } from "@/components/app/member-chip";
+import { AvatarPicker } from "@/components/family/avatar-picker";
 import { DocumentList } from "@/components/records/document-list";
 import { IdentitySheet } from "@/components/records/identity-sheet";
 import { RecordEntrySheet, type EntryKind } from "@/components/records/record-entry-sheet";
@@ -67,9 +67,11 @@ export function MemberRecordView({
         >
           <ArrowLeft className="size-5" />
         </Link>
-        <MemberAvatar member={member} />
+        {/* Esta pantalla solo la abre un adulto (RLS del expediente), así que
+            acá el picker va sin condición. */}
+        <AvatarPicker member={member} familyId={member.family_id} size="lg" />
         <div className="min-w-0">
-          <h1 className="truncate text-xl font-bold tracking-tight text-fg">
+          <h1 className="truncate text-xl font-bold tracking-tight text-fg lg:text-2xl">
             {member.display_name}
           </h1>
           {member.birth_date ? (
@@ -86,10 +88,10 @@ export function MemberRecordView({
             onClick={() => setTab(t.value)}
             aria-pressed={tab === t.value}
             className={cn(
-              "shrink-0 rounded-full border px-3.5 py-2 text-sm font-medium",
+              "shrink-0 rounded-full px-3.5 py-2 font-display text-sm font-bold transition-colors",
               tab === t.value
-                ? "border-primary bg-primary text-primary-fg"
-                : "border-border bg-surface text-muted",
+                ? "bg-primary text-primary-fg shadow-press"
+                : "bg-surface-2 text-muted hover:text-fg",
             )}
           >
             {t.label}
