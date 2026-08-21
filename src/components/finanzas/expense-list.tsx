@@ -70,7 +70,7 @@ export function ExpenseList({
   }
 
   return (
-    <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+    <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
       {expenses.map((expense) => {
         const status = expenseStatus(expense, today);
         const style = STATUS_STYLE[status];

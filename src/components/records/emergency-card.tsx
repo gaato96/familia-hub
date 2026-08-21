@@ -63,7 +63,7 @@ export function EmergencyCard({
 
   if (!data) {
     return (
-      <div className="rounded-app border border-dashed border-border p-6 text-center">
+      <div className="rounded-app border border-dashed border-border-strong p-6 text-center">
         <p className="text-sm text-muted">
           Todavía no hay ficha guardada. Abrí esta pantalla una vez con internet
           para que quede disponible sin conexión.
@@ -92,7 +92,7 @@ export function EmergencyCard({
         return (
           <section
             key={member.member_id}
-            className="overflow-hidden rounded-app border border-border bg-surface"
+            className="overflow-hidden rounded-app bg-surface shadow-card"
           >
             <header className="flex items-center gap-3 border-b border-border p-4">
               <MemberAvatar member={{ display_name: member.display_name, color: member.color }} />
@@ -159,7 +159,7 @@ export function EmergencyCard({
       {emergencyContacts.length > 0 ? (
         <section>
           <h2 className="mb-2 text-sm font-semibold text-muted">Teléfonos de urgencia</h2>
-          <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+          <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
             {emergencyContacts.map((contact) => (
               <li key={contact.id}>
                 <a

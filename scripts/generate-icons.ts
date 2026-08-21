@@ -6,31 +6,31 @@ import sharp from "sharp";
 /**
  * Genera los íconos de la PWA desde un SVG en línea.
  *
- * Sin archivo fuente a propósito: el ícono es una casa sobre el violeta de la
- * app, y tenerlo como código evita que se pierda un .png suelto o que quede
- * desincronizado con la paleta de globals.css.
+ * Sin archivo fuente a propósito: el ícono es el nido del hornero sobre la
+ * terracota de la marca, y tenerlo como código evita que se pierda un .png
+ * suelto o que quede desincronizado con la paleta de globals.css. El mismo
+ * path vive en src/components/brand/logo.tsx.
  *
- * El maskable lleva la casa MÁS CHICA (60% en vez de 72%): Android recorta el
+ * El maskable lleva el nido MÁS CHICO (60% en vez de 72%): Android recorta el
  * ícono a la forma del launcher — círculo, squircle, gota — y todo lo que
  * quede fuera de la "safe zone" central se pierde. Un maskable dibujado al
- * mismo tamaño que el normal aparece con la casa decapitada.
+ * mismo tamaño que el normal aparece decapitado.
  */
 
-const BACKGROUND = "#6D4AFF";
+/** --app-primary de globals.css. */
+const BACKGROUND = "#9F4122";
 
-function houseSvg(size: number, scale: number): string {
+function nestSvg(size: number, scale: number): string {
   const inner = size * scale;
   const offset = (size - inner) / 2;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
   <rect width="${size}" height="${size}" fill="${BACKGROUND}"/>
   <g transform="translate(${offset} ${offset}) scale(${inner / 24})">
-    <path d="M3 10.5 12 3l9 7.5" fill="none" stroke="#fff" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M5.5 9.5V20a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.5" fill="none" stroke="#fff"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M10 21v-5.5h4V21" fill="none" stroke="#fff" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill="#fff" fill-rule="evenodd" clip-rule="evenodd"
+          d="M12 3a8.5 8.5 0 0 1 8.5 8.5V19a1 1 0 0 1-1 1H4.5a1 1 0 0 1-1-1v-7.5A8.5 8.5 0 0 1 12 3Zm2.75 9.25A3.25 3.25 0 0 0 11.5 15.5V20h6.5v-4.5a3.25 3.25 0 0 0-3.25-3.25Z"/>
+    <path fill="#fff" fill-opacity="0.45"
+          d="M2.75 20.5h18.5a.9.9 0 0 1 0 1.8H2.75a.9.9 0 0 1 0-1.8Z"/>
   </g>
 </svg>`;
 }
@@ -48,7 +48,7 @@ async function main() {
   await mkdir(outDir, { recursive: true });
 
   for (const { file, size, scale } of TARGETS) {
-    const png = await sharp(Buffer.from(houseSvg(size, scale))).png().toBuffer();
+    const png = await sharp(Buffer.from(nestSvg(size, scale))).png().toBuffer();
     await writeFile(path.join(outDir, file), png);
     console.log(`  ${file} (${size}x${size})`);
   }

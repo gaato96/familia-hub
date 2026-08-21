@@ -41,6 +41,19 @@ export function startOfWeekAr(date: IsoDate): IsoDate {
   return new Date(epoch - backToMonday * 86_400_000).toISOString().slice(0, 10);
 }
 
+/**
+ * Día de la semana en numeración ISO: 1 = lunes ... 7 = domingo.
+ *
+ * `getUTCDay()` devuelve 0 para el domingo, que además de no ser ISO lo pone
+ * al principio de la semana. Como acá la semana arranca el lunes y así se
+ * guardan los `weekdays` de los bloques de horarios, la conversión vive en un
+ * solo lugar.
+ */
+export function isoWeekday(date: IsoDate): number {
+  const dow = new Date(Date.parse(`${date}T00:00:00Z`)).getUTCDay();
+  return dow === 0 ? 7 : dow;
+}
+
 export function addDaysIso(date: IsoDate, days: number): IsoDate {
   return new Date(Date.parse(`${date}T00:00:00Z`) + days * 86_400_000)
     .toISOString()
@@ -75,10 +88,19 @@ export function formatLongDate(date: IsoDate): string {
   }).format(Date.parse(`${date}T12:00:00Z`));
 }
 
+/**
+ * "20:58" y no "08:58 p. m.".
+ *
+ * `es-AR` por defecto formatea en 12 horas con "a. m."/"p. m.", que ocupa el
+ * doble de ancho y no es como se dice la hora acá. `hour12: false` es
+ * obligatorio además para que las horas de los eventos se lean igual que las
+ * de los bloques, que salen de un `time` de Postgres.
+ */
 export function formatTime(instant: string | Date): string {
   return new Intl.DateTimeFormat(LOCALE, {
     hour: "2-digit",
     minute: "2-digit",
+    hour12: false,
     timeZone: AR_TIME_ZONE,
   }).format(typeof instant === "string" ? new Date(instant) : instant);
 }

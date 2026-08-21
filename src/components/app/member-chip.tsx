@@ -52,7 +52,7 @@ export function UnassignedChip() {
     <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted">
       <span
         aria-hidden
-        className="grid size-6 place-items-center rounded-full border border-dashed border-border text-[10px]"
+        className="grid size-6 place-items-center rounded-full border border-dashed border-border-strong text-[10px]"
       >
         ?
       </span>

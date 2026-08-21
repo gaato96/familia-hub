@@ -4,9 +4,11 @@ import { defineConfig, devices } from "@playwright/test";
  * E2E contra el proyecto REAL de Supabase (no hay Docker en esta máquina),
  * igual que la suite de RLS. Requiere `npm run db:seed` antes.
  *
- * Un solo proyecto y en viewport de teléfono: la app es mobile-first y no
- * existe un caso de uso de escritorio que valga la pena cubrir. Probar en
- * desktop daría verde sobre layouts que nadie va a ver.
+ * Un solo proyecto, en viewport de teléfono. El escritorio no es otro proyecto
+ * sino un archivo aparte (`escritorio.spec.ts`) que fija su propio viewport:
+ * correr TODO el recorrido dos veces costaría el doble para volver a probar la
+ * misma lógica, y lo único que cambia de verdad al agrandar la ventana es el
+ * shell — qué navegación se muestra y qué forma toman los formularios.
  */
 export default defineConfig({
   testDir: "./tests/e2e",

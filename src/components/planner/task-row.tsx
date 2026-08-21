@@ -1,11 +1,12 @@
 "use client";
 
-import { Check, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { MemberAvatar } from "@/components/app/member-chip";
 import { TaskDetailSheet } from "@/components/planner/task-detail-sheet";
+import { CircleCheckbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import type { PlannerTask } from "@/lib/planner/queries";
 import { createClient } from "@/lib/supabase/client";
@@ -54,27 +55,11 @@ export function TaskRow({
   return (
     <>
       <li className="flex items-center gap-2">
-        <button
-          type="button"
+        <CircleCheckbox
+          checked={done}
+          label={`Marcar "${task.task?.title ?? "tarea"}" como ${done ? "pendiente" : "hecha"}`}
           onClick={toggle}
-          role="checkbox"
-          aria-checked={done}
-          aria-label={`Marcar "${task.task?.title ?? "tarea"}" como ${done ? "pendiente" : "hecha"}`}
-          className={cn(
-            // 44px de área táctil aunque el cuadrito dibujado sea de 24:
-            // se tilda caminando, con una mano.
-            "grid size-11 shrink-0 place-items-center",
-          )}
-        >
-          <span
-            className={cn(
-              "grid size-6 place-items-center rounded-md border-2 transition-colors",
-              done ? "border-success bg-success text-white" : "border-border",
-            )}
-          >
-            {done ? <Check className="size-4 stroke-[3]" /> : null}
-          </span>
-        </button>
+        />
 
         <button
           type="button"

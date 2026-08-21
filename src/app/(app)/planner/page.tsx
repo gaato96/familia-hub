@@ -1,4 +1,6 @@
 import { WeekView } from "@/components/planner/week-view";
+import { minutesNowAr } from "@/lib/agenda/blocks";
+import { fetchTimeBlocks } from "@/lib/agenda/queries";
 import { requireFamily } from "@/lib/auth/context";
 import { addDaysIso, startOfWeekAr, todayInAr, type IsoDate } from "@/lib/dates";
 import {
@@ -34,9 +36,10 @@ export default async function PlannerPage({
   // mostrar las tareas recurrentes que todavía no se habían materializado.
   await ensureInstances(supabase, sunday);
 
-  const [tasks, events] = await Promise.all([
+  const [tasks, events, blocks] = await Promise.all([
     fetchTasksBetween(supabase, monday, sunday),
     fetchEventsBetween(supabase, monday, sunday),
+    fetchTimeBlocks(supabase, monday, sunday),
   ]);
 
   return (
@@ -46,8 +49,10 @@ export default async function PlannerPage({
       tasks={tasks}
       events={events}
       members={members}
+      blocks={blocks}
       currentMemberId={member.id}
       filterMemberId={quien ?? null}
+      serverNowMinutes={minutesNowAr()}
     />
   );
 }

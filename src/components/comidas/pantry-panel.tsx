@@ -133,7 +133,7 @@ export function PantryPanel({
       ) : null}
 
       {summary.toRestock.length > 0 ? (
-        <section className="rounded-app border border-border bg-surface p-3">
+        <section className="rounded-app bg-surface shadow-card p-3">
           <h2 className="text-sm font-semibold text-fg">Hay que reponer</h2>
           <ul className="mt-1 space-y-0.5 text-sm text-muted">
             {summary.toRestock.map((item) => (
@@ -157,7 +157,7 @@ export function PantryPanel({
             <h2 className="mb-1.5 text-sm font-semibold text-muted">
               {group.location.label}
             </h2>
-            <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+            <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
               {group.items.map((item) => {
                 const alert = pantryAlert(item, today);
 

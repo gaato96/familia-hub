@@ -1,0 +1,154 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#ffffff", "inverse-primary": "#ffb59e", "secondary-fixed": "#c2e8ff", "secondary-fixed-dim": "#75d1ff", "surface-container-low": "#f2f4f8", "on-secondary-fixed": "#001e2b", "secondary-container": "#58cafe", "primary-fixed-dim": "#ffb59e", "surface": "#f7f9fd", "surface-bright": "#f7f9fd", "on-error-container": "#93000a", "tertiary-container": "#75ba78", "on-tertiary": "#ffffff", "on-surface": "#181c1f", "primary": "#9f4122", "surface-container": "#eceef2", "secondary": "#006688", "on-primary": "#ffffff", "tertiary": "#286b33", "on-background": "#181c1f", "surface-container-lowest": "#ffffff", "on-surface-variant": "#56423c", "outline-variant": "#ddc0b8", "primary-container": "#ff8a65", "on-primary-container": "#752305" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "sm": "12px", "container-margin": "16px", "xl": "32px", "md": "16px", "xs": "4px", "base": "8px", "lg": "24px", "gutter": "12px" }, "fontFamily": { "label-sm": ["Nunito Sans"], "headline-md": ["Quicksand"], "body-md": ["Nunito Sans"], "body-lg": ["Nunito Sans"], "display-lg-mobile": ["Quicksand"], "headline-sm": ["Quicksand"], "display-lg": ["Quicksand"], "label-md": ["Nunito Sans"] }, "fontSize": { "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}], "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}], "display-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}], "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}] } } } }</script><style>@layer base { .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-container-margin flex items-center justify-between"><div class="flex items-center gap-base"><img alt="Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkGV_lZyVu30TVWvpb2ORUQ5ZMZxO_PXlkHWHTlCjZpHlDfeDnUhAzFIiQJ0OO8cPafmjCPTjZY5BRAnlakcAlEEAnIsC5LbCnVCOaI5wisTGqRKn6sgtmUNteCCPOf9EmPNks7j6CvmeCERvJEqONRlm-AE_yIkD4wTnVVSY5MAG2uKnNAS9fHHxrRhElFqxuJEC_4J2XAYUnVyu58qquk-Br21StU1N8FExUzyvXV3tqmjuJSWTirg"/><span class="font-headline-sm text-headline-sm text-primary">Planner</span></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div></div></header><main class="pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-container-margin gap-lg">
+<div class="flex flex-col gap-xs mt-lg">
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Planificador</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Semana del 14 de Agosto</p>
+</div>
+<div class="relative w-full overflow-hidden">
+<div class="flex overflow-x-auto gap-gutter pb-sm scrollbar-hide -mx-container-margin px-container-margin snap-x snap-mandatory" id="day-scroller">
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-surface-container-low text-on-surface transition-all snap-center shadow-sm">
+<span class="font-label-sm text-label-sm opacity-70">LUN</span>
+<span class="font-headline-sm text-headline-sm mt-xs">14</span>
+</button>
+<button aria-current="true" class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-primary text-on-primary transition-all snap-center shadow-md scale-105">
+<span class="font-label-sm text-label-sm opacity-90">MAR</span>
+<span class="font-headline-sm text-headline-sm mt-xs">15</span>
+<div class="w-1.5 h-1.5 rounded-full bg-on-primary mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-surface-container-low text-on-surface transition-all snap-center shadow-sm">
+<span class="font-label-sm text-label-sm opacity-70">MIE</span>
+<span class="font-headline-sm text-headline-sm mt-xs">16</span>
+<div class="flex gap-0.5 mt-1">
+<div class="w-1.5 h-1.5 rounded-full bg-tertiary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+</div>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-surface-container-low text-on-surface transition-all snap-center shadow-sm">
+<span class="font-label-sm text-label-sm opacity-70">JUE</span>
+<span class="font-headline-sm text-headline-sm mt-xs">17</span>
+<div class="w-1.5 h-1.5 rounded-full bg-primary-container mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-surface-container-low text-on-surface transition-all snap-center shadow-sm">
+<span class="font-label-sm text-label-sm opacity-70">VIE</span>
+<span class="font-headline-sm text-headline-sm mt-xs">18</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-surface-container-low text-on-surface transition-all snap-center shadow-sm">
+<span class="font-label-sm text-label-sm opacity-70">SAB</span>
+<span class="font-headline-sm text-headline-sm mt-xs">19</span>
+</button>
+<button class="flex flex-col items-center justify-center min-w-[64px] h-[80px] rounded-xl bg-surface-container-low text-on-surface transition-all snap-center shadow-sm pr-container-margin">
+<span class="font-label-sm text-label-sm opacity-70">DOM</span>
+<span class="font-headline-sm text-headline-sm mt-xs">20</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">sunny</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Martes, 15 de Agosto</h3>
+</div>
+<div class="flex flex-col gap-md">
+<div class="relative bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col gap-sm overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-xl"></div>
+<div class="flex justify-between items-start pl-xs">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">08:00 - 08:30</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Dejar a Julián en el cole</h4>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<div class="flex gap-xs pl-xs">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Papá
+          </span>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Julián
+          </span>
+</div>
+</div>
+<div class="relative bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col gap-sm overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-container rounded-l-xl"></div>
+<div class="flex justify-between items-start pl-xs">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-primary-container uppercase tracking-wider">14:00 - 15:00</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Cita Dentista</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Revisión anual, Dr. López.</p>
+</div>
+</div>
+<div class="flex gap-xs pl-xs mt-1">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-primary-container/10 text-on-primary-container font-label-sm text-label-sm gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span> Mamá
+          </span>
+</div>
+</div>
+<div class="relative bg-[#FFF9C4] rounded-xl p-md shadow-[2px_4px_12px_rgba(0,0,0,0.05)] flex flex-col gap-sm rotate-[-1deg] hover:rotate-0 transition-transform origin-bottom-right mt-sm">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-[#5D4037] uppercase tracking-wider">Recordatorio</h4>
+<span class="material-symbols-outlined text-[#8D6E63] text-[20px]">push_pin</span>
+</div>
+<p class="font-body-lg text-body-lg text-[#3E2723] leading-snug">Comprar cartulinas para el proyecto de ciencias de Juli (para el jueves!).</p>
+</div>
+<div class="relative bg-surface-container-lowest rounded-xl p-md shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col gap-sm overflow-hidden group mt-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-tertiary rounded-l-xl"></div>
+<div class="flex justify-between items-start pl-xs">
+<div class="flex flex-col gap-xs">
+<span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider">17:30 - 19:00</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Clase de Natación</h4>
+</div>
+</div>
+<div class="flex gap-xs pl-xs mt-1">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Julián
+          </span>
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span> Papá
+          </span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-xl mb-md">
+<button class="w-full relative overflow-hidden bg-surface-container-highest rounded-2xl p-md shadow-md flex items-center justify-between group active:scale-[0.98] transition-transform">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex items-center gap-md relative z-10">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">family_restroom</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-headline-sm text-headline-sm text-on-surface">Revisión Dominical</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Planifiquemos la próxima semana</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary relative z-10">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+  }
+  .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const scroller = document.getElementById('day-scroller');
+    if(scroller) {
+        // Scroll to the active day, roughly center
+        const activeDay = scroller.querySelector('[aria-current="true"]');
+        if(activeDay) {
+            const scrollLeft = activeDay.offsetLeft - (scroller.offsetWidth / 2) + (activeDay.offsetWidth / 2);
+            scroller.scrollLeft = Math.max(0, scrollLeft);
+        }
+    }
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary scale-110"><div class="flex justify-around items-center h-20 px-xs"><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span><span class="font-label-sm text-label-sm">Home</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-xs transition-transform w-14 h-14 text-primary scale-110" data-path="planner" href="#"><span class="material-symbols-outlined">calendar_today</span><span class="font-label-sm text-label-sm">Planner</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="tareas" href="#"><span class="material-symbols-outlined">task_alt</span><span class="font-label-sm text-label-sm">Tareas</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="compras" href="#"><span class="material-symbols-outlined">shopping_basket</span><span class="font-label-sm text-label-sm">Compras</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="julian" href="#"><span class="material-symbols-outlined">lock</span><span class="font-label-sm text-label-sm">Julián</span></a></div></nav></body></html>

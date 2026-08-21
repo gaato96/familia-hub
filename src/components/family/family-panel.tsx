@@ -99,7 +99,7 @@ export function FamilyPanel({
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-2xl font-bold tracking-tight text-fg">{family.name}</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-fg lg:text-3xl">{family.name}</h1>
         <p className="text-sm text-muted">
           {members.length} {members.length === 1 ? "integrante" : "integrantes"}
         </p>
@@ -107,7 +107,7 @@ export function FamilyPanel({
 
       {/* Accesos que no cuelgan de ninguna persona en particular. La ficha de
           emergencia va primero y la ve todo el mundo. */}
-      <nav className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+      <nav className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
         <QuickLink
           href="/emergencia"
           icon={<TriangleAlert className="size-5 text-danger" />}
@@ -137,7 +137,7 @@ export function FamilyPanel({
           return (
             <li
               key={m.id}
-              className="flex items-center gap-3 rounded-app border border-border bg-surface p-3"
+              className="flex items-center gap-3 rounded-app bg-surface shadow-card p-3"
             >
               <MemberAvatar member={m} />
 
@@ -213,7 +213,7 @@ export function FamilyPanel({
             <UserPlus /> Agregar integrante sin cuenta
           </Button>
 
-          <section className="rounded-app border border-border bg-surface p-4">
+          <section className="rounded-app bg-surface shadow-card p-4">
             <h2 className="text-sm font-semibold text-fg">Invitar a alguien</h2>
             <p className="mt-1 text-xs text-muted">
               Compartí este código. Quien entre lo hace como integrante; después lo podés

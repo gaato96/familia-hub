@@ -559,6 +559,92 @@ type Table<
   Relationships: Rels;
 };
 
+// ---------------------------------------------------------------------------
+// Fase 5 — objetivos y bloques de horarios
+// ---------------------------------------------------------------------------
+export type GoalCategory = "casa" | "familia" | "salud" | "plata" | "estudio" | "proyecto";
+export type GoalStatus = "activo" | "logrado" | "pausado" | "archivado";
+export type TimeBlockKind =
+  | "trabajo"
+  | "estudio"
+  | "descanso"
+  | "comida"
+  | "cuidado"
+  | "traslado"
+  | "ocio"
+  | "otro";
+
+export type GoalRow = {
+  id: string;
+  family_id: string;
+  title: string;
+  detail: string | null;
+  category: GoalCategory;
+  /** null = objetivo de toda la casa. */
+  owner_member_id: string | null;
+  target_date: string | null;
+  status: GoalStatus;
+  /** Lo sella el trigger `goals_stamp_achieved`, no el cliente. */
+  achieved_on: string | null;
+  position: number;
+  created_by_member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type GoalStepRow = {
+  id: string;
+  family_id: string;
+  goal_id: string;
+  title: string;
+  assigned_member_id: string | null;
+  due_date: string | null;
+  done_at: string | null;
+  /** Lo sella el trigger `goal_steps_stamp_done`. */
+  done_by_member_id: string | null;
+  position: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TimeBlockRow = {
+  id: string;
+  family_id: string;
+  /** null = bloque de toda la casa: almuerzo, cena, silencio de siesta. */
+  member_id: string | null;
+  title: string;
+  kind: TimeBlockKind;
+  /** "HH:MM:SS" — `time` de Postgres, sin huso. Ver src/lib/agenda/blocks.ts. */
+  starts_at: string;
+  ends_at: string;
+  /** ISO 1..7 (lunes..domingo) para el recurrente; null si es de una fecha. */
+  weekdays: number[] | null;
+  on_date: string | null;
+  starts_on: string | null;
+  ends_on: string | null;
+  notes: string | null;
+  created_by_member_id: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+/**
+ * goal_steps -> goals.
+ *
+ * Se declara del lado que TIENE la clave foránea aunque el embebido que usa la
+ * app vaya al revés (`goals` trayendo sus pasos): PostgREST resuelve el
+ * embebido inverso buscando quién apunta a `goals`, y supabase-js tipa igual.
+ */
+type GoalStepRelationships = [
+  {
+    foreignKeyName: "goal_steps_goal_id_fkey";
+    columns: ["goal_id"];
+    isOneToOne: false;
+    referencedRelation: "goals";
+    referencedColumns: ["id"];
+  },
+];
+
 /** meal_plan -> recipes. La usa fetchWeekMeals() para traer el título del plato. */
 type MealPlanRelationships = [
   {
@@ -813,6 +899,45 @@ export type Database = {
         MealPlanRow,
         Stamps | "family_id" | "recipe_id" | "free_text" | "notes",
         MealPlanRelationships
+      >;
+
+      // --- Fase 5 ---------------------------------------------------------
+      goals: Table<
+        GoalRow,
+        | Stamps
+        | "family_id"
+        | "detail"
+        | "category"
+        | "owner_member_id"
+        | "target_date"
+        | "status"
+        | "achieved_on"
+        | "position"
+        | "created_by_member_id"
+      >;
+      goal_steps: Table<
+        GoalStepRow,
+        | Stamps
+        | "family_id"
+        | "assigned_member_id"
+        | "due_date"
+        | "done_at"
+        | "done_by_member_id"
+        | "position",
+        GoalStepRelationships
+      >;
+      time_blocks: Table<
+        TimeBlockRow,
+        | Stamps
+        | "family_id"
+        | "member_id"
+        | "kind"
+        | "weekdays"
+        | "on_date"
+        | "starts_on"
+        | "ends_on"
+        | "notes"
+        | "created_by_member_id"
       >;
     };
     Views: Record<string, never>;

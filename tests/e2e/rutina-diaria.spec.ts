@@ -11,6 +11,14 @@ import { expect, test, type Page } from "@playwright/test";
  * Requiere `npm run db:seed`.
  */
 
+/**
+ * Los nombres de las secciones se repiten en el panel (la tarjeta "Objetivos"
+ * también lleva a /objetivos), así que la navegación se busca SIEMPRE dentro
+ * de la barra de pestañas. Sin esto, agregar una tarjeta al panel rompe un
+ * test de navegación que no tiene nada que ver.
+ */
+const nav = (page: Page) => page.locator("nav.fixed");
+
 const EMAIL = "uno.mama@test.local";
 const PASSWORD = "familia-de-prueba-2026";
 
@@ -19,7 +27,9 @@ async function signIn(page: Page) {
   await page.getByLabel("Correo").fill(EMAIL);
   await page.getByLabel("Contraseña").fill(PASSWORD);
   await page.getByRole("button", { name: "Entrar" }).click();
-  await expect(page.getByRole("heading", { name: /Hola,/ })).toBeVisible();
+  // El saludo cambia con la hora ("Buen día" / "Buenas tardes" / "Buenas
+  // noches"), así que se ancla al nombre y no al saludo.
+  await expect(page.getByRole("heading", { name: /Mamá/ })).toBeVisible();
 }
 
 test("la rutina de todos los días", async ({ page }) => {
@@ -39,18 +49,22 @@ test("la rutina de todos los días", async ({ page }) => {
   await expect(page.getByText(noteText)).toBeVisible();
 
   // --- Tildar algo en la compra -----------------------------------------
-  await page.getByRole("link", { name: "Compras" }).click();
+  await nav(page).getByRole("link", { name: "Compras" }).click();
   await expect(page.getByRole("heading", { name: "Compras" })).toBeVisible();
 
+  // Se guarda el NOMBRE antes de tocarlo: al tildar, el ítem se va abajo a
+  // "ya está" y `.first()` pasaría a apuntar a otra fila —que sigue sin
+  // tildar— y el test fallaría por su propio efecto.
   const firstItem = page.getByRole("checkbox").first();
+  const itemName = (await firstItem.textContent())!.trim();
   await firstItem.click();
-  await expect(firstItem).toBeChecked();
+  await expect(page.getByRole("checkbox", { name: itemName })).toBeChecked();
 
   await page.reload();
   await expect(page.getByText(/Ya está \(/)).toBeVisible();
 
   // --- Mirar la semana ---------------------------------------------------
-  await page.getByRole("link", { name: "Semana" }).click();
+  await nav(page).getByRole("link", { name: "Semana" }).click();
   await expect(page.getByText(/· hoy/)).toBeVisible();
 
   // Navegar a la semana siguiente cambia la URL, así que el link se puede
@@ -66,7 +80,7 @@ test("la rutina de todos los días", async ({ page }) => {
 test("una tarea recurrente aparece en el planner después de crearla", async ({ page }) => {
   await signIn(page);
 
-  await page.getByRole("link", { name: "Semana" }).click();
+  await nav(page).getByRole("link", { name: "Semana" }).click();
   await page.getByRole("button", { name: "Agregar" }).click();
 
   const title = `Regar las plantas ${Date.now()}`;
@@ -77,6 +91,32 @@ test("una tarea recurrente aparece en el planner después de crearla", async ({ 
   // La ocurrencia se materializa del lado del servidor: si el planner mostrara
   // la tarea sin que exista la fila, no se podría tildar.
   await expect(page.getByText(title).first()).toBeVisible();
+});
+
+test("el día se arma con bloques y la vista lo dibuja", async ({ page }) => {
+  await signIn(page);
+
+  await nav(page).getByRole("link", { name: "Hoy" }).click();
+  await expect(page).toHaveURL(/\/dia/);
+
+  const title = `Clase de natación ${Date.now()}`;
+
+  await page.getByRole("button", { name: /Agregar un bloque|Bloque/ }).first().click();
+  await page.getByLabel("Qué es").fill(title);
+  await page.getByLabel("Desde").fill("17:00");
+  await page.getByLabel("Hasta").fill("18:30");
+  await page.getByRole("button", { name: "Agregar bloque" }).click();
+
+  await expect(page.getByText(title).first()).toBeVisible();
+
+  // El bloque tiene que sobrevivir al refresh: si solo estuviera en estado de
+  // React, la línea de tiempo se vaciaría.
+  await page.reload();
+  await expect(page.getByText(title).first()).toBeVisible();
+
+  // Y aparece también en la vista semanal, que lee los mismos bloques.
+  await nav(page).getByRole("link", { name: "Semana" }).click();
+  await expect(page.getByTitle(title).first()).toBeVisible();
 });
 
 test("sin sesión, cualquier pantalla privada manda a ingresar", async ({ page }) => {

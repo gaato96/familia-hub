@@ -179,7 +179,7 @@ function Stat({
   tone?: "danger";
 }) {
   return (
-    <div className="rounded-app border border-border bg-surface p-3">
+    <div className="rounded-app bg-surface shadow-card p-3">
       <p className="text-xs text-muted">{label}</p>
       <p
         className={cn(

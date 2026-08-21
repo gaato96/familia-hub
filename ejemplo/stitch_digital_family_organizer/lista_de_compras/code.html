@@ -1,0 +1,141 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#ffffff", "inverse-primary": "#ffb59e", "secondary-fixed": "#c2e8ff", "secondary-fixed-dim": "#75d1ff", "surface-container-low": "#f2f4f8", "on-secondary-fixed": "#001e2b", "secondary-container": "#58cafe", "primary-fixed-dim": "#ffb59e", "surface": "#f7f9fd", "surface-bright": "#f7f9fd", "on-error-container": "#93000a", "tertiary-container": "#75ba78", "on-tertiary": "#ffffff", "on-surface": "#181c1f", "primary": "#9f4122", "surface-container": "#eceef2", "secondary": "#006688", "on-primary": "#ffffff", "tertiary": "#286b33", "on-background": "#181c1f", "surface-container-lowest": "#ffffff", "on-surface-variant": "#56423c", "outline-variant": "#ddc0b8", "primary-container": "#ff8a65", "on-primary-container": "#752305" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "sm": "12px", "container-margin": "16px", "xl": "32px", "md": "16px", "xs": "4px", "base": "8px", "lg": "24px", "gutter": "12px" }, "fontFamily": { "label-sm": ["Nunito Sans"], "headline-md": ["Quicksand"], "body-md": ["Nunito Sans"], "body-lg": ["Nunito Sans"], "display-lg-mobile": ["Quicksand"], "headline-sm": ["Quicksand"], "display-lg": ["Quicksand"], "label-md": ["Nunito Sans"] }, "fontSize": { "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}], "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}], "display-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}], "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}] } } } }</script><style>@layer base { .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-container-margin flex items-center justify-between"><div class="flex items-center gap-base"><img alt="Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkGV_lZyVu30TVWvpb2ORUQ5ZMZxO_PXlkHWHTlCjZpHlDfeDnUhAzFIiQJ0OO8cPafmjCPTjZY5BRAnlakcAlEEAnIsC5LbCnVCOaI5wisTGqRKn6sgtmUNteCCPOf9EmPNks7j6CvmeCERvJEqONRlm-AE_yIkD4wTnVVSY5MAG2uKnNAS9fHHxrRhElFqxuJEC_4J2XAYUnVyu58qquk-Br21StU1N8FExUzyvXV3tqmjuJSWTirg"/><span class="font-headline-sm text-headline-sm text-primary">Compras</span></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div></div></header><main class="pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-container-margin py-md gap-lg">
+<!-- Main Shopping Section -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Para Comprar</h2>
+<!-- Supermercado Category -->
+<div class="bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-xl p-md flex flex-col gap-sm">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<h3 class="font-label-md text-label-md text-on-surface">Supermercado</h3>
+<span class="ml-auto font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full">4 items</span>
+</div>
+<div class="flex flex-col gap-xs mt-xs">
+<label class="flex items-center gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-6 h-6 rounded-full border-2 border-outline flex items-center justify-center group-hover:border-primary transition-colors">
+<!-- Checked state would have a checkmark and bg-primary -->
+</div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Leche Deslactosada (2L)</span>
+</label>
+<label class="flex items-center gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer opacity-50">
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface line-through">Huevos Grandes (Docena)</span>
+</label>
+<label class="flex items-center gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-6 h-6 rounded-full border-2 border-outline flex items-center justify-center group-hover:border-primary transition-colors"></div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Pan Integral</span>
+</label>
+</div>
+</div>
+<!-- Verdulería Category -->
+<div class="bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-xl p-md flex flex-col gap-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-tertiary-container/20 to-transparent rounded-bl-full pointer-events-none"></div>
+<div class="flex items-center gap-base relative z-10">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+<h3 class="font-label-md text-label-md text-on-surface">Verdulería / Quiosco</h3>
+</div>
+<div class="flex flex-col gap-xs mt-xs relative z-10">
+<label class="flex items-center gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-6 h-6 rounded-full border-2 border-outline flex items-center justify-center group-hover:border-tertiary transition-colors"></div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-tertiary transition-colors">Bananas (1kg)</span>
+</label>
+<label class="flex items-center gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-6 h-6 rounded-full border-2 border-outline flex items-center justify-center group-hover:border-tertiary transition-colors"></div>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-tertiary transition-colors">Tomates Perita</span>
+</label>
+</div>
+</div>
+<!-- Hogar Category -->
+<div class="bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.08)] rounded-xl p-md flex flex-col gap-sm">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">chair</span>
+<h3 class="font-label-md text-label-md text-on-surface">Hogar &amp; Deco</h3>
+</div>
+<div class="flex flex-col gap-xs mt-xs">
+<label class="flex items-center gap-sm p-sm rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer opacity-50">
+<div class="w-6 h-6 rounded-full border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface line-through">Velas Aromatizantes</span>
+</label>
+</div>
+</div>
+</section>
+<!-- Deseos y Regalos Section -->
+<section class="flex flex-col gap-sm mt-md">
+<div class="flex items-center gap-base">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Deseos y Regalos</h2>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<!-- Julián (Son) -->
+<div class="bg-[#FFF9C4] rounded-lg p-md transform rotate-1 shadow-[4px_4px_12px_rgba(0,0,0,0.05)] flex flex-col gap-sm h-32 justify-between">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface-variant" style="font-family: 'Patrick Hand', cursive;">Para Julián</h4>
+<div class="w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-primary">child_care</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">LEGO Astronauta (cumpleaños)</p>
+</div>
+<!-- Mom -->
+<div class="bg-surface-container shadow-[0_2px_8px_rgba(0,0,0,0.04)] rounded-lg p-md flex flex-col gap-sm h-32 justify-between">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface-variant">Para Mamá</h4>
+<div class="w-6 h-6 rounded-full bg-secondary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-on-secondary">face_3</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Libro de Botánica</p>
+</div>
+<!-- Dad -->
+<div class="bg-surface-container shadow-[0_2px_8px_rgba(0,0,0,0.04)] rounded-lg p-md flex flex-col gap-sm h-32 justify-between col-span-2">
+<div class="flex justify-between items-start">
+<h4 class="font-label-md text-label-md text-on-surface-variant">Para Papá</h4>
+<div class="w-6 h-6 rounded-full bg-tertiary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-on-tertiary">face_6</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Granos de café de especialidad (Etiopía)</p>
+</div>
+</div>
+</section>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-4 w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_8px_20px_rgba(159,65,34,0.3)] flex items-center justify-center hover:scale-105 transition-transform active:scale-95 z-40">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</div>
+<script>
+  // Simple check toggle logic for demonstration
+  document.querySelectorAll('label').forEach(label => {
+    label.addEventListener('click', (e) => {
+        // Prevent default to avoid double firing if actual input checkbox was added
+        e.preventDefault();
+        
+        const isChecked = label.classList.contains('opacity-50');
+        const iconContainer = label.querySelector('div');
+        const textSpan = label.querySelector('span:not(.material-symbols-outlined)');
+        
+        if (isChecked) {
+            // Uncheck
+            label.classList.remove('opacity-50');
+            iconContainer.className = 'w-6 h-6 rounded-full border-2 border-outline flex items-center justify-center group-hover:border-primary transition-colors';
+            iconContainer.innerHTML = '';
+            textSpan.className = 'font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors';
+        } else {
+            // Check
+            label.classList.add('opacity-50');
+            iconContainer.className = 'w-6 h-6 rounded-full border-2 border-primary bg-primary flex items-center justify-center';
+            iconContainer.innerHTML = '<span class="material-symbols-outlined text-[16px] text-on-primary">check</span>';
+            textSpan.className = 'font-body-md text-body-md text-on-surface line-through';
+        }
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary scale-110"><div class="flex justify-around items-center h-20 px-xs"><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="planner" href="#"><span class="material-symbols-outlined">calendar_today</span><span class="font-label-sm text-label-sm">Planner</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="tareas" href="#"><span class="material-symbols-outlined">task_alt</span><span class="font-label-sm text-label-sm">Tareas</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-xs transition-transform w-14 h-14 text-primary scale-110" data-path="compras" href="#"><span class="material-symbols-outlined">shopping_basket</span><span class="font-label-sm text-label-sm">Compras</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="julian" href="#"><span class="material-symbols-outlined">lock</span><span class="font-label-sm text-label-sm">Julián</span></a></div></nav></body></html>

@@ -68,7 +68,7 @@ export function ContactsPanel({
           hint="El pediatra, la guardia, el plomero: los que hacen falta a mano."
         />
       ) : (
-        <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+        <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
           {sorted.map((contact) => (
             <li key={contact.id} className="flex items-center gap-2 pr-2">
               <a

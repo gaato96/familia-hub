@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import "dotenv/config";
 
@@ -426,5 +426,164 @@ describe("aislamiento entre familias", () => {
     });
 
     expect(error).not.toBeNull();
+  });
+
+  // -------------------------------------------------------------------------
+  // Fase 5 — objetivos y bloques de horarios
+  //
+  // Mismo criterio que comidas: son de toda la casa. Un chico tiene que poder
+  // agarrar un paso de un objetivo y ver a qué hora vuelve el padre.
+  //
+  // A diferencia de las fases anteriores, estos casos NO dependen de la
+  // semilla: crean sus propias filas y las borran. Es a propósito — así el
+  // test también ejercita el trigger que estampa el family_id y el que estampa
+  // el autor, que es justo donde se rompería el aislamiento.
+  // -------------------------------------------------------------------------
+  describe("objetivos y bloques", () => {
+    let goalUno: string;
+    let goalDos: string;
+    let blockUno: string;
+
+    beforeAll(async () => {
+      const [a, b, c] = await Promise.all([
+        uno.from("goals").insert({ title: "Objetivo de la uno" }).select("id").single(),
+        dos.from("goals").insert({ title: "Objetivo de la dos" }).select("id").single(),
+        uno
+          .from("time_blocks")
+          .insert({
+            title: "Trabajo de prueba",
+            starts_at: "09:00",
+            ends_at: "18:00",
+            weekdays: [1, 2, 3, 4, 5],
+          })
+          .select("id")
+          .single(),
+      ]);
+
+      if (a.error || b.error || c.error) {
+        throw new Error(
+          `No se pudieron crear las filas de prueba: ${
+            a.error?.message ?? b.error?.message ?? c.error?.message
+          }`,
+        );
+      }
+
+      goalUno = a.data!.id;
+      goalDos = b.data!.id;
+      blockUno = c.data!.id;
+    }, 30_000);
+
+    afterAll(async () => {
+      await Promise.all([
+        uno.from("goals").delete().eq("id", goalUno),
+        dos.from("goals").delete().eq("id", goalDos),
+        uno.from("time_blocks").delete().eq("id", blockUno),
+      ]);
+    });
+
+    it("el trigger estampa el family_id sin que el cliente lo mande", async () => {
+      // El insert de arriba no mandó family_id. Si la columna quedara en null
+      // el insert habría fallado; que tenga el valor correcto es lo que prueba
+      // que el trigger corre ANTES del NOT NULL.
+      const { data } = await uno.from("goals").select("family_id").eq("id", goalUno).single();
+      expect(data?.family_id).toBe(unoFamilyId);
+    });
+
+    it("goals: cada familia ve solo lo suyo", async () => {
+      const [{ data: rowsUno }, { data: rowsDos }] = await Promise.all([
+        uno.from("goals").select("family_id"),
+        dos.from("goals").select("family_id"),
+      ]);
+
+      expect((rowsUno ?? []).length).toBeGreaterThan(0);
+      expect((rowsDos ?? []).length).toBeGreaterThan(0);
+      expect(new Set((rowsUno ?? []).map((r) => r.family_id))).toEqual(new Set([unoFamilyId]));
+      expect(new Set((rowsDos ?? []).map((r) => r.family_id))).toEqual(new Set([dosFamilyId]));
+    });
+
+    it("time_blocks: cada familia ve solo lo suyo", async () => {
+      const { data } = await dos.from("time_blocks").select("id").eq("id", blockUno);
+      expect(data ?? []).toEqual([]);
+    });
+
+    it("un integrante SÍ ve los objetivos y los horarios de su casa", async () => {
+      // Es el punto del módulo: si esto empieza a fallar, alguien les puso
+      // is_parent() a las policies copiando las del expediente.
+      const [{ data: goals }, { data: blocks }] = await Promise.all([
+        hijo.from("goals").select("id"),
+        hijo.from("time_blocks").select("id"),
+      ]);
+
+      expect((goals ?? []).map((g) => g.id)).toContain(goalUno);
+      expect((blocks ?? []).map((b) => b.id)).toContain(blockUno);
+    });
+
+    it("un integrante puede tildar un paso que no es suyo", async () => {
+      const { data: step } = await uno
+        .from("goal_steps")
+        .insert({ goal_id: goalUno, title: "Paso de prueba" })
+        .select("id")
+        .single();
+
+      const { error } = await hijo
+        .from("goal_steps")
+        .update({ done_at: new Date().toISOString() })
+        .eq("id", step!.id);
+
+      expect(error).toBeNull();
+
+      // Y el trigger firma quién lo hizo, sin que el cliente lo mande.
+      const { data: after } = await hijo
+        .from("goal_steps")
+        .select("done_by_member_id")
+        .eq("id", step!.id)
+        .single();
+
+      expect(after?.done_by_member_id).not.toBeNull();
+      await uno.from("goal_steps").delete().eq("id", step!.id);
+    });
+
+    it("nadie escribe un objetivo en la familia ajena forzando el family_id", async () => {
+      const { error } = await uno.from("goals").insert({
+        family_id: dosFamilyId,
+        title: "Esto no deberia existir",
+      });
+
+      expect(error).not.toBeNull();
+    });
+
+    it("no se puede borrar un objetivo de la otra familia", async () => {
+      await uno.from("goals").delete().eq("id", goalDos);
+
+      // El delete no da error —simplemente no afecta ninguna fila—, así que la
+      // única forma de verificarlo es preguntarle al dueño si sigue ahí.
+      const { data } = await dos.from("goals").select("id").eq("id", goalDos);
+      expect(data).toHaveLength(1);
+    });
+
+    it("la base rechaza un bloque que cruza la medianoche", async () => {
+      // El CHECK es lo que sostiene toda la aritmética de la vista diaria: si
+      // se pudiera guardar un 22-06, los bloques empezarían "ayer".
+      const { error } = await uno.from("time_blocks").insert({
+        title: "Turno noche",
+        starts_at: "22:00",
+        ends_at: "06:00",
+        weekdays: [1],
+      });
+
+      expect(error).not.toBeNull();
+    });
+
+    it("la base rechaza un bloque recurrente Y puntual a la vez", async () => {
+      const { error } = await uno.from("time_blocks").insert({
+        title: "Imposible",
+        starts_at: "09:00",
+        ends_at: "10:00",
+        weekdays: [1],
+        on_date: "2027-01-01",
+      });
+
+      expect(error).not.toBeNull();
+    });
   });
 });

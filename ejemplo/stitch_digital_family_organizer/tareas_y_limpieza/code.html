@@ -1,0 +1,205 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#ffffff", "inverse-primary": "#ffb59e", "secondary-fixed": "#c2e8ff", "secondary-fixed-dim": "#75d1ff", "surface-container-low": "#f2f4f8", "on-secondary-fixed": "#001e2b", "secondary-container": "#58cafe", "primary-fixed-dim": "#ffb59e", "surface": "#f7f9fd", "surface-bright": "#f7f9fd", "on-error-container": "#93000a", "tertiary-container": "#75ba78", "on-tertiary": "#ffffff", "on-surface": "#181c1f", "primary": "#9f4122", "surface-container": "#eceef2", "secondary": "#006688", "on-primary": "#ffffff", "tertiary": "#286b33", "on-background": "#181c1f", "surface-container-lowest": "#ffffff", "on-surface-variant": "#56423c", "outline-variant": "#ddc0b8", "primary-container": "#ff8a65", "on-primary-container": "#752305" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "sm": "12px", "container-margin": "16px", "xl": "32px", "md": "16px", "xs": "4px", "base": "8px", "lg": "24px", "gutter": "12px" }, "fontFamily": { "label-sm": ["Nunito Sans"], "headline-md": ["Quicksand"], "body-md": ["Nunito Sans"], "body-lg": ["Nunito Sans"], "display-lg-mobile": ["Quicksand"], "headline-sm": ["Quicksand"], "display-lg": ["Quicksand"], "label-md": ["Nunito Sans"] }, "fontSize": { "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}], "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}], "display-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}], "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}] } } } }</script><style>@layer base { .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-container-margin flex items-center justify-between"><div class="flex items-center gap-base"><img alt="Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkGV_lZyVu30TVWvpb2ORUQ5ZMZxO_PXlkHWHTlCjZpHlDfeDnUhAzFIiQJ0OO8cPafmjCPTjZY5BRAnlakcAlEEAnIsC5LbCnVCOaI5wisTGqRKn6sgtmUNteCCPOf9EmPNks7j6CvmeCERvJEqONRlm-AE_yIkD4wTnVVSY5MAG2uKnNAS9fHHxrRhElFqxuJEC_4J2XAYUnVyu58qquk-Br21StU1N8FExUzyvXV3tqmjuJSWTirg"/><span class="font-headline-sm text-headline-sm text-primary">Tareas</span></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div></div></header><main class="pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-md">
+<!-- Header / Summary -->
+<div class="px-container-margin pt-md flex items-center justify-between">
+<div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">Casa en orden</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">5 tareas completadas hoy</p>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-tertiary-container transition-all duration-1000 ease-out" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="65, 100" stroke-width="3"></path>
+</svg>
+<div class="absolute flex items-center justify-center">
+<span class="font-headline-sm text-headline-sm text-tertiary-container">65%</span>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="px-container-margin">
+<div class="flex bg-surface-container-low rounded-full p-1 relative shadow-inner">
+<div class="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-surface rounded-full shadow-sm transition-transform duration-300 ease-in-out z-0" id="tab-indicator"></div>
+<button class="flex-1 py-2 font-label-md text-label-md text-on-surface relative z-10" id="tab-pendientes" onclick="switchTab('pendientes')">Pendientes</button>
+<button class="flex-1 py-2 font-label-md text-label-md text-on-surface-variant relative z-10" id="tab-limpieza" onclick="switchTab('limpieza')">Limpieza</button>
+</div>
+</div>
+<!-- Content Container -->
+<div class="px-container-margin pb-xl" id="tab-content">
+<!-- Tab 1: Tareas Pendientes -->
+<div class="flex flex-col gap-sm" id="content-pendientes">
+<!-- Post-it style task -->
+<div class="bg-[#FFF9C4] rounded-lg p-md shadow-sm transform -rotate-1 relative" onclick="toggleCheckbox(this)">
+<div class="absolute bottom-0 right-0 w-8 h-8 bg-black/5 blur-sm rounded-full transform translate-x-2 translate-y-2"></div>
+<div class="flex items-start gap-md">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 mt-1 transition-colors task-checkbox bg-surface">
+<span class="material-symbols-outlined text-[16px] text-surface opacity-0 transition-opacity">check</span>
+</div>
+<div class="flex-1 task-content transition-opacity">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Llamar al plomero</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Fuga en lavabo baño principal</p>
+</div>
+</div>
+</div>
+<!-- Post-it style task 2 -->
+<div class="bg-[#E0F7FA] rounded-lg p-md shadow-sm transform rotate-1 relative" onclick="toggleCheckbox(this)">
+<div class="absolute bottom-0 right-0 w-8 h-8 bg-black/5 blur-sm rounded-full transform translate-x-2 translate-y-2"></div>
+<div class="flex items-start gap-md">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 mt-1 transition-colors task-checkbox bg-surface">
+<span class="material-symbols-outlined text-[16px] text-surface opacity-0 transition-opacity">check</span>
+</div>
+<div class="flex-1 task-content transition-opacity">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Comprar regalo Ana</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Cumpleaños el sábado</p>
+<div class="mt-xs inline-flex items-center gap-xs px-2 py-1 bg-surface/50 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-primary">priority_high</span>
+<span class="font-label-sm text-label-sm text-primary">Urgente</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Standard Task -->
+<div class="bg-surface-container-lowest rounded-lg p-md shadow-sm flex items-center gap-md" onclick="toggleCheckbox(this)">
+<div class="w-6 h-6 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 transition-colors task-checkbox">
+<span class="material-symbols-outlined text-[16px] text-surface opacity-0 transition-opacity">check</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface flex-1 task-content transition-opacity">Regar plantas interior</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-surface shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up of a lush green pothos plant leaf with water droplets catching morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM_6Mx7UMvl23kY-I_O0T9_NTujCMt7pCk2BG03A2V9FbIo2FTnS6O7pGYc6dAc1hbR9VYpcpR2e0JgIhwmqBYgrH_UZlzE-b8a-GFE1Ngt8oe3_L_m5qt6KNcccCBWdtDknQkYtO5LIFFzmWke-cHZv7DMPsPRIEbE2voHjxhv_u9cj-izrFxflce4bw-hgVC-94VtCRR642lwyW2UoSgE-34NzxePWqmkApuMmgTMU-05EGQPV7K_g"/>
+</div>
+</div>
+<!-- Standard Task Checked -->
+<div class="bg-surface-container-lowest rounded-lg p-md shadow-sm flex items-center gap-md opacity-50" onclick="toggleCheckbox(this)">
+<div class="w-6 h-6 rounded-full bg-tertiary-container flex items-center justify-center shrink-0 transition-colors task-checkbox">
+<span class="material-symbols-outlined text-[16px] text-on-tertiary-container transition-opacity">check</span>
+</div>
+<span class="font-body-lg text-body-lg text-on-surface flex-1 line-through task-content transition-opacity">Pagar factura luz</span>
+</div>
+<button class="mt-sm w-full py-md bg-primary text-on-primary rounded-full shadow-md font-label-md text-label-md flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">add</span> Nueva tarea
+      </button>
+</div>
+<!-- Tab 2: Limpieza Recurrente (Hidden by default) -->
+<div class="hidden flex-col gap-sm" id="content-limpieza">
+<!-- Cleaning Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm">
+<div class="h-2 w-full bg-secondary-container"></div>
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Aspirar alfombras</h3>
+<div class="flex items-center gap-xs mt-1">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">autorenew</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cada 3 días</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface shadow-sm overflow-hidden flex-shrink-0 bg-primary-container text-on-primary-container flex items-center justify-center font-label-md text-label-md">
+                J
+             </div>
+</div>
+<div class="flex gap-2">
+<div class="h-2 flex-1 rounded-full bg-tertiary-container"></div>
+<div class="h-2 flex-1 rounded-full bg-tertiary-container"></div>
+<div class="h-2 flex-1 rounded-full bg-surface-container-high"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-right">Toca mañana</p>
+<button class="mt-xs w-full py-2 border-2 border-secondary text-secondary rounded-full font-label-md text-label-md">
+            Marcar hecho
+          </button>
+</div>
+</div>
+<!-- Cleaning Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-sm">
+<div class="h-2 w-full bg-primary-container"></div>
+<div class="p-md flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Lavadora blanca</h3>
+<div class="flex items-center gap-xs mt-1">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">autorenew</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Semanal</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface shadow-sm overflow-hidden flex-shrink-0 bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md">
+                M
+             </div>
+</div>
+<div class="flex items-center gap-sm bg-error-container text-on-error-container p-sm rounded-md">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+<span class="font-label-sm text-label-sm">Retrasado 2 días</span>
+</div>
+<button class="w-full py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-md">
+            Hacer ahora
+          </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function switchTab(tab) {
+    const indicator = document.getElementById('tab-indicator');
+    const tabPendientes = document.getElementById('tab-pendientes');
+    const tabLimpieza = document.getElementById('tab-limpieza');
+    const contentPendientes = document.getElementById('content-pendientes');
+    const contentLimpieza = document.getElementById('content-limpieza');
+
+    if (tab === 'limpieza') {
+      indicator.style.transform = 'translateX(100%)';
+      tabLimpieza.classList.replace('text-on-surface-variant', 'text-on-surface');
+      tabPendientes.classList.replace('text-on-surface', 'text-on-surface-variant');
+      contentPendientes.classList.replace('flex', 'hidden');
+      contentLimpieza.classList.replace('hidden', 'flex');
+    } else {
+      indicator.style.transform = 'translateX(0)';
+      tabPendientes.classList.replace('text-on-surface-variant', 'text-on-surface');
+      tabLimpieza.classList.replace('text-on-surface', 'text-on-surface-variant');
+      contentLimpieza.classList.replace('flex', 'hidden');
+      contentPendientes.classList.replace('hidden', 'flex');
+    }
+  }
+
+  function toggleCheckbox(element) {
+    const checkbox = element.querySelector('.task-checkbox');
+    const icon = element.querySelector('.material-symbols-outlined');
+    const content = element.querySelector('.task-content');
+    
+    // Check if it's already checked (has background color class instead of transparent/border)
+    const isChecked = checkbox.classList.contains('bg-tertiary-container');
+    
+    if (isChecked) {
+      // Uncheck
+      checkbox.classList.remove('bg-tertiary-container', 'border-transparent');
+      checkbox.classList.add('border-outline-variant');
+      if(checkbox.classList.contains('bg-surface')){
+         checkbox.classList.add('bg-surface');
+      }
+      icon.classList.replace('opacity-100', 'opacity-0');
+      icon.classList.remove('text-on-tertiary-container');
+      element.classList.remove('opacity-50');
+      if(content.querySelector('h3')) {
+          content.querySelector('h3').classList.remove('line-through');
+      } else {
+          content.classList.remove('line-through');
+      }
+      
+    } else {
+      // Check
+      checkbox.classList.add('bg-tertiary-container', 'border-transparent');
+      checkbox.classList.remove('border-outline-variant', 'bg-surface');
+      icon.classList.replace('opacity-0', 'opacity-100');
+      icon.classList.add('text-on-tertiary-container');
+      element.classList.add('opacity-50');
+      if(content.querySelector('h3')) {
+          content.querySelector('h3').classList.add('line-through');
+      } else {
+          content.classList.add('line-through');
+      }
+    }
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary scale-110"><div class="flex justify-around items-center h-20 px-xs"><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="planner" href="#"><span class="material-symbols-outlined">calendar_today</span><span class="font-label-sm text-label-sm">Planner</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-xs transition-transform w-14 h-14 text-primary scale-110" data-path="tareas" href="#"><span class="material-symbols-outlined">task_alt</span><span class="font-label-sm text-label-sm">Tareas</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="compras" href="#"><span class="material-symbols-outlined">shopping_basket</span><span class="font-label-sm text-label-sm">Compras</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="julian" href="#"><span class="material-symbols-outlined">lock</span><span class="font-label-sm text-label-sm">Julián</span></a></div></nav></body></html>

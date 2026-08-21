@@ -19,7 +19,7 @@ export default async function DocumentosPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-2xl font-bold tracking-tight text-fg">Papeles de la casa</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-fg lg:text-3xl">Papeles de la casa</h1>
         <p className="text-sm text-muted">
           Contratos, garantías y comprobantes. Solo los ven los adultos.
         </p>

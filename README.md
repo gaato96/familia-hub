@@ -1,13 +1,23 @@
-# Casa
+# Hornero
 
-PWA de organización familiar. Notas en la heladera, planner semanal, tareas de la casa y listas de
-compras — todo compartido entre los integrantes, instalable en el teléfono y con avisos push.
+PWA de organización familiar. El día de cada uno, las tareas de la casa, las compras, la plata y
+el expediente de cada integrante — compartido entre todos, instalable en el teléfono y con avisos
+push.
+
+> El hornero construye su nido de barro, y lo construye en pareja.
+
+Se usa igual desde una pantalla grande que desde un teléfono: en escritorio hay barra lateral con
+todas las secciones a la vista; en el teléfono, cinco pestañas abajo y el resto en "Más".
 
 ## Qué tiene
 
+- **El panel** — qué está pasando ahora, qué sigue, qué te toca a vos y cómo viene la casa.
+- **Hoy** — el día dibujado en bloques de horarios: trabajo, colegio, siesta, cena. Los que se
+  solapan van en columnas, y una línea marca la hora actual.
 - **La heladera** — notas en vivo que ven todos, como papelitos pegados.
-- **La semana** — planner con eventos y tareas de la casa, con recurrencia
-  ("cada 15 días", "lunes y jueves") y rotación automática de responsables.
+- **La semana** — los horarios de los siete días más el planner con eventos y tareas de la casa,
+  con recurrencia ("cada 15 días", "lunes y jueves") y rotación automática de responsables.
+- **Objetivos** — lo que la casa se propuso, partido en pasos que alguien puede agarrar.
 - **Compras** — seis listas, tachado en tiempo real, artículos frecuentes.
 - **Familia** — expediente de salud de cada integrante (medicamentos, vacunas,
   consultas, peso y talla, hitos, talles), caja fuerte de documentos y contactos.
@@ -78,7 +88,7 @@ npm run dev          # desarrollo
 npm run build        # build de producción
 npm run typecheck    # tipos
 npm run lint         # eslint
-npm run test:unit    # lógica pura (recurrencia, plata, fechas)
+npm run test:unit    # lógica pura (recurrencia, plata, fechas, bloques, objetivos)
 npm run test:rls     # aislamiento entre familias — pega contra el proyecto real
 npm run test:e2e     # recorrido completo en viewport de teléfono
 npm run db:push      # aplicar migraciones

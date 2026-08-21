@@ -150,7 +150,7 @@ export function MealSlotPicker({
           ) : null}
         </section>
       ) : (
-        <p className="rounded-app border border-dashed border-border p-4 text-center text-sm text-muted">
+        <p className="rounded-app border border-dashed border-border-strong p-4 text-center text-sm text-muted">
           Todavía no hay recetas guardadas. Podés escribir directo arriba, o cargar recetas
           desde la pestaña Recetas para que la lista del súper se arme sola.
         </p>

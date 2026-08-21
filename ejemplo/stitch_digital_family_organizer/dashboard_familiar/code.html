@@ -1,0 +1,156 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#ffffff", "inverse-primary": "#ffb59e", "secondary-fixed": "#c2e8ff", "secondary-fixed-dim": "#75d1ff", "surface-container-low": "#f2f4f8", "on-secondary-fixed": "#001e2b", "secondary-container": "#58cafe", "primary-fixed-dim": "#ffb59e", "surface": "#f7f9fd", "surface-bright": "#f7f9fd", "on-error-container": "#93000a", "tertiary-container": "#75ba78", "on-tertiary": "#ffffff", "on-surface": "#181c1f", "primary": "#9f4122", "surface-container": "#eceef2", "secondary": "#006688", "on-primary": "#ffffff", "tertiary": "#286b33", "on-background": "#181c1f", "surface-container-lowest": "#ffffff", "on-surface-variant": "#56423c", "outline-variant": "#ddc0b8", "primary-container": "#ff8a65", "on-primary-container": "#752305" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "sm": "12px", "container-margin": "16px", "xl": "32px", "md": "16px", "xs": "4px", "base": "8px", "lg": "24px", "gutter": "12px" }, "fontFamily": { "label-sm": ["Nunito Sans"], "headline-md": ["Quicksand"], "body-md": ["Nunito Sans"], "body-lg": ["Nunito Sans"], "display-lg-mobile": ["Quicksand"], "headline-sm": ["Quicksand"], "display-lg": ["Quicksand"], "label-md": ["Nunito Sans"] }, "fontSize": { "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}], "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}], "display-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}], "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}] } } } }</script><style>@layer base { .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-container-margin flex items-center justify-between"><div class="flex items-center gap-base"><img alt="Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkGV_lZyVu30TVWvpb2ORUQ5ZMZxO_PXlkHWHTlCjZpHlDfeDnUhAzFIiQJ0OO8cPafmjCPTjZY5BRAnlakcAlEEAnIsC5LbCnVCOaI5wisTGqRKn6sgtmUNteCCPOf9EmPNks7j6CvmeCERvJEqONRlm-AE_yIkD4wTnVVSY5MAG2uKnNAS9fHHxrRhElFqxuJEC_4J2XAYUnVyu58qquk-Br21StU1N8FExUzyvXV3tqmjuJSWTirg"/><span class="font-headline-sm text-headline-sm text-primary">Dashboard</span></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div></div></header><main class="pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-lg px-container-margin">
+<!-- Welcome Section -->
+<section class="flex flex-col gap-xs mt-base">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">¡Hola Familia!</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Viernes, 27 de Octubre</p>
+</section>
+<!-- Digital Fridge (Post-its) -->
+<section class="flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-base">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">kitchen</span>
+        Nevera Digital
+      </h2>
+<button aria-label="Añadir nota" class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shadow-sm hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-on-secondary-container">add</span>
+</button>
+</div>
+<!-- Post-it Grid -->
+<div class="grid grid-cols-2 gap-md">
+<!-- Post-it 1 -->
+<div class="bg-[#FFF9C4] rounded-sm p-sm shadow-[2px_4px_8px_rgba(0,0,0,0.08)] transform rotate-[-2deg] flex flex-col justify-between min-h-[120px] relative">
+<div class="absolute top-[-8px] left-1/2 -translate-x-1/2 w-6 h-3 bg-red-400/30 rounded-full blur-[1px]"></div> <!-- Fake tape -->
+<p class="font-label-md text-label-md text-on-surface leading-relaxed">"Compré leche, está en la puerta. ¡Buen día!"</p>
+<span class="font-label-sm text-label-sm text-on-surface/60 mt-auto text-right">- Mamá</span>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-gradient-to-tl from-black/5 to-transparent rounded-bl-lg"></div> <!-- Lifted corner shadow effect -->
+</div>
+<!-- Post-it 2 -->
+<div class="bg-[#B2EBF2] rounded-sm p-sm shadow-[2px_4px_8px_rgba(0,0,0,0.08)] transform rotate-[1.5deg] flex flex-col justify-between min-h-[120px] relative">
+<div class="absolute top-[-8px] left-1/2 -translate-x-1/2 w-6 h-3 bg-blue-400/30 rounded-full blur-[1px]"></div>
+<p class="font-label-md text-label-md text-on-surface leading-relaxed">No se olviden:<br/>Mañana fútbol a las 10am.</p>
+<span class="font-label-sm text-label-sm text-on-surface/60 mt-auto text-right">- Papá</span>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-gradient-to-tl from-black/5 to-transparent rounded-bl-lg"></div>
+</div>
+<!-- Post-it 3 -->
+<div class="bg-[#F8BBD0] rounded-sm p-sm shadow-[2px_4px_8px_rgba(0,0,0,0.08)] transform rotate-[-1deg] flex flex-col justify-between min-h-[120px] relative col-span-2">
+<div class="absolute top-[-8px] left-1/2 -translate-x-1/2 w-6 h-3 bg-pink-400/30 rounded-full blur-[1px]"></div>
+<p class="font-label-md text-label-md text-on-surface leading-relaxed">¿Quién se comió mi yogur? 😠</p>
+<span class="font-label-sm text-label-sm text-on-surface/60 mt-auto text-right">- Sofi</span>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-gradient-to-tl from-black/5 to-transparent rounded-bl-lg"></div>
+</div>
+</div>
+</section>
+<!-- Task of the Day Highlight -->
+<section class="flex flex-col gap-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Misión del Día</h2>
+<div class="bg-surface-container-low rounded-xl p-md shadow-[0_4px_12px_rgba(0,0,0,0.04)] relative overflow-hidden flex items-center justify-between group">
+<!-- Decorative left border -->
+<div class="absolute left-0 top-0 bottom-0 w-2 bg-primary"></div>
+<div class="flex items-center gap-md pl-xs">
+<!-- Interactive Checkbox -->
+<button aria-label="Marcar tarea como completada" class="w-10 h-10 rounded-full border-2 border-outline-variant flex items-center justify-center bg-surface transition-colors duration-300" id="task-of-day-btn">
+<span class="material-symbols-outlined text-surface opacity-0 transition-opacity duration-300" id="task-of-day-icon">check</span>
+</button>
+<div class="flex flex-col" id="task-of-day-text-container">
+<span class="font-headline-md text-headline-md text-on-surface transition-all duration-300">Bañar al perro</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">stars</span> +50 pts Familiares
+          </span>
+</div>
+</div>
+<div class="flex -space-x-2">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-surface" data-alt="Close up of a small cute fluffy dog looking guilty but adorable, soft warm lighting, cozy home environment, 8k resolution, shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvW0o_TYjuWyyR4LzHYsAuBxQCWQYT6JrFSNQImC_pVH9VW4xrIgWzGbjlDk8wmGMAHfQ0BTkBTIuRR2ay5epXr-6gYatiBEvbZ1JLF0G7fCnanDpJcheCqo8QCR-ITT_O1MWYUoHTZS20vHzySuRYkte62xu01ZnJOQedI-uL_s5tJmbrTv6dtDHNFmxZmQij7_81D4pXJtJseChBCsklmyj0b8maox-ZDeUlVzmTNp199XbDpYXrsw"/>
+</div>
+</div>
+</section>
+<!-- Next Events Summary -->
+<section class="flex flex-col gap-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-base">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">event</span>
+        Próximos Eventos
+      </h2>
+<a class="font-label-md text-label-md text-primary flex items-center" href="#">
+        Ver Calendario <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col">
+<!-- Event 1 -->
+<div class="flex gap-md p-md relative">
+<!-- Timeline line connecting events -->
+<div class="absolute left-[31px] top-[48px] bottom-[-16px] w-[2px] bg-surface-variant"></div>
+<div class="flex flex-col items-center min-w-[36px]">
+<span class="font-label-sm text-label-sm text-tertiary font-bold">HOY</span>
+<div class="w-2 h-2 rounded-full bg-tertiary mt-xs z-10 shadow-[0_0_0_4px_rgba(255,255,255,1)]"></div>
+</div>
+<div class="flex flex-col gap-xs flex-1">
+<span class="font-body-md text-body-md text-on-surface font-semibold">Cena en casa de Abuelos</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 19:30 hrs
+          </span>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="flex gap-md p-md relative">
+<div class="absolute left-[31px] top-[48px] bottom-[-16px] w-[2px] bg-surface-variant"></div>
+<div class="flex flex-col items-center min-w-[36px]">
+<span class="font-label-sm text-label-sm text-on-surface-variant">SÁB</span>
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-xs z-10 shadow-[0_0_0_4px_rgba(255,255,255,1)]"></div>
+</div>
+<div class="flex flex-col gap-xs flex-1">
+<span class="font-body-md text-body-md text-on-surface font-semibold">Partido de Fútbol - Leo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 10:00 hrs
+          </span>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="flex gap-md p-md">
+<div class="flex flex-col items-center min-w-[36px]">
+<span class="font-label-sm text-label-sm text-on-surface-variant">LUN</span>
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-xs z-10 shadow-[0_0_0_4px_rgba(255,255,255,1)]"></div>
+</div>
+<div class="flex flex-col gap-xs flex-1">
+<span class="font-body-md text-body-md text-on-surface font-semibold">Cita Dentista - Sofi</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 16:15 hrs
+          </span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const taskBtn = document.getElementById('task-of-day-btn');
+    const taskIcon = document.getElementById('task-of-day-icon');
+    const taskTextContainer = document.getElementById('task-of-day-text-container');
+    let isCompleted = false;
+
+    taskBtn.addEventListener('click', () => {
+      isCompleted = !isCompleted;
+      
+      if (isCompleted) {
+        taskBtn.classList.remove('bg-surface', 'border-outline-variant');
+        taskBtn.classList.add('bg-primary', 'border-primary');
+        taskIcon.classList.remove('opacity-0', 'text-surface');
+        taskIcon.classList.add('opacity-100', 'text-on-primary');
+        taskTextContainer.style.opacity = '0.5';
+        taskTextContainer.style.textDecoration = 'line-through';
+      } else {
+        taskBtn.classList.add('bg-surface', 'border-outline-variant');
+        taskBtn.classList.remove('bg-primary', 'border-primary');
+        taskIcon.classList.add('opacity-0', 'text-surface');
+        taskIcon.classList.remove('opacity-100', 'text-on-primary');
+        taskTextContainer.style.opacity = '1';
+        taskTextContainer.style.textDecoration = 'none';
+      }
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary scale-110"><div class="flex justify-around items-center h-20 px-xs"><a aria-current="page" class="flex flex-col items-center justify-center gap-xs transition-transform w-14 h-14 text-primary scale-110" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="planner" href="#"><span class="material-symbols-outlined">calendar_today</span><span class="font-label-sm text-label-sm">Planner</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="tareas" href="#"><span class="material-symbols-outlined">task_alt</span><span class="font-label-sm text-label-sm">Tareas</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="compras" href="#"><span class="material-symbols-outlined">shopping_basket</span><span class="font-label-sm text-label-sm">Compras</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="julian" href="#"><span class="material-symbols-outlined">lock</span><span class="font-label-sm text-label-sm">Julián</span></a></div></nav></body></html>

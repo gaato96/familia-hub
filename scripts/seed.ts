@@ -395,6 +395,69 @@ async function seedFamilyContent(
     );
   }
 
+  // --- Fase 5: objetivos y bloques ------------------------------------------
+  const { data: goal, error: goalError } = await client
+    .from("goals")
+    .insert({
+      title: `Ordenar el garage (${label})`,
+      category: "casa",
+      detail: "Que se pueda entrar el auto antes del verano.",
+    })
+    .select("id")
+    .single();
+  check(`${label} objetivo`, goalError);
+
+  if (goal) {
+    check(
+      `${label} pasos del objetivo`,
+      (
+        await client.from("goal_steps").insert([
+          {
+            goal_id: goal.id,
+            title: "Sacar las cajas del fondo",
+            assigned_member_id: memberIds[0] ?? null,
+            position: 0,
+          },
+          {
+            goal_id: goal.id,
+            title: "Llamar al de las estanterías",
+            assigned_member_id: memberIds[1] ?? memberIds[0] ?? null,
+            position: 1,
+          },
+        ])
+      ).error,
+    );
+  }
+
+  // Un bloque de una persona y uno de toda la casa: alcanza para que la vista
+  // diaria muestre las dos formas —y para que se vea el solapamiento, que es
+  // lo único de la línea de tiempo que se rompe en silencio.
+  check(
+    `${label} bloques de horarios`,
+    (
+      await client.from("time_blocks").insert([
+        {
+          title: "Trabajo",
+          kind: "trabajo",
+          member_id: memberIds[0] ?? null,
+          starts_at: "09:00",
+          ends_at: "18:00",
+          weekdays: [1, 2, 3, 4, 5],
+          on_date: null,
+        },
+        {
+          title: "Almuerzo",
+          kind: "comida",
+          member_id: null,
+          starts_at: "13:00",
+          ends_at: "14:00",
+          weekdays: [1, 2, 3, 4, 5, 6, 7],
+          on_date: null,
+        },
+      ])
+    ).error,
+  );
+
   check(
     `${label} generar ocurrencias`,
     (

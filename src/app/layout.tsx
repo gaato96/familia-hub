@@ -1,16 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Plus_Jakarta_Sans } from "next/font/google";
+import { Caveat, Nunito_Sans, Quicksand } from "next/font/google";
 import { Toaster } from "sonner";
 
 import { ServiceWorkerRegister } from "@/components/app/service-worker-register";
 import { ThemeScript } from "@/components/theme-script";
+import { APP_NAME, APP_TAGLINE } from "@/lib/brand";
 
 import "./globals.css";
 
-const sans = Plus_Jakarta_Sans({
+/** Cuerpo: redonda pero legible a 13px, que es donde vive casi toda la app. */
+const body = Nunito_Sans({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-nunito",
   display: "swap",
+});
+
+/** Títulos: terminaciones redondeadas, contadores abiertos. Se lee amable. */
+const display = Quicksand({
+  subsets: ["latin"],
+  variable: "--font-quicksand",
+  display: "swap",
+  weight: ["500", "600", "700"],
 });
 
 /** Solo para el cuerpo de los post-its: es lo que los hace leer como papelitos. */
@@ -23,16 +33,16 @@ const handwriting = Caveat({
 
 export const metadata: Metadata = {
   title: {
-    default: "Casa",
-    template: "%s · Casa",
+    default: APP_NAME,
+    template: `%s · ${APP_NAME}`,
   },
-  description: "La organización de la familia en un solo lugar.",
-  applicationName: "Casa",
+  description: APP_TAGLINE,
+  applicationName: APP_NAME,
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Casa",
+    title: APP_NAME,
   },
   // Es una app privada de una familia: nada de esto debería indexarse jamás.
   robots: { index: false, follow: false },
@@ -40,8 +50,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#131217" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f9fd" },
+    { media: "(prefers-color-scheme: dark)", color: "#15100e" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -58,7 +68,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <ThemeScript />
       </head>
-      <body className={`${sans.variable} ${handwriting.variable} font-sans antialiased`}>
+      <body
+        className={`${body.variable} ${display.variable} ${handwriting.variable} font-sans antialiased`}
+      >
         {children}
         <ServiceWorkerRegister />
         <Toaster

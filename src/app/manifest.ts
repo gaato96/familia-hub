@@ -1,15 +1,18 @@
 import type { MetadataRoute } from "next";
 
+import { APP_DESCRIPTION, APP_NAME } from "@/lib/brand";
+
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Casa — organización familiar",
-    short_name: "Casa",
-    description: "Tareas, planner, compras y expediente de la familia.",
+    name: `${APP_NAME} — la casa en orden`,
+    short_name: APP_NAME,
+    description: APP_DESCRIPTION,
     start_url: "/",
     display: "standalone",
-    orientation: "portrait",
-    background_color: "#faf8f5",
-    theme_color: "#faf8f5",
+    // Sin `orientation: portrait`: ahora la app también se usa en una pantalla
+    // grande, y forzar vertical rompe la tablet apoyada de costado.
+    background_color: "#f7f9fd",
+    theme_color: "#f7f9fd",
     lang: "es-AR",
     dir: "ltr",
     categories: ["productivity", "lifestyle"],
@@ -27,9 +30,9 @@ export default function manifest(): MetadataRoute.Manifest {
     // directo a lo que se abre veinte veces por día.
     shortcuts: [
       {
-        name: "Pegar una nota",
-        short_name: "Nota",
-        url: "/?nota=nueva",
+        name: "Ver el día",
+        short_name: "Hoy",
+        url: "/dia",
         icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }],
       },
       {

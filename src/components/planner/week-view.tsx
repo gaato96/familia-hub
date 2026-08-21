@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { WeekBlocks } from "@/components/agenda/week-blocks";
 import { MemberAvatar } from "@/components/app/member-chip";
 import { PlannerComposer } from "@/components/planner/planner-composer";
 import { TaskRow } from "@/components/planner/task-row";
 import { Button } from "@/components/ui/button";
+import { Card, SectionHeading } from "@/components/ui/card";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import {
   addDaysIso,
@@ -19,7 +21,7 @@ import {
 } from "@/lib/dates";
 import type { PlannerTask } from "@/lib/planner/queries";
 import { cn } from "@/lib/utils";
-import type { EventRow, FamilyMemberRow } from "@/types/database";
+import type { EventRow, FamilyMemberRow, TimeBlockRow } from "@/types/database";
 
 export function WeekView({
   monday,
@@ -27,16 +29,20 @@ export function WeekView({
   tasks,
   events,
   members,
+  blocks,
   currentMemberId,
   filterMemberId,
+  serverNowMinutes,
 }: {
   monday: IsoDate;
   today: IsoDate;
   tasks: PlannerTask[];
   events: EventRow[];
   members: FamilyMemberRow[];
+  blocks: TimeBlockRow[];
   currentMemberId: string;
   filterMemberId: string | null;
+  serverNowMinutes: number;
 }) {
   const router = useRouter();
   const [composerOpen, setComposerOpen] = useState(false);
@@ -75,7 +81,9 @@ export function WeekView({
         </Link>
 
         <div className="text-center">
-          <h1 className="text-lg font-bold text-fg">{weekTitle(monday)}</h1>
+          <h1 className="font-display text-lg font-bold text-fg lg:text-2xl">
+            {weekTitle(monday)}
+          </h1>
           <p className="text-xs text-muted">
             {formatDayLabel(monday)} al {formatDayLabel(addDaysIso(monday, 6))}
           </p>
@@ -109,7 +117,32 @@ export function WeekView({
         ))}
       </div>
 
-      <ol className="space-y-3">
+      {/* Los horarios de la semana antes de las tareas: el pedido era ver "qué
+          hay durante la semana", y eso empieza por dónde está cada uno. El
+          detalle de cada día está a un toque de distancia. */}
+      <section>
+        <SectionHeading
+          title="Horarios"
+          action={
+            <Link href="/dia" className="font-display text-xs font-bold text-primary">
+              Ver el día
+            </Link>
+          }
+        />
+        <Card className="p-3">
+          <WeekBlocks
+            days={days}
+            today={today}
+            blocks={blocks}
+            members={members}
+            serverNowMinutes={serverNowMinutes}
+          />
+        </Card>
+      </section>
+
+      <SectionHeading title="Tareas y eventos" className="!mb-0 pt-1" />
+
+      <ol className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
         {days.map((day) => {
           const dayTasks = visibleTasks.filter((t) => t.due_date === day);
           const dayEvents = events.filter((e) => sameDay(e, day));
@@ -120,14 +153,14 @@ export function WeekView({
             <li
               key={day}
               className={cn(
-                "rounded-app border bg-surface p-3",
-                isToday ? "border-primary" : "border-border",
+                "rounded-app bg-surface p-3 shadow-card",
+                isToday && "ring-2 ring-primary",
               )}
             >
               <div className="mb-2 flex items-baseline justify-between">
                 <h2
                   className={cn(
-                    "text-sm font-bold capitalize",
+                    "font-display text-sm font-bold capitalize",
                     isToday ? "text-primary" : "text-fg",
                   )}
                 >

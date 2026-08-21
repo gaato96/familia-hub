@@ -1,22 +1,16 @@
 "use client";
 
-import {
-  Bell,
-  BellOff,
-  ChevronRight,
-  LogOut,
-  Moon,
-  Smartphone,
-  Sun,
-  UtensilsCrossed,
-  Wallet,
-} from "lucide-react";
+import { Bell, BellOff, ChevronRight, LogOut, Moon, Smartphone, Sun } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 
+import { Wordmark } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
+import { SECONDARY_NAV } from "@/lib/nav";
 import {
   isSubscribed,
   pushSupport,
@@ -48,6 +42,15 @@ function getSupportSnapshot(): PushSupport {
   return cachedSupport;
 }
 
+/**
+ * "Más": el cajón de todo lo que no entra en las cinco pestañas del teléfono,
+ * más los ajustes.
+ *
+ * En escritorio estos destinos ya están en la barra lateral, así que la grilla
+ * de arriba es redundante ahí — pero se deja igual: quien viene del teléfono
+ * los busca acá, y esconderlos según el tamaño de pantalla obliga a aprender
+ * dos mapas distintos de la misma app.
+ */
 export function SettingsPanel({ email, isParent }: { email: string; isParent: boolean }) {
   const router = useRouter();
   const dark = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
@@ -70,10 +73,6 @@ export function SettingsPanel({ email, isParent }: { email: string; isParent: bo
       cancelled = true;
     };
   }, []);
-
-  function toggleTheme() {
-    setDarkMode(!dark);
-  }
 
   async function togglePush() {
     setPushPending(true);
@@ -99,69 +98,83 @@ export function SettingsPanel({ email, isParent }: { email: string; isParent: bo
     router.refresh();
   }
 
+  const sections = SECONDARY_NAV.filter((item) => !item.parentOnly || isParent);
+
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-bold tracking-tight text-fg">Más</h1>
+    <>
+      <PageHeader title="Más" subtitle="Todo lo demás de la casa, y tus ajustes." />
 
-      {/* Estos dos viven acá y no en la bottom nav: seis pestañas no entran
-          cómodas en un teléfono de 360px. */}
-      <nav className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
-        <QuickLink
-          href="/comidas"
-          icon={<UtensilsCrossed className="size-5 text-muted" />}
-          label="Comidas y despensa"
-          hint="Menú de la semana, recetas y lo que hay en casa."
-        />
-        {/* Finanzas solo la ven los adultos. */}
-        {isParent ? (
-          <QuickLink
-            href="/finanzas"
-            icon={<Wallet className="size-5 text-primary" />}
-            label="Finanzas del hogar"
-            hint="Ingresos, reparto y vencimientos."
-          />
-        ) : null}
-      </nav>
+      <div className="space-y-5">
+        <nav className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {sections.map(({ href, label, icon: Icon, hint }) => (
+            <Link key={href} href={href}>
+              <Card className="flex h-full items-center gap-3 transition-shadow hover:shadow-float">
+                <span className="grid size-11 shrink-0 place-items-center rounded-full bg-secondary-soft text-secondary-soft-fg">
+                  <Icon className="size-5" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-display text-sm font-bold text-fg">{label}</span>
+                  <span className="block truncate text-xs text-muted">{hint}</span>
+                </span>
+                <ChevronRight className="size-4 shrink-0 text-muted" />
+              </Card>
+            </Link>
+          ))}
+        </nav>
 
-      <section className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
-        <button
-          type="button"
-          onClick={toggleTheme}
-          className="flex w-full items-center gap-3 p-4 text-left"
-        >
-          {dark ? <Moon className="size-5 text-muted" /> : <Sun className="size-5 text-muted" />}
-          <span className="flex-1 text-sm font-medium text-fg">
-            {dark ? "Modo oscuro" : "Modo claro"}
-          </span>
-          <ChevronRight className="size-4 text-muted" />
-        </button>
+        <div className="grid gap-4 lg:grid-cols-2 lg:items-start">
+          <Card className="divide-y divide-border p-0">
+            <button
+              type="button"
+              onClick={() => setDarkMode(!dark)}
+              className="flex w-full items-center gap-3 p-4 text-left"
+            >
+              {dark ? (
+                <Moon className="size-5 text-muted" />
+              ) : (
+                <Sun className="size-5 text-muted" />
+              )}
+              <span className="flex-1 text-sm font-semibold text-fg">
+                {dark ? "Modo oscuro" : "Modo claro"}
+              </span>
+              <ChevronRight className="size-4 text-muted" />
+            </button>
 
-        <PushRow
-          support={support}
-          subscribed={subscribed}
-          pending={pushPending}
-          onToggle={togglePush}
-        />
-      </section>
+            <PushRow
+              support={support}
+              subscribed={subscribed}
+              pending={pushPending}
+              onToggle={togglePush}
+            />
+          </Card>
 
-      <section className="rounded-app border border-border bg-surface p-4">
-        <p className="text-xs text-muted">Sesión iniciada como</p>
-        <p className="truncate text-sm font-medium text-fg">{email}</p>
-        <Button variant="outline" className="mt-3 w-full" onClick={signOut}>
-          <LogOut /> Cerrar sesión
-        </Button>
-      </section>
+          <div className="space-y-4">
+            <Card>
+              <p className="text-xs text-muted">Sesión iniciada como</p>
+              <p className="truncate text-sm font-semibold text-fg">{email}</p>
+              <Button variant="outline" className="mt-3 w-full" onClick={signOut}>
+                <LogOut /> Cerrar sesión
+              </Button>
+            </Card>
 
-      {/* Se listan las secciones que faltan en vez de esconderlas: así nadie
-          busca finanzas durante diez minutos creyendo que se le perdió. */}
-      <section className="rounded-app border border-dashed border-border p-4">
-        <h2 className="text-sm font-semibold text-fg">Ideas para más adelante</h2>
-        <ul className="mt-2 space-y-1 text-sm text-muted">
-          <li>Vencimientos del hogar y el auto (VTV, seguro, service)</li>
-          <li>Álbum de recuerdos y cumpleaños</li>
-        </ul>
-      </section>
-    </div>
+            {/* Se listan las ideas que quedaron afuera en vez de esconderlas:
+                así nadie las busca durante diez minutos creyendo que existen. */}
+            <Card tone="vault">
+              <h2 className="font-display text-sm font-bold text-fg">Ideas para más adelante</h2>
+              <ul className="mt-2 space-y-1 text-sm text-muted">
+                <li>Vencimientos del hogar y el auto (VTV, seguro, service)</li>
+                <li>Álbum de recuerdos y cumpleaños</li>
+                <li>Panel de equidad: quién hizo cuánto de verdad</li>
+              </ul>
+            </Card>
+          </div>
+        </div>
+
+        <footer className="flex justify-center pt-2">
+          <Wordmark showTagline />
+        </footer>
+      </div>
+    </>
   );
 }
 
@@ -181,7 +194,7 @@ function PushRow({
       <div className="flex items-start gap-3 p-4">
         <Smartphone className="mt-0.5 size-5 shrink-0 text-muted" />
         <div>
-          <p className="text-sm font-medium text-fg">Instalá la app para recibir avisos</p>
+          <p className="text-sm font-semibold text-fg">Instalá la app para recibir avisos</p>
           <p className="mt-0.5 text-xs text-muted">
             En iPhone, tocá Compartir y después &ldquo;Agregar a inicio&rdquo;. Los avisos solo
             funcionan con la app instalada — es una limitación de Apple, no de la app.
@@ -196,7 +209,7 @@ function PushRow({
       <div className="flex items-start gap-3 p-4">
         <BellOff className="mt-0.5 size-5 shrink-0 text-muted" />
         <div>
-          <p className="text-sm font-medium text-fg">Avisos bloqueados</p>
+          <p className="text-sm font-semibold text-fg">Avisos bloqueados</p>
           <p className="mt-0.5 text-xs text-muted">
             Los bloqueaste desde el navegador. Se habilitan en los ajustes del sitio.
           </p>
@@ -223,7 +236,7 @@ function PushRow({
     >
       <Bell className="size-5 text-muted" />
       <span className="flex-1">
-        <span className="block text-sm font-medium text-fg">Avisos en este teléfono</span>
+        <span className="block text-sm font-semibold text-fg">Avisos en este teléfono</span>
         <span className="block text-xs text-muted">
           {subscribed
             ? "Activados: tareas asignadas, notas nuevas y el resumen del domingo."
@@ -235,7 +248,7 @@ function PushRow({
         className={
           subscribed
             ? "h-6 w-11 shrink-0 rounded-full bg-primary p-0.5"
-            : "h-6 w-11 shrink-0 rounded-full bg-border p-0.5"
+            : "h-6 w-11 shrink-0 rounded-full bg-border-strong p-0.5"
         }
       >
         <span
@@ -247,30 +260,5 @@ function PushRow({
         />
       </span>
     </button>
-  );
-}
-
-function QuickLink({
-  href,
-  icon,
-  label,
-  hint,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  hint: string;
-}) {
-  return (
-    <Link href={href} className="flex items-center gap-3 p-4">
-      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-surface-2">
-        {icon}
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-sm font-medium text-fg">{label}</span>
-        <span className="block truncate text-xs text-muted">{hint}</span>
-      </span>
-      <ChevronRight className="size-4 shrink-0 text-muted" />
-    </Link>
   );
 }

@@ -25,7 +25,7 @@ export default async function EmergenciaPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-2xl font-bold tracking-tight text-fg">Emergencia</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-fg lg:text-3xl">Emergencia</h1>
         <p className="text-sm text-muted">
           Esta pantalla funciona sin internet una vez que la abriste.
         </p>

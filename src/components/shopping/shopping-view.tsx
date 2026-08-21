@@ -111,9 +111,12 @@ export function ShoppingView({
     void refetch();
   }
 
+  // `lg:max-w-3xl` y no todo el ancho del contenedor: una lista de compras de
+  // 1100px es ilegible, el ojo pierde el renglón entre el tilde de la
+  // izquierda y el precio de la derecha.
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold tracking-tight text-fg">Compras</h1>
+    <div className="space-y-4 lg:max-w-3xl">
+      <h1 className="text-2xl font-bold tracking-tight text-fg lg:text-3xl">Compras</h1>
 
       {/* Pestañas deslizables: seis listas no entran en una fila de teléfono. */}
       <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4">
@@ -175,7 +178,7 @@ export function ShoppingView({
         />
       ) : (
         <>
-          <ul className="divide-y divide-border rounded-app border border-border bg-surface">
+          <ul className="divide-y divide-border rounded-app bg-surface shadow-card">
             {pending.map((item) => (
               <ItemRow
                 key={item.id}
@@ -209,7 +212,7 @@ export function ShoppingView({
                   Vaciar
                 </button>
               </div>
-              <ul className="divide-y divide-border rounded-app border border-border bg-surface opacity-60">
+              <ul className="divide-y divide-border rounded-app bg-surface shadow-card opacity-60">
                 {bought.map((item) => (
                   <ItemRow
                     key={item.id}
@@ -257,8 +260,10 @@ function ItemRow({
       >
         <span
           className={cn(
-            "grid size-6 shrink-0 place-items-center rounded-md border-2 transition-colors",
-            item.is_checked ? "border-success bg-success text-white" : "border-border",
+            // Redondo y no cuadrado: un círculo vacío se lee como "esto
+            // espera a alguien"; un cuadrado vacío, como un campo de formulario.
+            "grid size-6 shrink-0 place-items-center rounded-full border-2 transition-colors",
+            item.is_checked ? "border-success bg-success text-white" : "border-border-strong",
           )}
         >
           {item.is_checked ? <Check className="size-4 stroke-[3]" /> : null}

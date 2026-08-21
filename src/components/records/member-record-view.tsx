@@ -110,7 +110,7 @@ export function MemberRecordView({
               <>
                 <ul className="space-y-2">
                   {activeMeds.map((med) => (
-                    <li key={med.id} className="rounded-app border border-border bg-surface p-3">
+                    <li key={med.id} className="rounded-app bg-surface shadow-card p-3">
                       <p className="font-medium text-fg">
                         {med.name}
                         {med.dose ? <span className="text-muted"> · {med.dose}</span> : null}
@@ -179,7 +179,7 @@ export function MemberRecordView({
                   </ul>
                 ) : null}
 
-                <ul className="divide-y divide-border rounded-app border border-border bg-surface">
+                <ul className="divide-y divide-border rounded-app bg-surface shadow-card">
                   {appliedVaccines.map((v) => (
                     <li key={v.id} className="flex items-center justify-between gap-2 p-3">
                       <span className="min-w-0 truncate text-sm text-fg">
@@ -206,7 +206,7 @@ export function MemberRecordView({
             ) : (
               <ul className="space-y-2">
                 {record.visits.map((visit) => (
-                  <li key={visit.id} className="rounded-app border border-border bg-surface p-3">
+                  <li key={visit.id} className="rounded-app bg-surface shadow-card p-3">
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="min-w-0 truncate font-medium text-fg">
                         {visit.specialty ?? "Consulta"}
@@ -254,7 +254,7 @@ export function MemberRecordView({
                     <Stat label="Talla" value={formatHeight(lastGrowth.height_mm)} />
                   </div>
                 ) : null}
-                <ul className="divide-y divide-border rounded-app border border-border bg-surface">
+                <ul className="divide-y divide-border rounded-app bg-surface shadow-card">
                   {record.growth.map((g) => (
                     <li key={g.id} className="flex items-center justify-between gap-2 p-3 text-sm">
                       <span className="text-muted">
@@ -302,7 +302,7 @@ export function MemberRecordView({
             ) : (
               <ul className="space-y-2">
                 {record.milestones.map((m) => (
-                  <li key={m.id} className="rounded-app border border-border bg-surface p-3">
+                  <li key={m.id} className="rounded-app bg-surface shadow-card p-3">
                     <div className="flex items-baseline justify-between gap-2">
                       <p className="min-w-0 font-medium text-fg">{m.title}</p>
                       <span className="shrink-0 text-xs text-muted">{m.achieved_on}</span>
@@ -327,7 +327,7 @@ export function MemberRecordView({
 
       {tab === "datos" ? (
         <div className="space-y-3">
-          <div className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+          <div className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
             <Field label="Nombre completo" value={record.details?.full_legal_name} />
             <Field label="DNI" value={record.details?.dni} />
             <Field label="CUIL" value={record.details?.cuil} />
@@ -409,7 +409,7 @@ function Section({
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-app border border-border bg-surface p-3">
+    <div className="rounded-app bg-surface shadow-card p-3">
       <p className="text-xs capitalize text-muted">{label}</p>
       <p className="text-lg font-bold text-fg">{value}</p>
     </div>

@@ -81,7 +81,7 @@ export function DocumentList({
           hint="Sacale una foto al DNI, al carnet de vacunas o a una receta."
         />
       ) : (
-        <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+        <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
           {documents.map((doc) => (
             <li key={doc.id} className="flex items-center gap-3 p-3">
               <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-surface-2 text-muted">
@@ -200,7 +200,7 @@ function UploadForm({
     <form onSubmit={submit} className="space-y-4">
       <div>
         <Label>Archivo</Label>
-        <label className="flex cursor-pointer items-center gap-3 rounded-app border border-dashed border-border p-4">
+        <label className="flex cursor-pointer items-center gap-3 rounded-app border border-dashed border-border-strong p-4">
           <span className="grid size-11 shrink-0 place-items-center rounded-full bg-surface-2 text-muted">
             <Camera className="size-5" />
           </span>

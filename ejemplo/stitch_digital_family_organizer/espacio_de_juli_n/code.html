@@ -1,0 +1,161 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&amp;family=Quicksand:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary": "#ffffff", "inverse-primary": "#ffb59e", "secondary-fixed": "#c2e8ff", "secondary-fixed-dim": "#75d1ff", "surface-container-low": "#f2f4f8", "on-secondary-fixed": "#001e2b", "secondary-container": "#58cafe", "primary-fixed-dim": "#ffb59e", "surface": "#f7f9fd", "surface-bright": "#f7f9fd", "on-error-container": "#93000a", "tertiary-container": "#75ba78", "on-tertiary": "#ffffff", "on-surface": "#181c1f", "primary": "#9f4122", "surface-container": "#eceef2", "secondary": "#006688", "on-primary": "#ffffff", "tertiary": "#286b33", "on-background": "#181c1f", "surface-container-lowest": "#ffffff", "on-surface-variant": "#56423c", "outline-variant": "#ddc0b8", "primary-container": "#ff8a65", "on-primary-container": "#752305" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "sm": "12px", "container-margin": "16px", "xl": "32px", "md": "16px", "xs": "4px", "base": "8px", "lg": "24px", "gutter": "12px" }, "fontFamily": { "label-sm": ["Nunito Sans"], "headline-md": ["Quicksand"], "body-md": ["Nunito Sans"], "body-lg": ["Nunito Sans"], "display-lg-mobile": ["Quicksand"], "headline-sm": ["Quicksand"], "display-lg": ["Quicksand"], "label-md": ["Nunito Sans"] }, "fontSize": { "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}], "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}], "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "body-lg": ["18px", {"lineHeight": "26px", "fontWeight": "400"}], "display-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}], "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}], "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "700"}] } } } }</script><style>@layer base { .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } body { -webkit-tap-highlight-color: transparent; overscroll-behavior-y: contain; } }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md"><header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-container-margin flex items-center justify-between"><div class="flex items-center gap-base"><img alt="Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkGV_lZyVu30TVWvpb2ORUQ5ZMZxO_PXlkHWHTlCjZpHlDfeDnUhAzFIiQJ0OO8cPafmjCPTjZY5BRAnlakcAlEEAnIsC5LbCnVCOaI5wisTGqRKn6sgtmUNteCCPOf9EmPNks7j6CvmeCERvJEqONRlm-AE_yIkD4wTnVVSY5MAG2uKnNAS9fHHxrRhElFqxuJEC_4J2XAYUnVyu58qquk-Br21StU1N8FExUzyvXV3tqmjuJSWTirg"/><span class="font-headline-sm text-headline-sm text-primary">Julian</span></div><div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-md"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div></div></header><main class="pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-container-margin gap-lg pb-xl pt-lg relative overflow-hidden bg-[#eaf4f4] rounded-t-3xl shadow-[inset_0_4px_12px_rgba(0,0,0,0.05)] mt-4">
+<!-- Vault Header -->
+<div class="flex items-center justify-between mt-xs">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[24px]">lock</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Julián's Vault</h1>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">shield</span> Secure Area
+                </p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface shadow-sm flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Quick Access Actions -->
+<div class="grid grid-cols-3 gap-sm">
+<button class="flex flex-col items-center justify-center gap-xs p-3 bg-surface rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-secondary transition-transform active:scale-95">
+<span class="material-symbols-outlined">add_a_photo</span>
+<span class="font-label-sm text-label-sm">Add Doc</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-xs p-3 bg-surface rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-secondary transition-transform active:scale-95">
+<span class="material-symbols-outlined">prescriptions</span>
+<span class="font-label-sm text-label-sm">Log Meds</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-xs p-3 bg-surface rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-secondary transition-transform active:scale-95">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-sm text-label-sm">Visit</span>
+</button>
+</div>
+<!-- Legal & ID Section -->
+<section class="flex flex-col gap-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">badge</span> Legal &amp; ID
+            </h2>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<!-- DNI Card -->
+<div class="bg-surface rounded-xl p-3 shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col gap-2 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-12 h-12 bg-secondary/10 rounded-bl-full -mr-2 -mt-2"></div>
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-secondary">DNI</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">visibility</span>
+</div>
+<div class="w-full h-16 bg-surface-container-low rounded-lg bg-cover bg-center overflow-hidden" data-alt="A blurred, secure-looking representation of a national ID card (DNI) placed on a clean wooden desk, soft natural lighting, subtle teal accent colors in the background to match the app theme." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZoUHWlmu2Eg9xxti7K8ahD1m7EY3g-3XZ-OWnBrp4xbryX_upIA_d0HCnOixTtv_AxHjiYcvQfGSKEqXuorePPbwM7zm8a0RZAQ45t6TGRi4wKHdjU83hWzrEjddGO-l6vsUBlqVWBz8w1V6c2acBRllgS1Nwq0ToSJYvGn72qYTLiivr-kFoSdU9lHv86OV65y-lm1A7r3blxGUpbNQKAzalyEo6Qjoq5gUop7XcTA20gK9v0SBV0g');"></div>
+<div class="font-body-md text-body-md text-on-surface mt-1 truncate">45.***.892</div>
+</div>
+<!-- CUIT Card -->
+<div class="bg-surface rounded-xl p-3 shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col gap-2 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-12 h-12 bg-secondary/10 rounded-bl-full -mr-2 -mt-2"></div>
+<div class="flex justify-between items-start">
+<span class="font-label-md text-label-md text-secondary">Birth Cert.</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">visibility</span>
+</div>
+<div class="w-full h-16 bg-surface-container-low rounded-lg bg-cover bg-center overflow-hidden" data-alt="A softly focused image of a formal document, like a birth certificate, with an official seal, sitting on a pale teal mat, lit by gentle morning sunlight." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC2M1n4iQtFyoN_yb9EdzBJO-XVs8ZD2MzjMJUq0PCc718qBG-If3dlT66WHYMinDcqDiNtc7l-BgcFntQls2ufiyWmH90_4H0XeiOrOP8eKDFyBClYrcjxHHKRU1hcYHeFSC8zza4RnFYvkwKFj_W-1lq-9W4fIZZfdxCWRAPO_Y_9m1bV-qx_FWYiuS921-wBQR81YVPBKnOBIUm_-nQoWxQ0cSNbilcRem43eZqmukGmhhRzOvbHEA');"></div>
+<div class="font-body-md text-body-md text-on-surface mt-1 truncate">Original</div>
+</div>
+</div>
+</section>
+<!-- Health & Meds Section -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">medical_services</span> Health &amp; Meds
+        </h2>
+<div class="bg-surface rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden">
+<!-- Active Meds List -->
+<div class="flex flex-col p-2">
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">vaccines</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Amoxicillin</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">5ml • Every 8h (3 days left)</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-primary bg-primary/10">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-surface hover:bg-surface-container-lowest transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">medication_liquid</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Ibuprofen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2.5ml • As needed (Fever)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Symptoms Log Mini -->
+<div class="bg-[#FFF9C4] p-3 rounded-b-xl transform -rotate-1 relative mt-1 shadow-sm mx-2 mb-2">
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-black/5 blur-sm transform translate-y-1 translate-x-1 rounded-full"></div>
+<div class="flex items-center gap-1 mb-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">edit_note</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Latest Note</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-handwriting">
+                     "Woke up with slight fever (37.8°C). Gave Ibuprofen at 8:00 AM." - Today
+                 </p>
+</div>
+</div>
+</section>
+<!-- Medical Visits Section -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">calendar_month</span> Visits &amp; Vaccines
+        </h2>
+<div class="flex gap-sm overflow-x-auto pb-2 -mx-container-margin px-container-margin snap-x scrollbar-hide">
+<!-- Upcoming Visit -->
+<div class="min-w-[240px] flex-shrink-0 bg-secondary text-on-secondary rounded-xl p-4 shadow-[0_8px_20px_rgba(0,102,136,0.2)] snap-center relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-10">
+<span class="material-symbols-outlined text-[100px]">stethoscope</span>
+</div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="bg-on-secondary/20 px-2 py-1 rounded-md font-label-sm text-label-sm">Upcoming</span>
+<span class="font-label-md text-label-md">Oct 24</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm mb-1 relative z-10">Dr. Ruiz (Pediatrician)</h3>
+<p class="font-body-md text-body-md opacity-90 relative z-10">18-Month Checkup &amp; Vaccines</p>
+</div>
+<!-- Past Visit Record -->
+<div class="min-w-[200px] flex-shrink-0 bg-surface rounded-xl p-4 shadow-[0_4px_12px_rgba(0,0,0,0.04)] snap-center flex flex-col justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 block">Sep 10</span>
+<h3 class="font-label-md text-label-md text-on-surface">Dentist - First Visit</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mt-1">All teeth coming in fine.</p>
+</div>
+<div class="mt-3 flex gap-1">
+<div class="w-8 h-8 rounded bg-surface-container bg-cover bg-center" data-alt="A small thumbnail image of a dentist receipt or generic medical form sitting on a soft surface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAm6rmMj-GKIwp9uZOOOvu7uEMCyZzRBOP65WIH5HATuMdPa6fqGFfRGocinb-qnKmnOnAhM6Fiar6gFdLtTG37KOzj3dfZ9Icpuo7YcSPXvVpFSlPVmszvyrjgCJ3y91e8gZm1neSCyYzFDe2pNGcRSVE2dempBvAFa7WUSolO0yABBrqhzryyK6s7Tbsn5NurOT8EL98G5PNXn8SQaZO9IA05OmL2SBtyGnfb4OHJjsViLk7Z2RzUCw');"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    /* Mimic handwriting for the post-it note if possible, falling back to body font */
+    .font-handwriting {
+        font-family: 'Caveat', 'Kalam', cursive, var(--font-body-md);
+    }
+</style></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-primary scale-110"><div class="flex justify-around items-center h-20 px-xs"><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="planner" href="#"><span class="material-symbols-outlined">calendar_today</span><span class="font-label-sm text-label-sm">Planner</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="tareas" href="#"><span class="material-symbols-outlined">task_alt</span><span class="font-label-sm text-label-sm">Tareas</span></a><a class="flex flex-col items-center justify-center gap-xs text-on-surface-variant transition-transform w-14 h-14" data-path="compras" href="#"><span class="material-symbols-outlined">shopping_basket</span><span class="font-label-sm text-label-sm">Compras</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-xs transition-transform w-14 h-14 text-primary scale-110" data-path="julian" href="#"><span class="material-symbols-outlined">lock</span><span class="font-label-sm text-label-sm">Julián</span></a></div></nav></body></html>

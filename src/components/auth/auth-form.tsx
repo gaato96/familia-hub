@@ -66,7 +66,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
 
   if (checkInbox) {
     return (
-      <div className="rounded-app border border-border bg-surface p-4 text-sm text-fg">
+      <div className="rounded-app bg-surface shadow-card p-4 text-sm text-fg">
         <p className="font-semibold">Revisá tu correo</p>
         <p className="mt-1 text-muted">
           Te mandamos un link a <span className="text-fg">{email}</span> para confirmar la

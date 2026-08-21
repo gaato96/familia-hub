@@ -6,12 +6,17 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * Hoja inferior. Es el contenedor de TODOS los formularios de la app.
+ * El contenedor de TODOS los formularios de la app. Cambia de forma según la
+ * pantalla, y no por gusto:
  *
- * En un teléfono, un modal centrado deja los campos arriba y el teclado los
- * tapa; una hoja que sube desde abajo deja el contenido pegado al pulgar y al
- * teclado. Se usa esto en lugar de páginas nuevas para no perder el contexto
- * de lo que se estaba mirando.
+ * - **Teléfono**: hoja que sube desde abajo. Un modal centrado deja los campos
+ *   arriba y el teclado los tapa; la hoja los deja pegados al pulgar.
+ * - **Escritorio** (`lg`): diálogo centrado. Una hoja pegada al borde inferior
+ *   de un monitor de 27" obliga a mirar abajo del todo mientras el mouse está
+ *   en el medio, y deja 800px de pantalla vacía arriba.
+ *
+ * Es el mismo componente porque es el mismo formulario: duplicarlo garantiza
+ * que dentro de tres meses el de escritorio no tenga el campo nuevo.
  */
 
 export const Sheet = Dialog.Root;
@@ -23,34 +28,51 @@ export function SheetContent({
   description,
   children,
   className,
+  /** `wide` para pantallas con dos columnas adentro (recetas, expediente). */
+  size = "md",
 }: {
   title: string;
   /** Opcional en pantalla, obligatorio para lectores de pantalla. */
   description?: string;
   children: React.ReactNode;
   className?: string;
+  size?: "md" | "wide";
 }) {
   return (
     <Dialog.Portal>
-      <Dialog.Overlay className="fixed inset-0 z-50 bg-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in data-[state=closed]:fade-out" />
+      <Dialog.Overlay
+        className={cn(
+          "fixed inset-0 z-50 bg-[#1a0f0a]/45 backdrop-blur-[2px]",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out",
+          "data-[state=open]:fade-in data-[state=closed]:fade-out",
+        )}
+      />
       <Dialog.Content
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 max-h-[92dvh] overflow-y-auto",
-          "rounded-t-3xl border-t border-border bg-surface",
-          // El padding de abajo suma la barra de gestos: sin esto, el botón de
-          // guardar queda medio tapado en un iPhone.
+          "fixed z-50 overflow-y-auto bg-surface thin-scroll",
+          // Teléfono: hoja inferior a ancho completo.
+          "inset-x-0 bottom-0 max-h-[92dvh] rounded-t-3xl",
           "px-4 pb-[calc(env(safe-area-inset-bottom)+1.25rem)] pt-3",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom",
+          // Escritorio: diálogo centrado.
+          "lg:inset-auto lg:bottom-auto lg:left-1/2 lg:top-1/2 lg:max-h-[85dvh]",
+          "lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-app-lg lg:p-6 lg:shadow-float",
+          "lg:data-[state=open]:zoom-in-95 lg:data-[state=closed]:zoom-out-95",
+          "lg:data-[state=open]:slide-in-from-bottom-0 lg:data-[state=closed]:slide-out-to-bottom-0",
+          size === "wide" ? "lg:w-[44rem]" : "lg:w-[30rem]",
           className,
         )}
       >
-        {/* Agarradera: le dice al pulgar que esto se puede bajar. */}
-        <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-border" />
+        {/* Agarradera: le dice al pulgar que esto se puede bajar. En escritorio
+            no significa nada, así que no está. */}
+        <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-border-strong lg:hidden" />
 
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
-            <Dialog.Title className="text-lg font-bold text-fg">{title}</Dialog.Title>
+            <Dialog.Title className="font-display text-xl font-bold text-fg">
+              {title}
+            </Dialog.Title>
             {description ? (
               <Dialog.Description className="mt-0.5 text-sm text-muted">
                 {description}
@@ -61,7 +83,7 @@ export function SheetContent({
           </div>
           <Dialog.Close
             aria-label="Cerrar"
-            className="-mr-1 -mt-1 grid size-9 shrink-0 place-items-center rounded-full text-muted hover:bg-surface-2"
+            className="-mr-1 -mt-1 grid size-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-fg"
           >
             <X className="size-5" />
           </Dialog.Close>

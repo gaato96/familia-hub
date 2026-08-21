@@ -50,7 +50,7 @@ export function IncomeList({
 
   return (
     <div className="space-y-3">
-      <div className="rounded-app border border-border bg-surface p-3">
+      <div className="rounded-app bg-surface shadow-card p-3">
         <p className="text-xs text-muted">Total del mes</p>
         <p className="text-2xl font-bold text-fg">{formatMoney(totalCents)}</p>
 
@@ -74,7 +74,7 @@ export function IncomeList({
         </ul>
       </div>
 
-      <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+      <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
         {incomes.map((income) => {
           const member = income.member_id ? byId.get(income.member_id) : undefined;
 
@@ -85,7 +85,7 @@ export function IncomeList({
               ) : (
                 <span
                   aria-hidden
-                  className="grid size-8 shrink-0 place-items-center rounded-full border border-dashed border-border text-xs text-muted"
+                  className="grid size-8 shrink-0 place-items-center rounded-full border border-dashed border-border-strong text-xs text-muted"
                 >
                   ?
                 </span>

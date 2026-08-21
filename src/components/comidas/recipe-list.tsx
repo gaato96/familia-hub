@@ -57,7 +57,7 @@ export function RecipeList({
           hint="Cargá las que hacen siempre, con sus ingredientes: de ahí sale la lista del súper."
         />
       ) : (
-        <ul className="divide-y divide-border overflow-hidden rounded-app border border-border bg-surface">
+        <ul className="divide-y divide-border overflow-hidden rounded-app bg-surface shadow-card">
           {recipes.map((recipe) => (
             <li key={recipe.id} className="flex items-center gap-2 p-3">
               <button

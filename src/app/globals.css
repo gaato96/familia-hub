@@ -5,67 +5,177 @@
    usuario tiene que ganarle a la preferencia del sistema. Ver theme-script.tsx. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------------------------------------------------------------------------
-   Paleta
-   Base cálida tipo papel, no gris azulado: la app imita una heladera con
-   papelitos, y un fondo frío pelea con eso. El violeta es el único color
-   "de sistema"; el resto del color de la app lo ponen los integrantes y las
-   notas, que traen el suyo.
---------------------------------------------------------------------------- */
+/* ===========================================================================
+   Hornero — sistema visual
+   ---------------------------------------------------------------------------
+   "Cálido y moderno": la eficiencia de una herramienta de productividad con la
+   temperatura de una casa. Tres decisiones sostienen todo lo demás.
+
+   1. La terracota manda. Es el barro con el que el hornero construye el nido,
+      y es el único color que da órdenes: botones primarios, pestaña activa,
+      lo que hay que tocar. Si algo es terracota, se toca.
+   2. El azul informa y el verde confirma. Nunca al revés: un verde en un botón
+      de acción hace que "listo" y "hacelo" se parezcan demasiado.
+   3. La jerarquía la hacen las sombras y el tono, no los bordes. Los bordes
+      duros de la versión anterior aplanaban todo: veinte rectángulos con la
+      misma línea gris alrededor no tienen jerarquía, tienen empate.
+
+   Los grises son cálidos a propósito (tiran a marrón, no a azul). Un gris frío
+   sobre un naranja lo ensucia; sobre este fondo, la terracota respira.
+=========================================================================== */
 :root {
-  --app-bg: #faf8f5;
+  --app-bg: #f7f9fd;
   --app-surface: #ffffff;
-  --app-surface-2: #f4f1ec;
-  --app-border: #e7e1d8;
-  --app-fg: #1c1917;
-  --app-muted: #78716c;
-  --app-primary: #6d4aff;
+  --app-surface-2: #f1f3f8;
+  --app-surface-3: #e8ebf2;
+  --app-border: #e2e5ec;
+  --app-border-strong: #cfd4de;
+
+  --app-fg: #181c1f;
+  /* Marrón grisado y no gris neutro: acompaña a la terracota en vez de
+     pelearse con ella. */
+  --app-muted: #6b5a54;
+
+  /* Terracota: acciones. */
+  --app-primary: #9f4122;
   --app-primary-fg: #ffffff;
-  --app-danger: #dc2626;
-  --app-success: #16a34a;
-  --app-warning: #d97706;
+  --app-primary-soft: #ffe4d9;
+  --app-primary-soft-fg: #7f2a0d;
+  --app-accent: #ff8a65;
 
-  /* Corcho de fondo del tablero de notas. */
-  --app-board: #e9dfcd;
+  /* Azul: información, navegación, lo que se lee sin actuar. */
+  --app-secondary: #006688;
+  --app-secondary-fg: #ffffff;
+  --app-secondary-soft: #d6f0fd;
+  --app-secondary-soft-fg: #005370;
 
-  --radius: 0.875rem;
+  /* Verde: hecho, cumplido, saludable. */
+  --app-success: #286b33;
+  --app-success-soft: #dbf1dc;
+  --app-success-soft-fg: #07521d;
+
+  --app-danger: #ba1a1a;
+  --app-danger-soft: #ffdad6;
+  --app-danger-soft-fg: #93000a;
+
+  --app-warning: #9a5b00;
+  --app-warning-soft: #ffe6c2;
+  --app-warning-soft-fg: #6b3e00;
+
+  /* Corcho de la heladera. Los papelitos traen su propio color; el fondo solo
+     tiene que dar la sensación de superficie. */
+  --app-board: #ece7e2;
+
+  /* Elevación por capas tonales + sombra difusa, nunca por borde duro. */
+  --app-shadow-card: 0 1px 2px rgba(24, 28, 31, 0.04), 0 4px 12px rgba(24, 28, 31, 0.06);
+  --app-shadow-float: 0 2px 4px rgba(24, 28, 31, 0.06), 0 12px 28px rgba(24, 28, 31, 0.12);
+  --app-shadow-press: 0 1px 2px rgba(24, 28, 31, 0.08);
+  /* La bóveda: el expediente se siente "guardado adentro", no apoyado encima. */
+  --app-shadow-vault: inset 0 2px 10px rgba(24, 28, 31, 0.09);
+
+  --radius: 1rem;
 }
 
 .dark {
-  --app-bg: #131217;
-  --app-surface: #1c1a22;
-  --app-surface-2: #24212c;
-  --app-border: #322e3c;
-  --app-fg: #f5f3f0;
-  --app-muted: #a29daf;
-  --app-primary: #9d84ff;
-  --app-primary-fg: #16131f;
-  --app-danger: #f87171;
-  --app-success: #4ade80;
-  --app-warning: #fbbf24;
+  /* Oscuro cálido. Un gris azulado acá convertiría la app en un panel de
+     control industrial, que es exactamente lo contrario de lo que es. */
+  --app-bg: #15100e;
+  --app-surface: #1f1a17;
+  --app-surface-2: #2a2320;
+  --app-surface-3: #352c28;
+  --app-border: #3a312c;
+  --app-border-strong: #4d423c;
 
-  --app-board: #221f2b;
+  --app-fg: #f3ece8;
+  --app-muted: #b6a49c;
+
+  /* En oscuro el primario se aclara: la terracota profunda sobre fondo oscuro
+     no llega al contraste mínimo y los botones desaparecen. */
+  --app-primary: #ff9a76;
+  --app-primary-fg: #4a1503;
+  --app-primary-soft: #46231a;
+  --app-primary-soft-fg: #ffcbb9;
+  --app-accent: #ff8a65;
+
+  --app-secondary: #75d1ff;
+  --app-secondary-fg: #00344a;
+  --app-secondary-soft: #10333f;
+  --app-secondary-soft-fg: #b6e6ff;
+
+  --app-success: #90d792;
+  --app-success-soft: #1c3520;
+  --app-success-soft-fg: #b9ecba;
+
+  --app-danger: #ffb4ab;
+  --app-danger-soft: #451a17;
+  --app-danger-soft-fg: #ffdad6;
+
+  --app-warning: #f0b357;
+  --app-warning-soft: #3d2c12;
+  --app-warning-soft-fg: #ffdda9;
+
+  --app-board: #241d1a;
+
+  /* Sombras casi invisibles sobre fondo oscuro: la elevación la da el tono de
+     la superficie, y la sombra solo separa el borde. */
+  --app-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --app-shadow-float: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --app-shadow-press: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --app-shadow-vault: inset 0 2px 10px rgba(0, 0, 0, 0.45);
 }
 
 @theme inline {
   --color-bg: var(--app-bg);
   --color-surface: var(--app-surface);
   --color-surface-2: var(--app-surface-2);
+  --color-surface-3: var(--app-surface-3);
   --color-border: var(--app-border);
+  --color-border-strong: var(--app-border-strong);
+
   --color-fg: var(--app-fg);
   --color-muted: var(--app-muted);
+
   --color-primary: var(--app-primary);
   --color-primary-fg: var(--app-primary-fg);
-  --color-danger: var(--app-danger);
+  --color-primary-soft: var(--app-primary-soft);
+  --color-primary-soft-fg: var(--app-primary-soft-fg);
+  --color-accent: var(--app-accent);
+
+  --color-secondary: var(--app-secondary);
+  --color-secondary-fg: var(--app-secondary-fg);
+  --color-secondary-soft: var(--app-secondary-soft);
+  --color-secondary-soft-fg: var(--app-secondary-soft-fg);
+
   --color-success: var(--app-success);
+  --color-success-soft: var(--app-success-soft);
+  --color-success-soft-fg: var(--app-success-soft-fg);
+
+  --color-danger: var(--app-danger);
+  --color-danger-soft: var(--app-danger-soft);
+  --color-danger-soft-fg: var(--app-danger-soft-fg);
+
   --color-warning: var(--app-warning);
+  --color-warning-soft: var(--app-warning-soft);
+  --color-warning-soft-fg: var(--app-warning-soft-fg);
+
   --color-board: var(--app-board);
 
   --radius-app: var(--radius);
+  --radius-app-sm: 0.625rem;
+  --radius-app-lg: 1.5rem;
 
-  /* next/font expone --font-jakarta y --font-caveat; acá se convierten en las
-     utilidades `font-sans` y `font-hand`. */
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --shadow-card: var(--app-shadow-card);
+  --shadow-float: var(--app-shadow-float);
+  --shadow-press: var(--app-shadow-press);
+  --shadow-vault: var(--app-shadow-vault);
+
+  /* Dos familias tipográficas y no una: Quicksand tiene terminaciones
+     redondeadas que hacen que un título se lea amable, pero a 14px y en
+     párrafo se vuelve blanda. Nunito Sans mantiene la redondez con mucha mejor
+     legibilidad en cuerpo chico. Caveat sigue siendo solo para los papelitos.
+     next/font expone las tres como variables CSS. */
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-quicksand), var(--font-nunito), ui-sans-serif, sans-serif;
   --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
 }
 
@@ -73,6 +183,8 @@
    Base
 --------------------------------------------------------------------------- */
 @layer base {
+  /* Tailwind 4 deja el color de borde en `currentColor`: sin esto, cualquier
+     `border` sin `border-*` sale del color del texto. */
   * {
     border-color: var(--app-border);
   }
@@ -92,11 +204,22 @@
     overscroll-behavior-y: none;
   }
 
+  /* Todos los títulos en Quicksand sin tener que acordarse en cada pantalla. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
   /* El foco visible se mantiene, pero solo por teclado: en un teléfono, un
-     anillo violeta después de cada tap parece un error. */
+     anillo después de cada tap parece un error. En escritorio, en cambio, es
+     la única forma de saber dónde estás si navegás con Tab — y ahora media
+     familia usa la app con teclado. */
   :focus-visible {
     outline: 2px solid var(--app-primary);
     outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
@@ -109,13 +232,34 @@
     padding-top: env(safe-area-inset-top);
   }
 
-  /* Scroll horizontal sin barra: las pestañas de listas de compras. */
+  /* Scroll horizontal sin barra: las pestañas de listas de compras, la tira de
+     días del planner. */
   .no-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Papelito de la heladera: una rotación mínima y una sombra que cae hacia
+     abajo a la derecha. Es lo que separa "nota temporal" de "tarjeta del
+     sistema" sin necesidad de explicarlo. */
+  .post-it {
+    box-shadow:
+      0 1px 1px rgba(24, 28, 31, 0.08),
+      2px 4px 10px rgba(24, 28, 31, 0.1);
+  }
+
+  /* La bóveda del expediente: hundida en vez de apoyada. */
+  .vault {
+    box-shadow: var(--app-shadow-vault);
+  }
+
+  /* Barras de scroll discretas en escritorio. En el teléfono ni se ven. */
+  .thin-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--app-border-strong) transparent;
   }
 }
 

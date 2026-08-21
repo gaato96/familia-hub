@@ -105,7 +105,7 @@ export function AllocationEditor({
           return (
             <li
               key={allocation.id}
-              className="rounded-app border border-border bg-surface p-3"
+              className="rounded-app bg-surface shadow-card p-3"
               style={{ borderLeftWidth: 4, borderLeftColor: allocation.color }}
             >
               <div className="flex items-center gap-2">
