@@ -1,6 +1,6 @@
 "use client";
 
-import { Ban, Check, CircleCheck } from "lucide-react";
+import { Ban, Check, CircleCheck, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -26,15 +26,46 @@ export function TaskDetailSheet({
   done,
   onToggle,
   onChanged,
+  onDeleted,
 }: {
   task: PlannerTask;
   assignee: FamilyMemberRow | undefined;
   done: boolean;
   onToggle: () => void;
   onChanged: () => void;
+  /** Cierra la hoja: después de borrar no queda nada que mostrar acá adentro. */
+  onDeleted: () => void;
 }) {
   const [steps, setSteps] = useState<TaskStepRow[] | null>(null);
   const [checked, setChecked] = useState<string[]>(task.done_step_ids);
+  const [deleting, setDeleting] = useState(false);
+
+  const isRecurring = task.task?.recurrence !== null && task.task?.recurrence !== undefined;
+
+  /**
+   * Borra la REGLA (`tasks`), no la ocurrencia: `task_id` referencia a
+   * `tasks(id) on delete cascade`, así que se lleva puestos los pasos y
+   * TODAS las ocurrencias, pasadas y futuras.
+   *
+   * Es la acción correcta para "esto fue un error" o "dejamos de hacer esto".
+   * Para posponer o saltear una sola vez, la herramienta es reasignar o
+   * marcarla como hecha — borrar una tarea recurrente entera es intencional
+   * y se lo advierte en el texto del botón, no con un confirm() del
+   * navegador: acá nada usa esa clase de diálogo (ver documentos, recetas,
+   * objetivos), y sumarlo solo para esta pantalla rompería el patrón.
+   */
+  async function remove() {
+    setDeleting(true);
+    const { error } = await createClient().from("tasks").delete().eq("id", task.task_id);
+    setDeleting(false);
+
+    if (error) {
+      toast.error("No se pudo borrar. Puede que la haya creado otra persona.");
+      return;
+    }
+    toast.success(isRecurring ? "Tarea y sus repeticiones borradas." : "Tarea borrada.");
+    onDeleted();
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -79,8 +110,28 @@ export function TaskDetailSheet({
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-3 text-sm">
         {assignee ? <MemberChip member={assignee} /> : <UnassignedChip />}
-        <span className="text-muted">{formatLongDate(task.due_date)}</span>
+        <span className="flex items-center gap-2">
+          <span className="text-muted">{formatLongDate(task.due_date)}</span>
+          <button
+            type="button"
+            onClick={remove}
+            disabled={deleting}
+            aria-label={
+              isRecurring ? "Borrar la tarea y todas sus repeticiones" : "Borrar la tarea"
+            }
+            className="grid size-8 shrink-0 place-items-center rounded-full text-muted/50 transition-colors hover:text-danger disabled:opacity-40"
+          >
+            <Trash2 className="size-4" />
+          </button>
+        </span>
       </div>
+
+      {isRecurring ? (
+        <p className="-mt-3 text-xs text-muted">
+          Es una tarea que se repite: borrarla se lleva puestas todas las fechas, pasadas y
+          futuras. Para saltear solo esta vez, reasignala o marcala como hecha.
+        </p>
+      ) : null}
 
       {task.task?.notes ? (
         <p className="whitespace-pre-wrap rounded-app bg-surface-2 p-3 text-sm text-fg">

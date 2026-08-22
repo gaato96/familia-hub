@@ -124,6 +124,21 @@ veces** (la de SQL materializa, la de TS previsualiza). **Cambian juntas o no ca
 `tests/unit/recurrence.test.ts` cubre los casos que se rompen solos: fin de mes, el 31 en febrero,
 el `from` que no corre el ancla, el techo de horizonte colgado de *hoy* y no de `starts_on`.
 
+### Borrar una tarea borra la REGLA, no la ocurrencia
+
+`TaskDetailSheet` borra `tasks` (con `on delete cascade` a `task_steps` y a TODAS sus
+`task_instances`, pasadas y futuras), nunca la fila de `task_instances`. Es a propósito: borrar
+solo la ocurrencia de hoy dejaría la regla con un hueco, y la próxima corrida de
+`ensure_task_instances()` podría llegar a regenerarla —el cálculo camina desde `max(due_date)`— así
+que un "borrado" de una sola ocurrencia se deshace solo. Si algún día hace falta "saltear esta vez
+sin tocar el resto", la herramienta correcta es el `status = 'skipped'` que ya existe en el enum y
+todavía no tiene botón en ningún lado — no reutilizar el borrado para eso.
+
+Para una tarea recurrente esto se lleva puesto el historial completo ("quién limpió el baño en
+julio"), así que la hoja lo avisa en texto en vez de con un `confirm()` del navegador: acá nada usa
+esa clase de diálogo (documentos, recetas, objetivos también borran al toque), y sumarlo solo para
+esta pantalla rompería el patrón.
+
 ### El expediente es la excepción de permisos
 
 Casi toda la app la usan por igual adultos y chicos. El expediente NO: las nueve

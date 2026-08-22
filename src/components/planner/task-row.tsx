@@ -91,6 +91,10 @@ export function TaskRow({
             done={done}
             onToggle={toggle}
             onChanged={onChanged}
+            onDeleted={() => {
+              setDetailOpen(false);
+              onChanged();
+            }}
           />
         </SheetContent>
       </Sheet>

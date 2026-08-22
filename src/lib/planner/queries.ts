@@ -5,7 +5,9 @@ import type { Database, EventRow, TaskInstanceRow, TaskRow } from "@/types/datab
 
 /** Una ocurrencia con los datos de su plantilla: lo que la UI necesita para pintar una fila. */
 export type PlannerTask = TaskInstanceRow & {
-  task: Pick<TaskRow, "title" | "category" | "priority" | "notes"> | null;
+  // `recurrence` va acá para que el detalle de una ocurrencia sepa si borrar
+  // la tarea se lleva puesta una sola fecha o el historial entero.
+  task: Pick<TaskRow, "title" | "category" | "priority" | "notes" | "recurrence"> | null;
 };
 
 /**
@@ -33,7 +35,7 @@ export async function fetchTasksBetween(
 ): Promise<PlannerTask[]> {
   const { data, error } = await supabase
     .from("task_instances")
-    .select("*, task:tasks(title, category, priority, notes)")
+    .select("*, task:tasks(title, category, priority, notes, recurrence)")
     .gte("due_date", from)
     .lte("due_date", to)
     .order("due_date", { ascending: true });
@@ -68,7 +70,7 @@ export async function fetchOverdueTasks(
 ): Promise<PlannerTask[]> {
   const { data, error } = await supabase
     .from("task_instances")
-    .select("*, task:tasks(title, category, priority, notes)")
+    .select("*, task:tasks(title, category, priority, notes, recurrence)")
     .lt("due_date", today)
     .eq("status", "pending")
     .order("due_date", { ascending: true })

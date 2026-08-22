@@ -80,6 +80,12 @@ test("la rutina de todos los días", async ({ page }) => {
   await expect(page.getByRole("checkbox", { name: itemName })).toBeChecked();
   await expect(page.getByText(/Ya está \(/)).toBeVisible();
 
+  // Y se borra. Sin esto "Ya está" crece una fila por corrida para siempre —
+  // ítems tildados no vuelven a aparecer solos en ningún lado de la app, así
+  // que nadie los limpiaría a mano.
+  await page.getByRole("button", { name: `Borrar ${itemName}` }).click();
+  await expect(page.getByText(itemName)).toHaveCount(0);
+
   // --- Mirar la semana ---------------------------------------------------
   await nav(page).getByRole("link", { name: "Semana" }).click();
   await expect(page.getByText(/· hoy/)).toBeVisible();
@@ -108,6 +114,18 @@ test("una tarea recurrente aparece en el planner después de crearla", async ({ 
   // La ocurrencia se materializa del lado del servidor: si el planner mostrara
   // la tarea sin que exista la fila, no se podría tildar.
   await expect(page.getByText(title).first()).toBeVisible();
+
+  // Se borra al final, y de paso ejercita el aviso: una tarea recurrente
+  // borrada se lleva puestas TODAS sus repeticiones, no solo esta. Sin este
+  // aviso alguien podría creer que solo se salteaba la ocurrencia de hoy.
+  await page.getByText(title).first().click();
+  await expect(
+    page.getByText(/se lleva puestas todas las fechas/),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Borrar la tarea y todas sus repeticiones" })
+    .click();
+  await expect(page.getByText(title)).toHaveCount(0);
 });
 
 test("el día se arma con bloques y la vista lo dibuja", async ({ page }) => {

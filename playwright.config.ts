@@ -14,7 +14,19 @@ export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  /**
+   * Un reintento también en local, no solo en CI.
+   *
+   * La causa real de la inestabilidad no es un test frágil: es que la primera
+   * visita de TODA la corrida a la ruta más pesada (`/planner`, que arrastra
+   * la vista semanal, la línea de tiempo y dnd-kit) puede tardar más que
+   * cualquier timeout razonable en compilar contra `next dev`. Subir el
+   * número de siempre persigue un blanco que se corre solo a medida que la
+   * app crece. Un reintento es la herramienta correcta para "lento la primera
+   * vez, después anda": el server sigue arriba y la ruta ya quedó compilada,
+   * así que el reintento no repite la espera — pasa al toque.
+   */
+  retries: 1,
   workers: 1,
   reporter: "list",
   /**
