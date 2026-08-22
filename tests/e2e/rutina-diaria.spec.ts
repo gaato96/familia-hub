@@ -48,6 +48,14 @@ test("la rutina de todos los días", async ({ page }) => {
   await page.reload();
   await expect(page.getByText(noteText)).toBeVisible();
 
+  // Y se saca al terminar. Sin esto la heladera junta un papelito por corrida:
+  // a las diez corridas el tablero es tan alto que la barra de pestañas queda
+  // debajo del pliegue y los tests siguientes empiezan a fallar solos.
+  await page
+    .getByRole("button", { name: `Sacar la nota "${noteText}"` })
+    .click();
+  await expect(page.getByText(noteText)).toHaveCount(0);
+
   // --- Tildar algo en la compra -----------------------------------------
   await nav(page).getByRole("link", { name: "Compras" }).click();
   await expect(page.getByRole("heading", { name: "Compras" })).toBeVisible();
@@ -126,6 +134,15 @@ test("el día se arma con bloques y la vista lo dibuja", async ({ page }) => {
   // Y aparece también en la vista semanal, que lee los mismos bloques.
   await nav(page).getByRole("link", { name: "Semana" }).click();
   await expect(page.getByTitle(title).first()).toBeVisible();
+
+  // Se borra al terminar. Sin esto la corrida número ocho deja ocho bloques
+  // superpuestos en el mismo horario: `assignLanes` los reparte en ocho
+  // columnas de veinte píxeles y el título deja de verse, así que el test
+  // termina fallando por la basura que dejó él mismo.
+  await nav(page).getByRole("link", { name: "Hoy" }).click();
+  await page.getByRole("button", { name: title }).click();
+  await page.getByRole("button", { name: "Borrar bloque" }).click();
+  await expect(page.getByRole("button", { name: title })).toHaveCount(0);
 });
 
 test("la foto de perfil se sube, se recorta y se sirve por la ruta privada", async ({

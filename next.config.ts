@@ -11,6 +11,16 @@ const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
   : undefined;
 
 const nextConfig: NextConfig = {
+  /**
+   * El indicador flotante de desarrollo, apagado.
+   *
+   * Se dibuja en la esquina inferior izquierda, que es exactamente donde caen
+   * los botones destructivos de las hojas del teléfono ("Borrar bloque"). En
+   * los e2e, que corren contra `next dev`, el overlay se come el click y el
+   * test falla por algo que no existe en producción. Los overlays de ERROR no
+   * se ven afectados: esto apaga solo la insignia de estado.
+   */
+  devIndicators: false,
   images: {
     remotePatterns: supabaseHost
       ? [{ protocol: "https", hostname: supabaseHost, pathname: "/storage/v1/object/sign/**" }]

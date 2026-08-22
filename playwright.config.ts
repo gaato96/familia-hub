@@ -21,15 +21,21 @@ export default defineConfig({
    * Timeouts holgados a propósito.
    *
    * La suite corre contra `next dev`, que compila cada ruta la PRIMERA vez que
-   * alguien la pide: el primer click sobre "Hoy" o sobre "Semana" en una tanda
-   * limpia puede tardar diez segundos en pintar. Con los 5s por defecto, el
-   * test que le toca ir primero falla por lento y no por roto — y peor, falla
-   * uno distinto cada vez, que es la clase de test que la gente termina
+   * alguien la pide. En una tanda limpia, el primer click sobre "Semana" —que
+   * arrastra la vista semanal, la línea de tiempo y dnd-kit— puede tardar más
+   * de veinte segundos en pintar. Con los 5s por defecto falla un test
+   * distinto en cada corrida, que es la clase de test que la gente termina
    * ignorando.
+   *
+   * La alternativa era correr contra `next build && next start`, que no
+   * compila nada al vuelo: más determinista, pero suma un minuto de build a
+   * cada corrida. Para una suite que se corre a mano, treinta segundos de
+   * paciencia salen más baratos — y un timeout generoso no cuesta nada cuando
+   * los tests pasan.
    */
-  expect: { timeout: 20_000 },
+  expect: { timeout: 30_000 },
   use: {
-    actionTimeout: 20_000,
+    actionTimeout: 30_000,
     navigationTimeout: 30_000,
     baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",
     trace: "on-first-retry",

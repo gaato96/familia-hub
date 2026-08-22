@@ -371,6 +371,18 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
   compatibilidad con `Record<string, unknown>`; una `interface` no tiene índice implícito y los
   tipos `Insert` se resuelven a `never` en silencio, sin ningún error que apunte a la causa. Cada
   tabla además necesita `Relationships` o los selects embebidos no tipan.
+- **El rol vive en el TOKEN, así que ascender a alguien no se ve hasta que se emite uno nuevo.**
+  `set_member_role()` cambia la fila de `profiles`, pero las policies leen `auth.jwt()`: quien fue
+  ascendido sigue viendo la app como `child` —sin Finanzas ni Documentos, y con RLS devolviendo
+  cero filas del expediente— hasta que el token vence. `requireFamily()` compara el claim con la
+  fila (`roleIsStale`) y `<RoleSync>` pide un token nuevo. **El rol que manda sigue siendo el del
+  claim, nunca el de la fila**: mostrar finanzas porque la fila dice "parent" mientras el token
+  dice "child" daría una pantalla vacía sin ninguna explicación. Vale en los dos sentidos —
+  quitarle admin a alguien también se aplica en la carga siguiente.
+- **Quien se une con el código entra siempre como `child`, incluso el otro adulto de la pareja.**
+  Es a propósito (si el rol lo eligiera quien se une, cualquiera con el código se auto-promovería),
+  pero es la razón número uno de "creé un usuario nuevo y no ve lo mismo que yo": hay que
+  ascenderlo desde `/familia`.
 - **`refreshSession()` después de `create_family` / `join_family`.** Los claims se estampan al
   emitir el token, así que justo después de la RPC el token en mano todavía dice que el usuario no
   tiene familia. Sin esa línea todo compila, todo "anda", y la pantalla queda vacía. Ver
@@ -438,10 +450,16 @@ modo de falla peor para un deploy. Revisar cuando Serwist soporte Turbopack.
 - **El destino nuevo se agrega en `src/lib/nav.ts` y en ningún otro lado.** De ahí salen la barra
   lateral, la barra inferior y la grilla de `/mas`. Agregarlo en uno solo es cómo se consigue que
   la app tenga dos mapas distintos según la pantalla.
-- **Los tests e2e crean sus propias filas, no tocan las de la semilla.** Un test que tilda "el
-  primer ítem de la lista" pasa la primera vez y falla la décima, cuando ya no queda ninguno sin
-  tildar y termina destildando uno. Nombre único con `Date.now()` y listo: la corrida cincuenta se
-  comporta como la primera. Vale también para los bloques de horarios y los objetivos.
+- **Los tests e2e crean sus propias filas Y LAS BORRAN.** Las dos mitades importan. Un test que
+  tilda "el primer ítem de la lista" falla en la décima corrida, cuando ya no queda ninguno sin
+  tildar y termina destildando uno; y uno que crea sin borrar envenena la app de a poco — ocho
+  bloques superpuestos en el mismo horario hacen que `assignLanes` los reparta en ocho columnas de
+  veinte píxeles y el título deje de verse, así que el test falla por la basura que dejó él mismo.
+  Nombre único con `Date.now()` para crear, y limpieza al final.
+- **`devIndicators: false` no es capricho.** La insignia de desarrollo de Next se dibuja en la
+  esquina inferior izquierda, que es donde caen los botones destructivos de las hojas del teléfono
+  ("Borrar bloque"). Se come el click en los e2e, que corren contra `next dev`, y el test falla por
+  algo que en producción no existe.
 - **`npm run db:seed` corta ante cualquier error.** Una versión anterior los ignoraba y decía
   "Listo" con media base vacía; los tests de RLS fallaban por falta de datos y parecía un
   problema de policies.

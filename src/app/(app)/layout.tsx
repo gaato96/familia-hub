@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/app/app-sidebar";
 import { BottomNav } from "@/components/app/bottom-nav";
 import { MobileTopBar } from "@/components/app/mobile-top-bar";
+import { RoleSync } from "@/components/app/role-sync";
 import { requireFamily } from "@/lib/auth/context";
 
 /**
@@ -20,10 +21,14 @@ import { requireFamily } from "@/lib/auth/context";
  *   columnas adentro de este contenedor.
  */
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const { family, member, role } = await requireFamily();
+  const { family, member, role, roleIsStale } = await requireFamily();
 
   return (
     <div className="min-h-dvh bg-bg">
+      {/* Si a esta persona la ascendieron mientras tenía la sesión abierta, el
+          token todavía dice el rol viejo. Esto pide uno nuevo y se acomoda
+          sin que tenga que cerrar sesión. */}
+      <RoleSync stale={roleIsStale} />
       <AppSidebar familyName={family.name} member={member} isParent={role === "parent"} />
       <MobileTopBar familyName={family.name} member={member} />
 

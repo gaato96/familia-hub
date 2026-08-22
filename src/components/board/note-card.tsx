@@ -21,6 +21,14 @@ export function NoteCard({
   onDelete: (note: Note) => void;
 }) {
   const palette = NOTE_COLORS[note.color];
+
+  /**
+   * Las acciones se llamaban "Fijar nota" y "Sacar nota" a secas. Con cinco
+   * papelitos en la heladera, un lector de pantalla lee cinco veces lo mismo y
+   * no hay forma de saber cuál se está por sacar. El cuerpo recortado alcanza
+   * para distinguirlas sin volver la etiqueta interminable.
+   */
+  const resumen = note.body.length > 30 ? `${note.body.slice(0, 30)}…` : note.body;
   // La inclinación sale del id, no de un random por render: si cambiara en cada
   // actualización, todo el tablero temblaría cada 30 segundos con el poll.
   const tilt = note.is_pinned ? 0 : rotationFor(note.id);
@@ -59,7 +67,7 @@ export function NoteCard({
           <button
             type="button"
             onClick={() => onTogglePin(note)}
-            aria-label={note.is_pinned ? "Desfijar nota" : "Fijar nota"}
+            aria-label={`${note.is_pinned ? "Desfijar" : "Fijar"} la nota "${resumen}"`}
             aria-pressed={note.is_pinned}
             className="grid size-7 place-items-center rounded-full hover:bg-black/10"
           >
@@ -70,7 +78,7 @@ export function NoteCard({
             <button
               type="button"
               onClick={() => onDelete(note)}
-              aria-label="Sacar nota"
+              aria-label={`Sacar la nota "${resumen}"`}
               className="grid size-7 place-items-center rounded-full hover:bg-black/10"
             >
               <Trash2 className="size-3.5" />

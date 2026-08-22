@@ -13,6 +13,14 @@ export type FamilyContext = {
   member: FamilyMemberRow;
   /** Todos los integrantes, incluidos los que no tienen cuenta (Julián). */
   members: FamilyMemberRow[];
+  /**
+   * El rol del JWT quedó viejo respecto de la fila de `profiles`.
+   *
+   * Pasa siempre que un adulto promueve a alguien: `set_member_role()` cambia
+   * la fila, pero el rol viaja DENTRO del token y el token ya estaba emitido.
+   * Ver `<RoleSync>` — el cliente refresca la sesión y se arregla solo.
+   */
+  roleIsStale: boolean;
 };
 
 /**
@@ -47,13 +55,17 @@ export const requireFamily = cache(async function requireFamily(): Promise<Famil
   // elegir crear una familia o entrar con un código.
   if (!claimRole || !claimFamilyId) redirect("/bienvenida");
 
-  const [familyResult, membersResult] = await Promise.all([
+  const [familyResult, membersResult, profileResult] = await Promise.all([
     supabase.from("families").select("*").eq("id", claimFamilyId).single(),
     supabase
       .from("family_members")
       .select("*")
       .eq("is_archived", false)
       .order("position", { ascending: true }),
+    // El rol REAL, de la fila. El del claim puede estar viejo, y la policy
+    // `profiles_select` deja leer siempre la propia fila (`id = auth.uid()`)
+    // justamente para que este chequeo funcione con un token desactualizado.
+    supabase.from("profiles").select("role").eq("id", claims.sub).maybeSingle(),
   ]);
 
   // Familia inexistente significa que el claim apunta a algo borrado, o que el
@@ -67,12 +79,21 @@ export const requireFamily = cache(async function requireFamily(): Promise<Famil
   // borró el family_member a mano. Se manda al onboarding en vez de romper.
   if (!member) redirect("/bienvenida");
 
+  // El rol que MANDA es el del claim, no el de la fila: es el que leen las
+  // policies de RLS. Mostrar la pantalla de finanzas porque la fila dice
+  // "parent", mientras el token todavía dice "child", daría una pantalla
+  // vacía sin explicación. Lo que se hace con la diferencia es refrescar el
+  // token, no ignorarlo.
+  const role: UserRole = claimRole === "parent" ? "parent" : "child";
+  const actualRole = profileResult.data?.role;
+
   return {
     userId: claims.sub,
-    role: claimRole === "parent" ? "parent" : "child",
+    role,
     family: familyResult.data,
     member,
     members,
+    roleIsStale: actualRole !== undefined && actualRole !== role,
   };
 });
 

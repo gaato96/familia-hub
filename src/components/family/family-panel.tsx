@@ -93,7 +93,10 @@ export function FamilyPanel({
       );
       return;
     }
-    toast.success("Listo. Se aplica cuando esa persona vuelva a entrar.");
+    // Antes decía "se aplica cuando esa persona vuelva a entrar", que era
+    // cierto y era el problema: el rol viaja en el token. Ahora `<RoleSync>`
+    // le pide un token nuevo apenas abre cualquier pantalla.
+    toast.success("Listo. Se le aplica la próxima vez que abra la app.");
     router.refresh();
   }
 
